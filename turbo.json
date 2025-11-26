@@ -1,6 +1,9 @@
 {
   "$schema": "https://turborepo.com/schema.json",
   "ui": "tui",
+  "globalEnv": [
+    "ANDROID_HOME"
+  ],
   "tasks": {
     "build": {
       "dependsOn": ["^build"],
@@ -9,9 +12,6 @@
     },
     "lint": {
       "dependsOn": ["^lint"]
-    },
-    "check-types": {
-      "dependsOn": ["^check-types"]
     },
     "dev": {
       "cache": false,
