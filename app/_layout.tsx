@@ -16,9 +16,11 @@ export default function RootLayout() {
   const { colorScheme } = useColorScheme();
 
   return (
-    <ThemeProvider value={NAV_THEME[colorScheme ?? 'light']}>
-      <StatusBar style={colorScheme === 'dark' ? 'light' : 'dark'} />
-      <Stack />
+    <ThemeProvider value={NAV_THEME[colorScheme ?? 'dark']}>
+      <StatusBar style={colorScheme === 'dark' ? 'light' : 'dark'} /> 
+      <Stack>
+        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+      </Stack>
       <PortalHost />
     </ThemeProvider>
   );
