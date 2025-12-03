@@ -28,7 +28,7 @@ export default function Settings() {
           </SettingsSection>
 
           <SettingsSection title="About">
-            <SettingsItem icon={InfoIcon} label="About App" value="v1.0.0" />
+            <SettingsItem icon={InfoIcon} label="About App" value="v0.0.1" />
           </SettingsSection>
         </View>
       </ScrollView>
