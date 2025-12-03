@@ -1,6 +1,9 @@
 import { mmkv } from '@/integrations/mmkv';
 import { generateUUID } from '@/lib/utils';
 import { List, Zod_List } from '@/types';
+import { Logger } from '@/clients/logger';
+
+const logger = new Logger('list-actions');
 
 const Zod_CreateListSchema = Zod_List.omit({ id: true });
 
@@ -11,6 +14,7 @@ const LISTS_KEY = 'lists';
 export const createList = (args: CreateListSchema) => {
   const validated = Zod_CreateListSchema.safeParse(args);
   if (!validated.success) {
+    logger.error('Invalid input for createList', validated.error);
     throw new Error('Invalid input');
   }
 
@@ -29,7 +33,15 @@ export const createList = (args: CreateListSchema) => {
 };
 
 export const updateList = (args: { list: List }) => {
-  const { list } = args;
+  const validated = Zod_List.safeParse(args.list);
+
+  if (!validated.success) {
+    logger.error('Invalid input for updateList', validated.error);
+    throw new Error('Invalid input');
+  }
+
+  const list = validated.data;
+
   const lists = getLists();
 
   const index = lists.findIndex((l) => l.id === list.id);
@@ -42,8 +54,15 @@ export const updateList = (args: { list: List }) => {
   return null;
 };
 
-export const removelist = (args: { list: List }) => {
-  const { list } = args;
+export const removeList = (args: { list: List }) => {
+  const validated = Zod_List.safeParse(args.list);
+
+  if (!validated.success) {
+    logger.error('Invalid input for removeList', validated.error);
+    throw new Error('Invalid input');
+  }
+
+  const list = validated.data;
   const lists = getLists();
 
   const index = lists.findIndex((l) => l.id === list.id);

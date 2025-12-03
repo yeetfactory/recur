@@ -29,7 +29,13 @@ export const createSubscription = (args: CreateSubscription) => {
 };
 
 export const updateSubscription = (args: { subscription: Subscription }) => {
-  const { subscription } = args;
+  const validated = Zod_Subscription.safeParse(args.subscription);
+
+  if (!validated.success) {
+    throw new Error('Invalid input');
+  }
+
+  const subscription = validated.data;
   const subscriptions = getSubscriptions();
 
   const index = subscriptions.findIndex((s) => s.id === subscription.id);
@@ -43,13 +49,20 @@ export const updateSubscription = (args: { subscription: Subscription }) => {
 };
 
 export const removeSubscription = (args: { subscription: Subscription }) => {
-  const { subscription } = args;
+  const validated = Zod_Subscription.safeParse(args.subscription);
+
+  if (!validated.success) {
+    throw new Error('Invalid input');
+  }
+
+  const subscription = validated.data;
   const subscriptions = getSubscriptions();
 
   const index = subscriptions.findIndex((s) => s.id === subscription.id);
   if (index !== -1) {
     subscriptions.splice(index, 1);
     mmkv.set(SUBSCRIPTIONS_KEY, subscriptions);
+    return subscription;
   }
 
   return null;

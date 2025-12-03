@@ -43,7 +43,7 @@ export const Zod_Subscription = z.object({
   frequency: Zod_SubscriptionFrequency,
   amount: z.number(),
   currency: Zod_Currency,
-  isFreeTrail: z.boolean(),
+  isFreeTrial: z.boolean(),
 });
 
 export type Subscription = z.infer<typeof Zod_Subscription>;
