@@ -1,22 +1,8 @@
-import { z } from 'zod';
-
-export const Zod_BrandfetchSearchInput = z.object({
-  query: z.string(),
-});
-
-export type BrandfetchSearchInput = z.infer<typeof Zod_BrandfetchSearchInput>;
-
-export const Zod_BrandfetchSearchResponse = z.array(
-  z.object({
-    icon: z.string().optional(),
-    name: z.string().optional(),
-    domain: z.string(),
-    claimed: z.boolean(),
-    brandId: z.string(),
-  })
-);
-
-export type BrandfetchSearchResponse = z.infer<typeof Zod_BrandfetchSearchResponse>;
+import {
+  BrandfetchSearchInput,
+  BrandfetchSearchResponse,
+  Zod_BrandfetchSearchInput,
+} from '@/types';
 
 /**
  * A class for interacting with the Brandfetch API.
