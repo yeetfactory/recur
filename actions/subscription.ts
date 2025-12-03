@@ -1,6 +1,9 @@
 import { mmkv } from '@/integrations/mmkv';
 import { generateUUID } from '@/lib/utils';
 import { Subscription, Zod_Subscription } from '@/types';
+import { Logger } from '@/clients/logger';
+
+const logger = new Logger('subscription-actions');
 
 const SUBSCRIPTIONS_KEY = 'subscriptions';
 
@@ -13,6 +16,7 @@ type CreateSubscription = Omit<Subscription, 'id'>;
 export const createSubscription = (args: CreateSubscription) => {
   const validated = Zod_CreateSubscriptionSchema.safeParse(args);
   if (!validated.success) {
+    logger.error('Invalid input for createSubscription', validated.error);
     throw new Error('Invalid input');
   }
 
@@ -32,6 +36,7 @@ export const updateSubscription = (args: { subscription: Subscription }) => {
   const validated = Zod_Subscription.safeParse(args.subscription);
 
   if (!validated.success) {
+    logger.error('Invalid input for updateSubscription', validated.error);
     throw new Error('Invalid input');
   }
 
@@ -45,6 +50,7 @@ export const updateSubscription = (args: { subscription: Subscription }) => {
     return subscription;
   }
 
+  logger.warn('Subscription not found for update:', subscription.id);
   return null;
 };
 
@@ -52,6 +58,7 @@ export const removeSubscription = (args: { subscription: Subscription }) => {
   const validated = Zod_Subscription.safeParse(args.subscription);
 
   if (!validated.success) {
+    logger.error('Invalid input for removeSubscription', validated.error);
     throw new Error('Invalid input');
   }
 
@@ -65,6 +72,7 @@ export const removeSubscription = (args: { subscription: Subscription }) => {
     return subscription;
   }
 
+  logger.warn('Subscription not found for removal:', subscription.id);
   return null;
 };
 

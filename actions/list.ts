@@ -51,6 +51,7 @@ export const updateList = (args: { list: List }) => {
     return list;
   }
 
+  logger.warn('List not found for update:', list.id);
   return null;
 };
 
@@ -72,6 +73,7 @@ export const removeList = (args: { list: List }) => {
     return list;
   }
 
+  logger.warn('List not found for removal:', list.id);
   return null;
 };
 
