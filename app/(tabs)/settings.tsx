@@ -52,7 +52,7 @@ function SettingsSection({ title, children }: { title: string; children: React.R
 function SettingsItem({ icon: IconComponent, label, value, onPress }: { icon: any, label: string, value?: string, onPress?: () => void }) {
   return (
     <TouchableOpacity onPress={onPress} activeOpacity={0.7}>
-      <View className="flex-row items-center justify-between border border-border bg-card dark:bg-black rounded-lg p-4">
+      <View className="flex-row items-center justify-between border border-[#502615] bg-card dark:bg-black rounded-lg p-4">
         <View className="flex-row items-center gap-3">
           <View className="p-2 bg-muted rounded-md">
             <Icon as={IconComponent} className="size-5 text-foreground" />
@@ -85,7 +85,7 @@ function ThemeToggleItem() {
 
   return (
     <TouchableOpacity onPress={toggleColorScheme} activeOpacity={0.7}>
-      <View className="flex-row items-center justify-between border border-border bg-card dark:bg-black rounded-lg p-4">
+      <View className="flex-row items-center justify-between border border-[#502615] bg-card dark:bg-black rounded-lg p-4">
         <View className="flex-row items-center gap-3">
           <View className="p-2 bg-muted rounded-md">
             <Icon as={THEME_ICONS[colorScheme ?? 'light']} className="size-5 text-foreground" />
