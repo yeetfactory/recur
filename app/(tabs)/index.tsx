@@ -10,10 +10,9 @@ export default function Screen() {
   return (
     <>
       <Stack.Screen />
-      <ScrollView>
+      <ScrollView showsVerticalScrollIndicator={false}>
         <View className="flex-row items-center justify-between p-4 mt-[30px]">
-          <Text className="text-3xl font-bold text-foreground">Recur.</Text>
-
+          <Text className="text-3xl font-recoleta-semibold text-foreground">Recur.</Text>
           <AddSubscriptionDialog />
         </View>
         <View className="flex-1 items-center justify-center p-4">

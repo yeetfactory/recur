@@ -59,7 +59,7 @@ export const Card = ({ icon, name, price }: CardProps) => {
   const colorScheme = useColorScheme();
   const iconColor = colorScheme === 'dark' ? 'white' : 'black';
   return (
-    <View className="flex flex-row items-center border border-border bg-card dark:bg-black rounded-lg p-4">
+    <View className="flex flex-row items-center border border-[#502615] bg-card dark:bg-black rounded-lg p-4">
       <Ionicons name={icon} color={iconColor} size={24} />
       <View className="ml-4">
         <Text className="text-sm font-medium text-card-foreground dark:text-white">{name}</Text>

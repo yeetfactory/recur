@@ -2,73 +2,52 @@ import * as React from 'react';
 import { Ionicons } from '@expo/vector-icons';
 import { useColorScheme } from 'nativewind';
 import { View, Pressable } from 'react-native';
-import { cn } from '@/lib/utils';
-import {
-    Dialog,
-    DialogContent,
-    DialogDescription,
-    DialogFooter,
-    DialogHeader,
-    DialogTitle,
-    DialogTrigger,
-    DialogClose,
-} from "@/components/ui/dialog";
-import { Button } from '@/components/ui/button';
+import * as DialogPrimitive from '@rn-primitives/dialog';
+import Animated, { FadeIn, FadeOut, SlideInDown, SlideOutDown } from 'react-native-reanimated';
 import { Text } from '@/components/ui/text';
-import { Input } from "@/components/ui/input"
 
 export function AddSubscriptionDialog() {
     const { colorScheme } = useColorScheme();
-    const [billingCycle, setBillingCycle] = React.useState<'Monthly' | 'Yearly'>('Monthly');
+    const [isOpen, setIsOpen] = React.useState(false);
 
     return (
-        <Dialog>
-            <DialogTrigger>
-                <Ionicons name="add-circle-outline" size={36} color={colorScheme === 'dark' ? 'white' : 'black'} />
-            </DialogTrigger>
-            <DialogContent className="w-[90vw]">
-                <DialogHeader>
-                    <DialogTitle>Add.</DialogTitle>
-                    <DialogDescription>
-                        <Text className="text-muted-foreground">Add a new subscription to your account.</Text>
-                    </DialogDescription>
-                </DialogHeader>
-                <Input className="w-full h-[50px]" placeholder="Subscription Name" />
-                <Input className="w-full h-[50px]" placeholder="Subscription Price" />
-
-                <View className="flex-row p-1 bg-secondary/30 rounded-lg gap-1">
-                    <Pressable
-                        // onPress={() => setBillingCycle('Monthly')}
-                        className={cn(
-                            "flex-1 py-2 items-center justify-center rounded-md",
-                            billingCycle === 'Monthly' ? "bg-background shadow-sm" : "bg-transparent"
-                        )}
+        <DialogPrimitive.Root open={isOpen} onOpenChange={setIsOpen}>
+            <DialogPrimitive.Trigger asChild>
+                <Pressable>
+                    <Ionicons name="add-circle-outline" size={36} color={colorScheme === 'dark' ? 'white' : 'black'} />
+                </Pressable>
+            </DialogPrimitive.Trigger>
+            <DialogPrimitive.Portal>
+                <DialogPrimitive.Overlay asChild>
+                    <Animated.View
+                        entering={FadeIn}
+                        exiting={FadeOut}
+                        className="absolute inset-0 z-50 bg-black/80"
                     >
-                        <Text className={cn(
-                            "font-medium",
-                            billingCycle === 'Monthly' ? "text-foreground" : "text-muted-foreground"
-                        )}>Monthly</Text>
-                    </Pressable>
-                    <Pressable
-                        // onPress={() => setBillingCycle('Yearly')}
-                        className={cn(
-                            "flex-1 py-2 items-center justify-center rounded-md",
-                            billingCycle === 'Yearly' ? "bg-background shadow-sm" : "bg-transparent"
-                        )}
-                    >
-                        <Text className={cn(
-                            "font-medium",
-                            billingCycle === 'Yearly' ? "text-foreground" : "text-muted-foreground"
-                        )}>Yearly</Text>
-                    </Pressable>
-                </View>
+                        <Pressable className="flex-1" onPress={() => setIsOpen(false)} />
+                    </Animated.View>
+                </DialogPrimitive.Overlay>
 
-                <DialogFooter>
-                    <DialogClose asChild>
-                        <Button><Text>Close</Text></Button>
-                    </DialogClose>
-                </DialogFooter>
-            </DialogContent>
-        </Dialog>
+                <DialogPrimitive.Content asChild>
+                    <Animated.View
+                        entering={SlideInDown}
+                        exiting={SlideOutDown}
+                        className="absolute bottom-0 z-50 w-full h-[85%] bg-background rounded-t-3xl border-t border-border p-6 shadow-lg"
+                    >
+                        <View className="flex-row items-center justify-between mb-6">
+                            <View>
+                                <Text className="text-2xl font-bold text-foreground">Add.</Text>
+                                <Text className="text-muted-foreground">Add a new subscription to your account.</Text>
+                            </View>
+                            <DialogPrimitive.Close asChild>
+                                <Pressable className="p-2 bg-secondary/50 rounded-full">
+                                    <Ionicons name="close" size={20} color={colorScheme === 'dark' ? 'white' : 'black'} />
+                                </Pressable>
+                            </DialogPrimitive.Close>
+                        </View>
+                    </Animated.View>
+                </DialogPrimitive.Content>
+            </DialogPrimitive.Portal>
+        </DialogPrimitive.Root>
     );
 }
