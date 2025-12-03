@@ -7,6 +7,11 @@ module.exports = {
   presets: [require('nativewind/preset')],
   theme: {
     extend: {
+      fontFamily: {
+        recoleta: ['Recoleta-Regular'],
+        'recoleta-medium': ['Recoleta-Medium'],
+        'recoleta-semibold': ['Recoleta-SemiBold'],
+      },
       colors: {
         border: 'hsl(var(--border))',
         input: 'hsl(var(--input))',
