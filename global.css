@@ -55,12 +55,29 @@
     --chart-4: 280 65% 60%;
     --chart-5: 340 75% 55%;
   }
+
   * {
-    @apply border-border;
-    font-family: 'Recoleta-Regular';
+    @apply border-border font-sans;
   }
+
   body {
-    @apply bg-background text-foreground;
-    font-family: 'Recoleta-Regular';
+    @apply bg-background text-foreground font-sans;
+  }
+}
+
+@layer utilities {
+  .font-medium {
+    font-family: 'Recoleta-Medium';
+    font-weight: normal;
+  }
+
+  .font-semibold {
+    font-family: 'Recoleta-SemiBold';
+    font-weight: normal;
+  }
+
+  .font-bold {
+    font-family: 'Recoleta-SemiBold';
+    font-weight: normal;
   }
 }
