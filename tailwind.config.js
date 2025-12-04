@@ -11,6 +11,7 @@ module.exports = {
         recoleta: ['Recoleta-Regular'],
         'recoleta-medium': ['Recoleta-Medium'],
         'recoleta-semibold': ['Recoleta-SemiBold'],
+        sans: ['Recoleta-Regular'],
       },
       colors: {
         border: 'hsl(var(--border))',
