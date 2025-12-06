@@ -3,8 +3,16 @@ import { Text } from '@/components/ui/text';
 import { Button } from '@/components/ui/button';
 import { Icon } from '@/components/ui/icon';
 import { useColorScheme } from 'nativewind';
-import { MoonStarIcon, SunIcon, BellIcon, ShieldIcon, InfoIcon, ChevronRightIcon } from 'lucide-react-native';
-import { Stack } from 'expo-router';
+import {
+  MoonStarIcon,
+  SunIcon,
+  BellIcon,
+  ShieldIcon,
+  InfoIcon,
+  ChevronRightIcon,
+  ListIcon,
+} from 'lucide-react-native';
+import { Stack, router } from 'expo-router';
 import { View, ScrollView, TouchableOpacity } from 'react-native';
 
 const SCREEN_OPTIONS = {
@@ -17,9 +25,17 @@ export default function Settings() {
     <>
       <Stack.Screen options={SCREEN_OPTIONS} />
       <ScrollView>
-        <View className="flex-1 p-4 mt-[100px] gap-6">
+        <View className="mt-[100px] flex-1 gap-6 p-4">
           <SettingsSection title="Appearance">
             <ThemeToggleItem />
+          </SettingsSection>
+
+          <SettingsSection title="Lists">
+            <SettingsItem
+              icon={ListIcon}
+              label="Manage Lists"
+              onPress={() => router.push('/settings/manage-lists')}
+            />
           </SettingsSection>
 
           <SettingsSection title="General">
@@ -39,34 +55,36 @@ export default function Settings() {
 function SettingsSection({ title, children }: { title: string; children: React.ReactNode }) {
   return (
     <View className="gap-2">
-      <Text className="text-muted-foreground ml-1 text-sm font-medium uppercase tracking-wider">
+      <Text className="ml-1 text-sm font-medium uppercase tracking-wider text-muted-foreground">
         {title}
       </Text>
-      <View className="gap-3">
-        {children}
-      </View>
+      <View className="gap-3">{children}</View>
     </View>
   );
 }
 
-function SettingsItem({ icon: IconComponent, label, value, onPress }: { icon: any, label: string, value?: string, onPress?: () => void }) {
+function SettingsItem({
+  icon: IconComponent,
+  label,
+  value,
+  onPress,
+}: {
+  icon: any;
+  label: string;
+  value?: string;
+  onPress?: () => void;
+}) {
   return (
     <TouchableOpacity onPress={onPress} activeOpacity={0.7}>
-      <View className="flex-row items-center justify-between border border-[#502615] bg-card dark:bg-black rounded-lg p-4">
+      <View className="flex-row items-center justify-between rounded-lg border border-[#502615] bg-card p-4 dark:bg-black">
         <View className="flex-row items-center gap-3">
-          <View className="p-2 bg-muted rounded-md">
+          <View className="rounded-md bg-muted p-2">
             <Icon as={IconComponent} className="size-5 text-foreground" />
           </View>
-          <Text className="font-medium text-card-foreground dark:text-white">
-            {label}
-          </Text>
+          <Text className="font-medium text-card-foreground dark:text-white">{label}</Text>
         </View>
         <View className="flex-row items-center gap-2">
-          {value && (
-            <Text className="text-muted-foreground text-sm">
-              {value}
-            </Text>
-          )}
+          {value && <Text className="text-sm text-muted-foreground">{value}</Text>}
           <Icon as={ChevronRightIcon} className="size-4 text-muted-foreground" />
         </View>
       </View>
@@ -85,32 +103,22 @@ function ThemeToggleItem() {
 
   return (
     <TouchableOpacity onPress={toggleColorScheme} activeOpacity={0.7}>
-      <View className="flex-row items-center justify-between border border-[#502615] bg-card dark:bg-black rounded-lg p-4">
+      <View className="flex-row items-center justify-between rounded-lg border border-[#502615] bg-card p-4 dark:bg-black">
         <View className="flex-row items-center gap-3">
-          <View className="p-2 bg-muted rounded-md">
+          <View className="rounded-md bg-muted p-2">
             <Icon as={THEME_ICONS[colorScheme ?? 'light']} className="size-5 text-foreground" />
           </View>
           <View>
-            <Text className="font-medium text-card-foreground dark:text-white">
-              Theme
-            </Text>
+            <Text className="font-medium text-card-foreground dark:text-white">Theme</Text>
             <Text className="text-sm text-muted-foreground">
               {isDark ? 'Dark Mode' : 'Light Mode'}
             </Text>
           </View>
         </View>
-        <Button
-          onPress={toggleColorScheme}
-          variant="ghost"
-          size="sm"
-          className="h-8 px-3"
-        >
-          <Text className="text-primary font-medium">
-            Toggle
-          </Text>
+        <Button onPress={toggleColorScheme} variant="ghost" size="sm" className="h-8 px-3">
+          <Text className="font-medium text-primary">Toggle</Text>
         </Button>
       </View>
     </TouchableOpacity>
   );
 }
-
