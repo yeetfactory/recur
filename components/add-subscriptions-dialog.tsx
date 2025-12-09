@@ -1,9 +1,9 @@
 import * as React from 'react';
 import { Ionicons } from '@expo/vector-icons';
 import { useColorScheme } from 'nativewind';
-import { Pressable, ScrollView } from 'react-native';
+import { Pressable, ScrollView, View, Image } from 'react-native';
 import { Sheet, SheetTrigger, SheetContent } from '@/components/ui/sheet';
-import { View, Text, Image } from 'react-native';
+import { Text } from '@/components/ui/text';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { brandfetch } from '@/integrations/brandfetch';
@@ -110,7 +110,7 @@ export function AddSubscriptionDialog() {
           {/* Search or Selected Company Section */}
           {!selectedCompany ? (
             <View className="gap-2 z-50">
-              <Text className="text-sm font-medium text-foreground">Service</Text>
+              <Text className="text-sm font-recoleta-medium text-foreground">Service</Text>
               <Input
                 placeholder="Search for a subscription (e.g. Netflix)"
                 value={searchQuery}
@@ -120,16 +120,16 @@ export function AddSubscriptionDialog() {
 
               {/* Search Results Dropdown/List */}
               {searchResults.length > 0 && (
-                <View className="border border-border rounded-md bg-background overflow-hidden mt-1">
+                <View className="border border-[#502615] rounded-md bg-background overflow-hidden mt-1">
                   {searchResults.map((item) => (
                     <Pressable
                       key={item.brandId}
-                      className="flex-row items-center gap-3 p-3 border-b border-border active:bg-accent/50 last:border-b-0"
+                      className="flex-row items-center gap-3 p-3 border-b border-[#502615] active:bg-accent/50 last:border-b-0"
                       onPress={() => handleCompanySelect(item)}
                     >
                       {item.icon && <Image source={{ uri: item.icon }} style={{ width: 24, height: 24, borderRadius: 6 }} />}
                       <View>
-                        <Text className="font-medium text-foreground">{item.name}</Text>
+                        <Text className="font-recoleta-medium text-foreground">{item.name}</Text>
                         <Text className="text-muted-foreground text-xs">{item.domain}</Text>
                       </View>
                     </Pressable>
@@ -142,8 +142,8 @@ export function AddSubscriptionDialog() {
             </View>
           ) : (
             <View className="gap-2">
-              <Text className="text-sm font-medium text-foreground">Service</Text>
-              <View className="flex-row items-center justify-between p-3 border border-border rounded-md bg-accent/10">
+              <Text className="text-sm font-recoleta-medium text-foreground">Service</Text>
+              <View className="flex-row items-center justify-between p-3 border border-[#502615] rounded-md bg-accent/10">
                 <View className="flex-row items-center gap-3">
                   {selectedCompany.icon && <Image source={{ uri: selectedCompany.icon }} style={{ width: 40, height: 40, borderRadius: 10 }} />}
                   <Text className="text-lg font-bold text-foreground">{selectedCompany.name}</Text>
@@ -159,7 +159,7 @@ export function AddSubscriptionDialog() {
 
             {/* Frequency Selection */}
             <View className="gap-2">
-              <Text className="text-sm font-medium text-foreground">Frequency</Text>
+              <Text className="text-sm font-recoleta-medium text-foreground">Frequency</Text>
               <View className="flex-row gap-2">
                 {(['monthly', 'yearly'] as const).map((freq) => (
                   <Button
@@ -168,7 +168,7 @@ export function AddSubscriptionDialog() {
                     onPress={() => setFrequency(freq)}
                     className="flex-1"
                   >
-                    <Text className={frequency === freq ? 'text-primary-foreground' : 'text-foreground'}>
+                    <Text>
                       {freq.charAt(0).toUpperCase() + freq.slice(1)}
                     </Text>
                   </Button>
@@ -178,7 +178,7 @@ export function AddSubscriptionDialog() {
 
             {/* Amount Input */}
             <View className="gap-2">
-              <Text className="text-sm font-medium text-foreground">Amount</Text>
+              <Text className="text-sm font-recoleta-medium text-foreground">Amount</Text>
               <Input
                 placeholder="0.00"
                 keyboardType="numeric"
@@ -189,7 +189,7 @@ export function AddSubscriptionDialog() {
 
             {/* Date Input */}
             <View className="gap-2">
-              <Text className="text-sm font-medium text-foreground">Start Date</Text>
+              <Text className="text-sm font-recoleta-medium text-foreground">Start Date</Text>
               <Input
                 placeholder="YYYY-MM-DD"
                 value={date}
@@ -199,15 +199,15 @@ export function AddSubscriptionDialog() {
 
             {/* Action Buttons */}
             <View className="flex-row gap-3 pt-4 pb-8">
-              <Button variant="ghost" className="flex-1" onPress={() => setIsOpen(false)}>
+              <Button variant="ghost" className="flex-1 border border-[#502615]" onPress={() => setIsOpen(false)}>
                 <Text>Cancel</Text>
               </Button>
               <Button
-                className="flex-1"
+                className="flex-1 border border-[#502615]"
                 onPress={handleCreate}
                 disabled={!selectedCompany} // Disable if no company selected
               >
-                <Text className={!selectedCompany ? "text-muted-foreground" : "text-white"}>Save Subscription</Text>
+                <Text>Save Subscription</Text>
               </Button>
             </View>
           </View>

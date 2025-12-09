@@ -13,24 +13,44 @@ function getGreeting(): string {
   if (hour < 17) return 'Good afternoon';
   return 'Good evening';
 }
-import { getSubscriptions } from '@/actions/subscription';
+import { getSubscriptions, removeSubscription } from '@/actions/subscription';
 import { Subscription } from '@/types';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from '@/components/ui/alert-dialog';
 
 export default function Screen() {
   const userName = getUserName();
   const greeting = getGreeting();
 
   const [subscriptions, setSubscriptions] = React.useState<Subscription[]>([]);
+  const [subscriptionToDelete, setSubscriptionToDelete] = React.useState<Subscription | null>(null);
+
+  const loadSubscriptions = React.useCallback(() => {
+    const data = getSubscriptions();
+    setSubscriptions(data);
+  }, []);
 
   useFocusEffect(
     React.useCallback(() => {
-      const loadSubscriptions = () => {
-        const data = getSubscriptions();
-        setSubscriptions(data);
-      };
       loadSubscriptions();
-    }, [])
+    }, [loadSubscriptions])
   );
+
+  const confirmDelete = () => {
+    if (subscriptionToDelete) {
+      removeSubscription({ subscription: subscriptionToDelete });
+      loadSubscriptions();
+      setSubscriptionToDelete(null);
+    }
+  };
 
   const totalMonthly = React.useMemo(() => {
     return subscriptions.reduce((acc, curr) => {
@@ -43,11 +63,32 @@ export default function Screen() {
   return (
     <>
       <Stack.Screen options={{ headerShown: false }} />
+
+      {/* Custom Alert Dialog */}
+      <AlertDialog open={!!subscriptionToDelete} onOpenChange={(open) => !open && setSubscriptionToDelete(null)}>
+        <AlertDialogContent className="border border-[#502615]">
+          <AlertDialogHeader>
+            <AlertDialogTitle className="font-recoleta-medium text-foreground">Remove Subscription?</AlertDialogTitle>
+            <AlertDialogDescription>
+              Are you sure you want to remove <Text className="font-bold text-foreground">{subscriptionToDelete?.company.name}</Text>? This action cannot be undone.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel onPress={() => setSubscriptionToDelete(null)}>
+              <Text>Cancel</Text>
+            </AlertDialogCancel>
+            <AlertDialogAction onPress={confirmDelete} className="bg-destructive">
+              <Text className="text-white">Remove</Text>
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+
       <ScrollView showsVerticalScrollIndicator={false} className="bg-background">
         <View className="mt-[60px] flex-row items-center justify-between p-4 px-6">
           <View>
             <Text className="text-base text-muted-foreground">{greeting},</Text>
-            <Text className="font-recoleta-bold text-3xl text-foreground">
+            <Text className="font-recoleta-semibold text-3xl text-foreground">
               {userName || 'there'} 👋
             </Text>
           </View>
@@ -65,7 +106,11 @@ export default function Screen() {
               </View>
             ) : (
               subscriptions.map((sub) => (
-                <Card key={sub.id} subscription={sub} />
+                <Card
+                  key={sub.id}
+                  subscription={sub}
+                  onLongPress={() => setSubscriptionToDelete(sub)}
+                />
               ))
             )}
           </View>
