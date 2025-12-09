@@ -44,6 +44,7 @@ export const Zod_Subscription = z.object({
   amount: z.number(),
   currency: Zod_Currency,
   isFreeTrial: z.boolean(),
+  startDate: z.coerce.date(), // Coerces string to Date, preserves timezone
 });
 
 export type Subscription = z.infer<typeof Zod_Subscription>;
