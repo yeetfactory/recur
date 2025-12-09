@@ -36,12 +36,37 @@ export class Brandfetch {
 
     const { query } = input.data;
 
+    // Use string concatenation or URL if supported. Expo supports URL.
     const url = new URL(`https://api.brandfetch.io/v2/search/${query}`);
-    url.searchParams.set('c', this.clientId);
+    if (this.clientId) {
+      url.searchParams.set('c', this.clientId);
+    } else {
+      console.warn('Brandfetch Client ID is missing/empty. API usage might be limited or fail.');
+    }
 
-    const response = await fetch(url, { method: 'GET' });
+    const response = await fetch(url.toString(), {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      }
+    });
 
-    const data = await response.json();
-    return data;
+    if (!response.ok) {
+      console.error(`Brandfetch API Error: ${response.status} ${response.statusText}`);
+      // Return empty array instead of throwing to avoid crashing UI if not handled strictly
+      return [];
+    }
+
+    try {
+      const data = await response.json();
+      if (!Array.isArray(data)) {
+        console.error('Brandfetch response is not an array:', data);
+        return [];
+      }
+      return data;
+    } catch (e) {
+      console.error('Failed to parse Brandfetch response', e);
+      return [];
+    }
   }
 }

@@ -167,6 +167,7 @@ export default function ManageListsPage() {
             value={newListName}
             onChangeText={setNewListName}
             autoFocus
+            className="w-[75vw]"
           />
           <DialogFooter>
             <Button variant="outline" onPress={() => setIsAddDialogOpen(false)}>
@@ -191,6 +192,7 @@ export default function ManageListsPage() {
             value={newListName}
             onChangeText={setNewListName}
             autoFocus
+            className="w-[75vw]"
           />
           <DialogFooter>
             <Button variant="outline" onPress={() => setIsEditDialogOpen(false)}>

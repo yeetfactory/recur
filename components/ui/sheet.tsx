@@ -19,6 +19,8 @@ interface SheetContentProps extends ViewProps {
   children?: React.ReactNode;
   /** Height of the sheet, default is '90%' */
   height?: DimensionValue;
+  /** Whether the sheet content should be scrollable, default is true */
+  scrollable?: boolean;
 }
 
 function Sheet({ open, onOpenChange, children }: SheetProps) {
@@ -37,9 +39,12 @@ function SheetContent({
   children,
   height = '90%',
   className,
+  scrollable = true,
   ...props
 }: SheetContentProps) {
   const { colorScheme } = useColorScheme();
+
+  const Container = scrollable ? Animated.ScrollView : Animated.View;
 
   return (
     <DialogPrimitive.Portal>
@@ -55,7 +60,7 @@ function SheetContent({
       </DialogPrimitive.Overlay>
 
       <DialogPrimitive.Content asChild>
-        <Animated.ScrollView
+        <Container
           entering={SlideInDown}
           exiting={SlideOutDown}
           style={{ height }}
@@ -80,7 +85,7 @@ function SheetContent({
             </DialogPrimitive.Close>
           </View>
           {children}
-        </Animated.ScrollView>
+        </Container>
       </DialogPrimitive.Content>
     </DialogPrimitive.Portal>
   );
