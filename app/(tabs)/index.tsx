@@ -2,7 +2,7 @@ import { Card } from '@/components/ui/card';
 import { Chart } from '@/components/ui/chart';
 import { Stack, useFocusEffect } from 'expo-router';
 import * as React from 'react';
-import { ScrollView, View } from 'react-native';
+import { ScrollView, View, TouchableOpacity } from 'react-native';
 import { Text } from '@/components/ui/text';
 import { AddSubscriptionDialog } from '@/components/add-subscriptions-dialog';
 import { getUserName } from '@/actions/user';
@@ -25,6 +25,8 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from '@/components/ui/alert-dialog';
+import Swipeable from 'react-native-gesture-handler/Swipeable';
+import { Ionicons } from '@expo/vector-icons';
 
 export default function Screen() {
   const userName = getUserName();
@@ -59,6 +61,19 @@ export default function Screen() {
       return acc + amount;
     }, 0);
   }, [subscriptions]);
+
+  const renderRightActions = (subscription: Subscription, progress: any, dragX: any) => {
+    return (
+      <View className="flex-row items-center justify-end pl-2 mb-2">
+        <TouchableOpacity
+          className="bg-destructive w-16 h-full items-center justify-center rounded-lg"
+          onPress={() => setSubscriptionToDelete(subscription)}
+        >
+          <Ionicons name="trash-outline" size={24} color="white" />
+        </TouchableOpacity>
+      </View>
+    );
+  };
 
   return (
     <>
@@ -106,11 +121,12 @@ export default function Screen() {
               </View>
             ) : (
               subscriptions.map((sub) => (
-                <Card
+                <Swipeable
                   key={sub.id}
-                  subscription={sub}
-                  onLongPress={() => setSubscriptionToDelete(sub)}
-                />
+                  renderRightActions={(progress, dragX) => renderRightActions(sub, progress, dragX)}
+                >
+                  <Card subscription={sub} />
+                </Swipeable>
               ))
             )}
           </View>
