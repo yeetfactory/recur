@@ -2,6 +2,7 @@ import { mmkv } from '@/integrations/mmkv';
 import { generateUUID } from '@/lib/utils';
 import { List, Zod_List } from '@/types';
 import { Logger } from '@/clients/logger';
+import { getSubscriptions, SUBSCRIPTIONS_KEY } from './subscription';
 
 const logger = new Logger('list-actions');
 
@@ -65,6 +66,16 @@ export const removeList = (args: { list: List }) => {
 
   const list = validated.data;
   const lists = getLists();
+  const subscriptions = getSubscriptions();
+
+  const subscriptionsWithRemovedLists = subscriptions.map(s => {
+    if (s.listId === list.id) {
+      return { ...s, listId: null };
+    }
+    return s;
+  });
+
+  mmkv.set(SUBSCRIPTIONS_KEY, subscriptionsWithRemovedLists);
 
   const index = lists.findIndex((l) => l.id === list.id);
   if (index !== -1) {

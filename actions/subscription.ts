@@ -5,7 +5,7 @@ import { Logger } from '@/clients/logger';
 
 const logger = new Logger('subscription-actions');
 
-const SUBSCRIPTIONS_KEY = 'subscriptions';
+export const SUBSCRIPTIONS_KEY = 'subscriptions';
 
 const Zod_CreateSubscriptionSchema = Zod_Subscription.omit({
   id: true,

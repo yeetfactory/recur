@@ -39,7 +39,7 @@ export type SubscriptionFrequency = z.infer<typeof Zod_SubscriptionFrequency>;
 export const Zod_Subscription = z.object({
   id: z.string(),
   company: Zod_BrandfetchCompany,
-  list: Zod_List,
+  listId: Zod_List.shape.id.nullable().optional(),
   frequency: Zod_SubscriptionFrequency,
   amount: z.number(),
   currency: Zod_Currency,
