@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Ionicons } from '@expo/vector-icons';
 import { useColorScheme } from 'nativewind';
-import { Pressable, ScrollView, View, Image } from 'react-native';
+import { Pressable, ScrollView, View, Image, ActivityIndicator } from 'react-native';
 import { Sheet, SheetTrigger, SheetContent } from '@/components/ui/sheet';
 import { Text } from '@/components/ui/text';
 import { Input } from '@/components/ui/input';
@@ -20,6 +20,7 @@ export function AddSubscriptionDialog() {
   const [searchQuery, setSearchQuery] = React.useState('');
   const [searchResults, setSearchResults] = React.useState<BrandfetchCompany[]>([]);
   const [isSearching, setIsSearching] = React.useState(false);
+  const [hasSearched, setHasSearched] = React.useState(false);
   const [selectedCompany, setSelectedCompany] = React.useState<BrandfetchCompany | null>(null);
 
   // Details State
@@ -27,38 +28,34 @@ export function AddSubscriptionDialog() {
   const [amount, setAmount] = React.useState('');
   const [date, setDate] = React.useState(new Date().toISOString().split('T')[0]); // Simple YYYY-MM-DD for now
 
-  // Debounce search
-  React.useEffect(() => {
-    const timer = setTimeout(async () => {
-      if (searchQuery.length > 2) {
-        setIsSearching(true);
-        try {
-          const results = await brandfetch.search({ query: searchQuery });
-          setSearchResults(results);
-        } catch (error) {
-          console.error('Search failed', error);
-          setSearchResults([]);
-        } finally {
-          setIsSearching(false);
-        }
-      } else {
-        setSearchResults([]);
-      }
-    }, 500);
+  const handleSearch = async () => {
+    if (searchQuery.length <= 2) return;
 
-    return () => clearTimeout(timer);
-  }, [searchQuery]);
+    setIsSearching(true);
+    setHasSearched(true);
+    try {
+      const results = await brandfetch.search({ query: searchQuery });
+      setSearchResults(results);
+    } catch (error) {
+      console.error('Search failed', error);
+      setSearchResults([]);
+    } finally {
+      setIsSearching(false);
+    }
+  };
 
   const handleCompanySelect = (company: BrandfetchCompany) => {
     setSelectedCompany(company);
     setSearchQuery('');
     setSearchResults([]);
+    setHasSearched(false);
   };
 
   const clearSelection = () => {
     setSelectedCompany(null);
     setSearchQuery('');
     setSearchResults([]);
+    setHasSearched(false);
   };
 
   const handleCreate = () => {
@@ -86,6 +83,7 @@ export function AddSubscriptionDialog() {
       // Reset state
       setSearchQuery('');
       setSearchResults([]);
+      setHasSearched(false);
       setSelectedCompany(null);
       setAmount('');
     } catch (e) {
@@ -111,12 +109,34 @@ export function AddSubscriptionDialog() {
           {!selectedCompany ? (
             <View className="gap-2 z-50">
               <Text className="text-sm font-recoleta-medium text-foreground">Service</Text>
-              <Input
-                placeholder="Search for a subscription (e.g. Netflix)"
-                value={searchQuery}
-                onChangeText={setSearchQuery}
-              />
-              {isSearching && <Text className="text-muted-foreground text-xs">Searching...</Text>}
+              <View className="flex-row gap-2">
+                <Input
+                  className="flex-1"
+                  placeholder="Search for a subscription"
+                  value={searchQuery}
+                  onChangeText={(text) => {
+                    setSearchQuery(text);
+                    setHasSearched(false);
+                    if (text.length === 0) {
+                      setSearchResults([]);
+                    }
+                  }}
+                  onSubmitEditing={handleSearch}
+                  returnKeyType="search"
+                />
+                <Button
+                  // size="sm"
+                  onPress={handleSearch}
+                  disabled={searchQuery.length <= 2 || isSearching}
+                  className="pl-3 pr-3"
+                >
+                  {isSearching ? (
+                    <ActivityIndicator size="small" color={colorScheme === 'dark' ? 'black' : 'white'} />
+                  ) : (
+                    <Ionicons name="search" size={20} color={colorScheme === 'dark' ? 'black' : 'white'} />
+                  )}
+                </Button>
+              </View>
 
               {/* Search Results Dropdown/List */}
               {searchResults.length > 0 && (
@@ -136,7 +156,7 @@ export function AddSubscriptionDialog() {
                   ))}
                 </View>
               )}
-              {searchQuery.length > 2 && !isSearching && searchResults.length === 0 && (
+              {hasSearched && !isSearching && searchResults.length === 0 && (
                 <Text className="text-muted-foreground text-center text-xs pt-1">No results found.</Text>
               )}
             </View>
