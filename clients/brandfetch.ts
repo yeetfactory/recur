@@ -63,7 +63,7 @@ export class Brandfetch {
         console.error('Brandfetch response is not an array:', data);
         return [];
       }
-      return data;
+      return data.filter((company: any) => company.claimed === true);
     } catch (e) {
       console.error('Failed to parse Brandfetch response', e);
       return [];
