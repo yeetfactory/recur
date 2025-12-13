@@ -1355,9 +1355,5 @@ export const CURRENCY_CODES = CURRENCIES.map((c) => c.code);
 // Community Links
 export const DISCORD_INVITE_URL = 'https://discord.gg/your-invite-link'; // TODO: use the actual links
 
-// Legal Links
-export const PRIVACY_POLICY_URL = 'https://example.com/privacy-policy'; // TODO: Self host in google sites
-export const TERMS_AND_CONDITIONS_URL = 'https://example.com/terms'; // TODO: Self host in google sites
-
 // App Store Links
 export const APP_STORE_URL = 'https://apps.apple.com/app/your-app-id'; // TODO: change to use both playstore and appstore
