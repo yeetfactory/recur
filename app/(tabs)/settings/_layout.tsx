@@ -5,6 +5,10 @@ export default function SettingsLayout() {
     <Stack
       screenOptions={{
         headerTransparent: true,
+        headerBlurEffect: 'dark',
+        headerStyle: {
+          backgroundColor: 'rgba(0, 0, 0, 0.5)',
+        },
       }}
     />
   );

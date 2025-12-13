@@ -6,21 +6,65 @@ import { useColorScheme } from 'nativewind';
 import {
   MoonStarIcon,
   SunIcon,
-  BellIcon,
   ShieldIcon,
   InfoIcon,
   ChevronRightIcon,
   ListIcon,
+  StarIcon,
+  ShareIcon,
+  FileTextIcon,
 } from 'lucide-react-native';
+import { Ionicons } from '@expo/vector-icons';
 import { Stack, router } from 'expo-router';
-import { View, ScrollView, TouchableOpacity } from 'react-native';
+import { View, ScrollView, TouchableOpacity, Linking, Share, Platform } from 'react-native';
+import {
+  DISCORD_INVITE_URL,
+  PRIVACY_POLICY_URL,
+  TERMS_AND_CONDITIONS_URL,
+  APP_STORE_URL,
+} from '@/const';
 
 const SCREEN_OPTIONS = {
   title: 'Settings',
   headerTransparent: true,
 };
 
+const DiscordIcon = () => {
+  const { colorScheme } = useColorScheme();
+  return (
+    <Ionicons name="logo-discord" size={20} color={colorScheme === 'dark' ? 'white' : 'black'} />
+  );
+};
+
 export default function Settings() {
+  const handleJoinCommunity = () => {
+    Linking.openURL(DISCORD_INVITE_URL);
+  };
+
+  const handleLeaveReview = () => {
+    Linking.openURL(APP_STORE_URL);
+  };
+
+  const handleShareApp = async () => {
+    try {
+      await Share.share({
+        message:
+          Platform.OS === 'ios' ? 'Check out this app!' : `Check out this app! ${APP_STORE_URL}`,
+        url: APP_STORE_URL,
+      });
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const handlePrivacyPolicy = () => {
+    Linking.openURL(PRIVACY_POLICY_URL);
+  };
+
+  const handleTermsAndConditions = () => {
+    Linking.openURL(TERMS_AND_CONDITIONS_URL);
+  };
+
   return (
     <>
       <Stack.Screen options={SCREEN_OPTIONS} />
@@ -30,7 +74,7 @@ export default function Settings() {
             <ThemeToggleItem />
           </SettingsSection>
 
-          <SettingsSection title="Lists">
+          <SettingsSection title="Data">
             <SettingsItem
               icon={ListIcon}
               label="Manage Lists"
@@ -38,13 +82,27 @@ export default function Settings() {
             />
           </SettingsSection>
 
-          <SettingsSection title="General">
-            <SettingsItem icon={BellIcon} label="Notifications" />
-            <SettingsItem icon={ShieldIcon} label="Privacy & Security" />
+          <SettingsSection title="Support">
+            <SettingsItem icon={StarIcon} label="Leave a review" onPress={handleLeaveReview} />
+            <SettingsItem icon={ShareIcon} label="Share with friends" onPress={handleShareApp} />
+            <SettingsItem
+              icon={DiscordIcon}
+              label="Join our community"
+              onPress={handleJoinCommunity}
+            />
+          </SettingsSection>
+
+          <SettingsSection title="Legal">
+            <SettingsItem icon={ShieldIcon} label="Privacy policy" onPress={handlePrivacyPolicy} />
+            <SettingsItem
+              icon={FileTextIcon}
+              label="Terms and conditions"
+              onPress={handleTermsAndConditions}
+            />
           </SettingsSection>
 
           <SettingsSection title="About">
-            <SettingsItem icon={InfoIcon} label="About App" value="v0.0.1" />
+            <SettingsItem icon={InfoIcon} label="Version" value="v0.0.1" />
           </SettingsSection>
         </View>
       </ScrollView>
@@ -77,11 +135,11 @@ function SettingsItem({
   return (
     <TouchableOpacity onPress={onPress} activeOpacity={0.7}>
       <View className="flex-row items-center justify-between rounded-lg border border-[#502615] bg-card p-4 dark:bg-black">
-        <View className="flex-row items-center gap-3">
+        <View className="flex-1 flex-row items-center gap-3">
           <View className="rounded-md bg-muted p-2">
             <Icon as={IconComponent} className="size-5 text-foreground" />
           </View>
-          <Text className="font-medium text-card-foreground dark:text-white">{label}</Text>
+          <Text className="flex-1 font-medium text-card-foreground dark:text-white">{label}</Text>
         </View>
         <View className="flex-row items-center gap-2">
           {value && <Text className="text-sm text-muted-foreground">{value}</Text>}
