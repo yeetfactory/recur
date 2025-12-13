@@ -1,14 +1,13 @@
 import React, { useState } from 'react';
-import { View, ScrollView, Pressable, Linking } from 'react-native';
+import { View, ScrollView, Pressable } from 'react-native';
 import { Text } from '@/components/ui/text';
 import { Button } from '@/components/ui/button';
 import { Icon } from '@/components/ui/icon';
 import { router } from 'expo-router';
 import { setOnboardingComplete } from '@/actions/user';
-import { TERMS_AND_CONDITIONS_URL, PRIVACY_POLICY_URL } from '@/const';
 import {
   CheckIcon,
-  ExternalLinkIcon,
+  ChevronRightIcon,
   FileTextIcon,
   ShieldIcon,
   type LucideIcon,
@@ -42,7 +41,7 @@ interface CheckboxItemProps {
   title: string;
   description: string;
   linkText: string;
-  linkUrl: string;
+  policyType: 'privacy' | 'terms';
   index: number;
 }
 
@@ -53,11 +52,11 @@ function CheckboxItem({
   title,
   description,
   linkText,
-  linkUrl,
+  policyType,
   index,
 }: CheckboxItemProps) {
   const handleLinkPress = () => {
-    Linking.openURL(linkUrl);
+    router.push({ pathname: '/onboarding/policy', params: { type: policyType } });
   };
 
   return (
@@ -86,7 +85,7 @@ function CheckboxItem({
           <Text className="mt-1 text-sm text-muted-foreground">{description}</Text>
           <Pressable onPress={handleLinkPress} className="mt-2 flex-row items-center gap-1">
             <Text className="text-sm font-medium text-primary">{linkText}</Text>
-            <Icon as={ExternalLinkIcon} className="size-3 text-primary" />
+            <Icon as={ChevronRightIcon} className="size-3 text-primary" />
           </Pressable>
         </View>
       </Pressable>
@@ -136,7 +135,7 @@ export default function OnboardingTerms() {
             title="Terms & Conditions"
             description="I agree to the Terms and Conditions that govern the use of this app."
             linkText="Read Terms & Conditions"
-            linkUrl={TERMS_AND_CONDITIONS_URL}
+            policyType="terms"
             index={0}
           />
 
@@ -147,7 +146,7 @@ export default function OnboardingTerms() {
             title="Privacy Policy"
             description="I have read and understood how my data will be collected and used."
             linkText="Read Privacy Policy"
-            linkUrl={PRIVACY_POLICY_URL}
+            policyType="privacy"
             index={1}
           />
         </View>

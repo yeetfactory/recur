@@ -17,13 +17,7 @@ import {
 import { Ionicons } from '@expo/vector-icons';
 import { Stack, router } from 'expo-router';
 import { View, ScrollView, TouchableOpacity, Linking, Share, Platform } from 'react-native';
-import {
-  DISCORD_INVITE_URL,
-  PRIVACY_POLICY_URL,
-  TERMS_AND_CONDITIONS_URL,
-  APP_STORE_URL,
-  CURRENCIES,
-} from '@/const';
+import { DISCORD_INVITE_URL, APP_STORE_URL, CURRENCIES } from '@/const';
 import { getUserName } from '@/actions/user';
 import { getDefaultCurrency } from '@/actions/currency';
 
@@ -91,11 +85,11 @@ export default function Settings() {
   };
 
   const handlePrivacyPolicy = () => {
-    Linking.openURL(PRIVACY_POLICY_URL);
+    router.push('/settings/privacy');
   };
 
   const handleTermsAndConditions = () => {
-    Linking.openURL(TERMS_AND_CONDITIONS_URL);
+    router.push('/settings/terms');
   };
 
   return (

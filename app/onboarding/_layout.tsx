@@ -10,6 +10,7 @@ export default function OnboardingLayout() {
       <Stack.Screen name="index" />
       <Stack.Screen name="details" />
       <Stack.Screen name="terms" />
+      <Stack.Screen name="policy" />
     </Stack>
   );
 }
