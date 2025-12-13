@@ -13,7 +13,7 @@ import {
   DialogDescription,
   DialogFooter,
 } from '@/components/ui/dialog';
-import { ListIcon, PlusIcon, PencilIcon, Trash2Icon } from 'lucide-react-native';
+import { ListIcon, PlusIcon, PencilIcon, Trash2Icon, SearchIcon } from 'lucide-react-native';
 import { createList, getLists, updateList, removeList } from '@/actions/list';
 import type { List } from '@/types';
 
@@ -23,10 +23,19 @@ const SCREEN_OPTIONS = {
 
 export default function ManageListsPage() {
   const [lists, setLists] = React.useState<List[]>([]);
+  const [searchQuery, setSearchQuery] = React.useState('');
   const [isAddDialogOpen, setIsAddDialogOpen] = React.useState(false);
   const [isEditDialogOpen, setIsEditDialogOpen] = React.useState(false);
   const [editingList, setEditingList] = React.useState<List | null>(null);
   const [newListName, setNewListName] = React.useState('');
+
+  // Filter lists based on search query
+  const filteredLists = React.useMemo(() => {
+    if (!searchQuery.trim()) {
+      return lists;
+    }
+    return lists.filter((list) => list.name.toLowerCase().includes(searchQuery.toLowerCase()));
+  }, [lists, searchQuery]);
 
   // Load lists from MMKV on mount
   React.useEffect(() => {
@@ -97,8 +106,19 @@ export default function ManageListsPage() {
       <Stack.Screen options={SCREEN_OPTIONS} />
       <ScrollView className="flex-1" showsVerticalScrollIndicator={false}>
         <View className="mt-[100px] flex-1 gap-4 p-4">
+          {/* Search Input */}
+          <View className="flex-row items-center gap-2 rounded-lg border border-[#502615] bg-card p-2 dark:bg-black">
+            <Icon as={SearchIcon} className="ml-2 size-5 text-muted-foreground" />
+            <Input
+              placeholder="Search lists..."
+              value={searchQuery}
+              onChangeText={setSearchQuery}
+              className="flex-1 border-0 bg-transparent"
+            />
+          </View>
+
           {/* List Items */}
-          {lists.map((list) => (
+          {filteredLists.map((list) => (
             <View
               key={list.id}
               className="flex-row items-center justify-between rounded-lg border border-[#502615] bg-card p-4 dark:bg-black">
