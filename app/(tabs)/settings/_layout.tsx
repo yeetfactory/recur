@@ -6,9 +6,6 @@ export default function SettingsLayout() {
       screenOptions={{
         headerTransparent: true,
         headerBlurEffect: 'dark',
-        headerStyle: {
-          backgroundColor: 'rgba(0, 0, 0, 0.5)',
-        },
       }}
     />
   );

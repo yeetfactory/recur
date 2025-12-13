@@ -4,11 +4,12 @@ import { NAV_THEME } from '@/lib/theme';
 import { ThemeProvider } from '@react-navigation/native';
 import { PortalHost } from '@rn-primitives/portal';
 import { useFonts } from 'expo-font';
-import { Stack } from 'expo-router';
+import { Stack, Redirect } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { StatusBar } from 'expo-status-bar';
 import { useColorScheme } from 'nativewind';
 import { useEffect } from 'react';
+import { isOnboardingComplete } from '@/actions/user';
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
@@ -17,6 +18,10 @@ export {
   // Catch any errors thrown by the Layout component.
   ErrorBoundary,
 } from 'expo-router';
+
+// Read onboarding status synchronously (MMKV is sync)
+// This is done outside the component to ensure it's only read once
+const initialOnboardingStatus = isOnboardingComplete();
 
 export default function RootLayout() {
   const { colorScheme } = useColorScheme();
@@ -44,8 +49,10 @@ export default function RootLayout() {
     <ThemeProvider value={NAV_THEME[colorScheme ?? 'dark']}>
       <StatusBar style={colorScheme === 'dark' ? 'light' : 'dark'} />
       <Stack>
+        <Stack.Screen name="onboarding" options={{ headerShown: false }} />
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
       </Stack>
+      {!initialOnboardingStatus && <Redirect href="/onboarding" />}
       <PortalHost />
     </ThemeProvider>
   );

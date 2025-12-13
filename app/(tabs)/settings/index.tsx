@@ -22,7 +22,10 @@ import {
   PRIVACY_POLICY_URL,
   TERMS_AND_CONDITIONS_URL,
   APP_STORE_URL,
+  CURRENCIES,
 } from '@/const';
+import { getUserName } from '@/actions/user';
+import { getDefaultCurrency } from '@/actions/currency';
 
 const SCREEN_OPTIONS = {
   title: 'Settings',
@@ -35,6 +38,36 @@ const DiscordIcon = () => {
     <Ionicons name="logo-discord" size={20} color={colorScheme === 'dark' ? 'white' : 'black'} />
   );
 };
+
+function ProfileCard() {
+  const userName = getUserName();
+  const currency = getDefaultCurrency();
+  const currencyData = CURRENCIES.find((c) => c.code === currency);
+  const initial = userName ? userName.charAt(0).toUpperCase() : '?';
+
+  return (
+    <View className="rounded-2xl border border-[#502615] bg-card p-5 dark:bg-black">
+      <View className="flex-row items-center gap-4">
+        {/* Avatar */}
+        <View className="h-16 w-16 items-center justify-center rounded-full bg-primary">
+          <Text className="font-recoleta-semibold text-2xl text-primary-foreground">{initial}</Text>
+        </View>
+
+        {/* Info */}
+        <View className="flex-1">
+          <Text className="font-recoleta-semibold text-xl text-foreground">
+            {userName || 'User'}
+          </Text>
+          {currencyData && (
+            <Text className="mt-1 text-sm text-muted-foreground">
+              {currencyData.code} • {currencyData.currency}
+            </Text>
+          )}
+        </View>
+      </View>
+    </View>
+  );
+}
 
 export default function Settings() {
   const handleJoinCommunity = () => {
@@ -70,6 +103,9 @@ export default function Settings() {
       <Stack.Screen options={SCREEN_OPTIONS} />
       <ScrollView>
         <View className="mt-[100px] flex-1 gap-6 p-4">
+          {/* Profile Card */}
+          <ProfileCard />
+
           <SettingsSection title="Appearance">
             <ThemeToggleItem />
           </SettingsSection>
