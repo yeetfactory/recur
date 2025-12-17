@@ -28,6 +28,21 @@ export function AddSubscriptionDialog() {
   const [amount, setAmount] = React.useState('');
   const [date, setDate] = React.useState(new Date().toISOString().split('T')[0]); // Simple YYYY-MM-DD for now
 
+  // List State
+  const [lists, setLists] = React.useState<{ id: string; name: string }[]>([]);
+  const [selectedListId, setSelectedListId] = React.useState<string | null>(null);
+
+  React.useEffect(() => {
+    if (isOpen) {
+      const allLists = getLists();
+      setLists(allLists);
+      // Default to first list if available and none selected, or ensure 'Default' exists logic
+      if (allLists.length > 0 && !selectedListId) {
+        setSelectedListId(allLists[0].id);
+      }
+    }
+  }, [isOpen]);
+
   const handleSearch = async () => {
     if (searchQuery.length <= 2) return;
 
@@ -61,13 +76,20 @@ export function AddSubscriptionDialog() {
   const handleCreate = () => {
     if (!selectedCompany) return;
 
-    // Default list logic
-    let targetList = { id: '', name: 'Default' };
-    const lists = getLists();
-    if (lists.length > 0) {
-      targetList = lists[0];
-    } else {
-      targetList = createList({ name: 'Default' });
+    // Ensure we have a list ID. If no lists exist, we might need to create one, 
+    // but getLists() should return something or we should force default.
+    // For now, if no list selected, try to find one or create default.
+    let targetListId = selectedListId;
+
+    if (!targetListId) {
+      // Fallback: This logic mirrors previous logic slightly but correctly uses IDs
+      const existingLists = getLists();
+      if (existingLists.length > 0) {
+        targetListId = existingLists[0].id;
+      } else {
+        const newList = createList({ name: 'Default' });
+        targetListId = newList.id;
+      }
     }
 
     try {
@@ -77,7 +99,8 @@ export function AddSubscriptionDialog() {
         amount: parseFloat(amount) || 0,
         currency: 'USD', // Default to USD for MVP
         isFreeTrial: false,
-        list: targetList,
+        listId: targetListId,
+        startDate: new Date(date),
       });
       setIsOpen(false);
       // Reset state
@@ -86,6 +109,8 @@ export function AddSubscriptionDialog() {
       setHasSearched(false);
       setSelectedCompany(null);
       setAmount('');
+      // Reset date to today
+      setDate(new Date().toISOString().split('T')[0]);
     } catch (e) {
       console.error("Failed to create subscription", e);
     }
@@ -176,6 +201,29 @@ export function AddSubscriptionDialog() {
           )}
 
           <View className="gap-6 mt-2">
+
+            {/* List Selection */}
+            {lists.length > 0 && (
+              <View className="gap-2">
+                <Text className="text-sm font-recoleta-medium text-foreground">List</Text>
+                <ScrollView horizontal showsHorizontalScrollIndicator={false} className="flex-row gap-2">
+                  {lists.map((list) => (
+                    <Pressable
+                      key={list.id}
+                      onPress={() => setSelectedListId(list.id)}
+                      className={`px-4 py-2 mr-1 ml-1 rounded-full border ${selectedListId === list.id
+                        ? 'bg-foreground border-foreground'
+                        : 'bg-background border-input'
+                        }`}
+                    >
+                      <Text className={`${selectedListId === list.id ? 'text-background' : 'text-foreground'}`}>
+                        {list.name}
+                      </Text>
+                    </Pressable>
+                  ))}
+                </ScrollView>
+              </View>
+            )}
 
             {/* Frequency Selection */}
             <View className="gap-2">
