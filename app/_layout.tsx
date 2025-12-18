@@ -51,10 +51,10 @@ export default function RootLayout() {
       <ThemeProvider value={NAV_THEME[colorScheme ?? 'dark']}>
         <StatusBar style={colorScheme === 'dark' ? 'light' : 'dark'} />
         <Stack>
-          {/* <Stack.Screen name="onboarding" options={{ headerShown: false }} /> */}
+          <Stack.Screen name="onboarding" options={{ headerShown: false }} />
           <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
         </Stack>
-        {/* {!initialOnboardingStatus && <Redirect href="/onboarding" />} */}
+        {!initialOnboardingStatus && <Redirect href="/onboarding" />}
         <PortalHost />
       </ThemeProvider>
     </GestureHandlerRootView>

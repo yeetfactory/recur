@@ -5,6 +5,7 @@ import * as React from 'react';
 import { ScrollView, View, TouchableOpacity } from 'react-native';
 import { Text } from '@/components/ui/text';
 import { AddSubscriptionDialog } from '@/components/add-subscriptions-dialog';
+import { EditSubscriptionDialog } from '@/components/edit-subscription-dialog';
 import { getUserName } from '@/actions/user';
 
 function getGreeting(): string {
@@ -34,6 +35,7 @@ export default function Screen() {
 
   const [subscriptions, setSubscriptions] = React.useState<Subscription[]>([]);
   const [subscriptionToDelete, setSubscriptionToDelete] = React.useState<Subscription | null>(null);
+  const [editingSubscription, setEditingSubscription] = React.useState<Subscription | null>(null);
 
   const loadSubscriptions = React.useCallback(() => {
     const data = getSubscriptions();
@@ -61,6 +63,23 @@ export default function Screen() {
       return acc + amount;
     }, 0);
   }, [subscriptions]);
+
+  const renderLeftActions = (subscription: Subscription, progress: any, dragX: any) => {
+    return (
+      <View className="flex-row items-center justify-start pr-2 mb-2">
+        <TouchableOpacity
+          className="bg-blue-600 w-16 h-full items-center justify-center rounded-lg"
+          onPress={() => {
+            // Close the swipeable automatically logic could be hard without refs, 
+            // but just opening the dialog usually resets focus/UI enough.
+            setEditingSubscription(subscription);
+          }}
+        >
+          <Ionicons name="pencil" size={24} color="white" />
+        </TouchableOpacity>
+      </View>
+    );
+  };
 
   const renderRightActions = (subscription: Subscription, progress: any, dragX: any) => {
     return (
@@ -123,6 +142,7 @@ export default function Screen() {
               subscriptions.map((sub) => (
                 <Swipeable
                   key={sub.id}
+                  renderLeftActions={(progress, dragX) => renderLeftActions(sub, progress, dragX)}
                   renderRightActions={(progress, dragX) => renderRightActions(sub, progress, dragX)}
                 >
                   <Card subscription={sub} />
@@ -132,6 +152,17 @@ export default function Screen() {
           </View>
         </View>
       </ScrollView>
+
+      {/* Edit Subscription Dialog */}
+      <EditSubscriptionDialog
+        open={!!editingSubscription}
+        onOpenChange={(open) => !open && setEditingSubscription(null)}
+        subscription={editingSubscription}
+        onUpdate={() => {
+          loadSubscriptions();
+          setEditingSubscription(null);
+        }}
+      />
     </>
   );
 }
