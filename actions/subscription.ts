@@ -79,3 +79,7 @@ export const removeSubscription = (args: { subscription: Subscription }) => {
 export const getSubscriptions = () => {
   return mmkv.get<Subscription[]>(SUBSCRIPTIONS_KEY) ?? [];
 };
+
+export const saveSubscriptions = (subscriptions: Subscription[]) => {
+  mmkv.set(SUBSCRIPTIONS_KEY, subscriptions);
+};

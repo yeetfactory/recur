@@ -14,7 +14,8 @@ import {
   DialogFooter,
 } from '@/components/ui/dialog';
 import { ListIcon, PlusIcon, PencilIcon, Trash2Icon, SearchIcon } from 'lucide-react-native';
-import { createList, getLists, updateList, removeList } from '@/actions/list';
+
+import { useLists } from '@/hooks/use-lists';
 import type { List } from '@/types';
 
 const SCREEN_OPTIONS = {
@@ -22,7 +23,7 @@ const SCREEN_OPTIONS = {
 };
 
 export default function ManageListsPage() {
-  const [lists, setLists] = React.useState<List[]>([]);
+  const { lists, createList, updateList, removeList } = useLists();
   const [searchQuery, setSearchQuery] = React.useState('');
   const [isAddDialogOpen, setIsAddDialogOpen] = React.useState(false);
   const [isEditDialogOpen, setIsEditDialogOpen] = React.useState(false);
@@ -37,17 +38,10 @@ export default function ManageListsPage() {
     return lists.filter((list) => list.name.toLowerCase().includes(searchQuery.toLowerCase()));
   }, [lists, searchQuery]);
 
-  // Load lists from MMKV on mount
-  React.useEffect(() => {
-    const storedLists = getLists();
-    setLists(storedLists);
-  }, []);
-
   const handleAddList = () => {
     if (newListName.trim()) {
       try {
-        const newList = createList({ name: newListName.trim() });
-        setLists([...lists, newList]);
+        createList(newListName.trim());
         setNewListName('');
         setIsAddDialogOpen(false);
       } catch (error) {
@@ -60,12 +54,7 @@ export default function ManageListsPage() {
   const handleEditList = () => {
     if (editingList && newListName.trim()) {
       try {
-        const updatedList = updateList({
-          list: { ...editingList, name: newListName.trim() },
-        });
-        if (updatedList) {
-          setLists(lists.map((list) => (list.id === editingList.id ? updatedList : list)));
-        }
+        updateList(editingList.id, newListName.trim());
         setNewListName('');
         setEditingList(null);
         setIsEditDialogOpen(false);
@@ -84,8 +73,7 @@ export default function ManageListsPage() {
         style: 'destructive',
         onPress: () => {
           try {
-            removeList({ list: listToDelete });
-            setLists(lists.filter((list) => list.id !== listToDelete.id));
+            removeList(listToDelete.id);
           } catch (error) {
             console.error(error);
             Alert.alert('Error', 'Failed to delete list');
@@ -107,7 +95,7 @@ export default function ManageListsPage() {
       <ScrollView className="flex-1" showsVerticalScrollIndicator={false}>
         <View className="mt-[100px] flex-1 gap-4 p-4">
           {/* Search Input */}
-          <View className="flex-row items-center gap-2 rounded-lg border border-[#502615] bg-card p-2 dark:bg-black">
+          <View className="border-brand-brown flex-row items-center gap-2 rounded-lg border bg-card p-2 dark:bg-black">
             <Icon as={SearchIcon} className="ml-2 size-5 text-muted-foreground" />
             <Input
               placeholder="Search lists..."
@@ -121,7 +109,7 @@ export default function ManageListsPage() {
           {filteredLists.map((list) => (
             <View
               key={list.id}
-              className="flex-row items-center justify-between rounded-lg border border-[#502615] bg-card p-4 dark:bg-black">
+              className="border-brand-brown flex-row items-center justify-between rounded-lg border bg-card p-4 dark:bg-black">
               <View className="flex-row items-center gap-3">
                 <View className="rounded-md bg-muted p-2">
                   <Icon as={ListIcon} className="size-5 text-foreground" />
@@ -147,7 +135,7 @@ export default function ManageListsPage() {
 
           {/* Add List Button */}
           <TouchableOpacity activeOpacity={0.7} onPress={() => setIsAddDialogOpen(true)}>
-            <View className="flex-row items-center justify-center gap-2 rounded-lg border border-dashed border-[#502615] bg-card/50 p-4 dark:bg-black/50">
+            <View className="border-brand-brown flex-row items-center justify-center gap-2 rounded-lg border border-dashed bg-card/50 p-4 dark:bg-black/50">
               <Icon as={PlusIcon} className="size-5 text-muted-foreground" />
               <Text className="font-medium text-muted-foreground">Add New List</Text>
             </View>

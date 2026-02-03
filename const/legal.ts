@@ -24,7 +24,7 @@ export const PRIVACY_CONTENT = {
     {
       title: 'Third-Party Services',
       content:
-        'The App uses the following third-party service:\\n\\n• Brandfetch API - Used to fetch company logos and brand information when you search for subscriptions. When you search, the search query is sent to Brandfetch to retrieve brand data. No personal information is shared.\\n\\nThe App does not integrate with any analytics, advertising, or tracking services.',
+        'The App does not use any third-party services. All functionality is provided locally on your device. The App does not integrate with any analytics, advertising, or tracking services.',
     },
     {
       title: 'Permissions',

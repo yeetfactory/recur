@@ -40,7 +40,7 @@ function ProfileCard() {
   const initial = userName ? userName.charAt(0).toUpperCase() : '?';
 
   return (
-    <View className="rounded-2xl border border-[#502615] bg-card p-5 dark:bg-black">
+    <View className="border-brand-brown rounded-2xl border bg-card p-5 dark:bg-black">
       <View className="flex-row items-center gap-4">
         {/* Avatar */}
         <View className="h-16 w-16 items-center justify-center rounded-full bg-primary">
@@ -164,7 +164,7 @@ function SettingsItem({
 }) {
   return (
     <TouchableOpacity onPress={onPress} activeOpacity={0.7}>
-      <View className="flex-row items-center justify-between rounded-lg border border-[#502615] bg-card p-4 dark:bg-black">
+      <View className="border-brand-brown flex-row items-center justify-between rounded-lg border bg-card p-4 dark:bg-black">
         <View className="flex-1 flex-row items-center gap-3">
           <View className="rounded-md bg-muted p-2">
             <Icon as={IconComponent} className="size-5 text-foreground" />
@@ -189,9 +189,17 @@ function ThemeToggleItem() {
   const { colorScheme, toggleColorScheme } = useColorScheme();
   const isDark = colorScheme === 'dark';
 
+  const handleToggleTheme = () => {
+    try {
+      toggleColorScheme();
+    } catch (error) {
+      console.error('Error toggling theme:', error);
+    }
+  };
+
   return (
-    <TouchableOpacity onPress={toggleColorScheme} activeOpacity={0.7}>
-      <View className="flex-row items-center justify-between rounded-lg border border-[#502615] bg-card p-4 dark:bg-black">
+    <TouchableOpacity onPress={handleToggleTheme} activeOpacity={0.7}>
+      <View className="border-brand-brown flex-row items-center justify-between rounded-lg border bg-card p-4 dark:bg-black">
         <View className="flex-row items-center gap-3">
           <View className="rounded-md bg-muted p-2">
             <Icon as={THEME_ICONS[colorScheme ?? 'light']} className="size-5 text-foreground" />
@@ -203,7 +211,7 @@ function ThemeToggleItem() {
             </Text>
           </View>
         </View>
-        <Button onPress={toggleColorScheme} variant="ghost" size="sm" className="h-8 px-3">
+        <Button onPress={handleToggleTheme} variant="ghost" size="sm" className="h-8 px-3">
           <Text className="font-medium text-primary">Toggle</Text>
         </Button>
       </View>

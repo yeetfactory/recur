@@ -42,7 +42,7 @@ export class Logger {
    */
   private log(level: LogLevel, message: string, ...args: any[]) {
     const timestamp = new Date().toISOString(); // follows ISO Standards
-    const logMessage = `[${timestamp}] [${level.toUpperCase()}] [${this.context}] ${message}`; // example: [2025-12-02T06:16:52.123Z] [INFO] [Brandfetch] Brandfetch initialized
+    const logMessage = `[${timestamp}] [${level.toUpperCase()}] [${this.context}] ${message}`; // example: [2025-12-02T06:16:52.123Z] [INFO] [App] App initialized
 
     switch (level) {
       case 'error':
