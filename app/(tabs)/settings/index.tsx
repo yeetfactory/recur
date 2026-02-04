@@ -96,7 +96,7 @@ export default function Settings() {
     <>
       <Stack.Screen options={SCREEN_OPTIONS} />
       <ScrollView>
-        <View className="mt-[100px] flex-1 gap-6 p-4">
+        <View className="mt-[80px] flex-1 gap-6 p-4">
           {/* Profile Card */}
           <ProfileCard />
 

@@ -6,7 +6,8 @@ export default function SettingsLayout() {
       screenOptions={{
         headerTransparent: true,
         headerBlurEffect: 'dark',
-      }}
-    />
+      }}>
+      <Stack.Screen name="index" options={{ headerShown: false }} />
+    </Stack>
   );
 }

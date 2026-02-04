@@ -4,7 +4,7 @@ import { useColorScheme } from 'nativewind';
 import { Ionicons } from '@expo/vector-icons';
 
 type SubscriptionAvatarProps = {
-  name: string;
+  name?: string | null;
   icon: string | null;
   size?: number;
   onPress?: () => void;
@@ -32,11 +32,15 @@ const getTextColor = (isDark: boolean): string => {
 
 // Get initials from name (max 2 characters)
 const getInitials = (name: string): string => {
-  const words = name.trim().split(/\s+/);
+  const safe = name.trim();
+  if (!safe) {
+    return '?';
+  }
+  const words = safe.split(/\s+/);
   if (words.length >= 2) {
     return (words[0][0] + words[1][0]).toUpperCase();
   }
-  return name.slice(0, 2).toUpperCase();
+  return safe.slice(0, 2).toUpperCase();
 };
 
 export const SubscriptionAvatar = ({
@@ -48,7 +52,8 @@ export const SubscriptionAvatar = ({
 }: SubscriptionAvatarProps) => {
   const { colorScheme } = useColorScheme();
   const isDark = colorScheme === 'dark';
-  const initials = getInitials(name);
+  const safeName = typeof name === 'string' ? name : '';
+  const initials = getInitials(safeName);
 
   // Emoji content - no background, just the emoji
   const emojiContent = <Text style={{ fontSize: size * 0.6 }}>{icon}</Text>;
@@ -60,7 +65,7 @@ export const SubscriptionAvatar = ({
         width: size,
         height: size,
         borderRadius: size * 0.22,
-        backgroundColor: getThemeColor(name, isDark),
+        backgroundColor: getThemeColor(safeName, isDark),
         alignItems: 'center',
         justifyContent: 'center',
         borderWidth: 1,
