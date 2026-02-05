@@ -147,15 +147,21 @@ export function EditSubscriptionDialog({
             {lists.length > 0 && (
               <View className="gap-2">
                 <Text className="font-recoleta-medium text-sm text-foreground">List</Text>
-                <ScrollView
-                  horizontal
-                  showsHorizontalScrollIndicator={false}
-                  className="flex-row gap-2">
+                <ScrollView horizontal showsHorizontalScrollIndicator={false} className="flex-row">
+                  <Pressable
+                    onPress={() => {
+                      onOpenChange(false);
+                      router.push('/settings/manage-lists');
+                    }}
+                    className="mr-2 flex-row items-center gap-2 rounded-full border border-dashed border-brand-brown bg-card/50 px-4 py-2">
+                    <Icon as={PlusIcon} className="size-4 text-muted-foreground" />
+                    <Text className="text-muted-foreground">Add List</Text>
+                  </Pressable>
                   {lists.map((list) => (
                     <Pressable
                       key={list.id}
                       onPress={() => setSelectedListId(list.id)}
-                      className={`rounded-full border px-4 py-2 ${
+                      className={`mr-2 rounded-full border px-4 py-2 ${
                         selectedListId === list.id
                           ? 'border-foreground bg-foreground'
                           : 'border-input bg-background'
@@ -166,15 +172,6 @@ export function EditSubscriptionDialog({
                       </Text>
                     </Pressable>
                   ))}
-                  <Pressable
-                    onPress={() => {
-                      onOpenChange(false);
-                      router.push('/settings/manage-lists');
-                    }}
-                    className="mr-4 flex-row items-center gap-2 rounded-full border border-dashed border-brand-brown bg-card/50 px-4 py-2">
-                    <Icon as={PlusIcon} className="size-4 text-muted-foreground" />
-                    <Text className="text-muted-foreground">Add List</Text>
-                  </Pressable>
                 </ScrollView>
               </View>
             )}

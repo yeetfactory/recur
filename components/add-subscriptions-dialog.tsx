@@ -138,15 +138,22 @@ export function AddSubscriptionDialog() {
             {lists.length > 0 && (
               <View className="gap-2">
                 <Text className="font-recoleta-medium text-sm text-foreground">List</Text>
-                <ScrollView
-                  horizontal
-                  showsHorizontalScrollIndicator={false}
-                  className="flex-row gap-2">
+                <ScrollView horizontal showsHorizontalScrollIndicator={false} className="flex-row">
+                  <Pressable
+                    onPress={() => {
+                      setIsOpen(false);
+                      resetForm();
+                      router.push('/settings/manage-lists');
+                    }}
+                    className="mr-2 flex-row items-center gap-2 rounded-full border border-dashed border-brand-brown bg-card/50 px-4 py-2">
+                    <Icon as={PlusIcon} className="size-4 text-muted-foreground" />
+                    <Text className="text-muted-foreground">Add List</Text>
+                  </Pressable>
                   {lists.map((list) => (
                     <Pressable
                       key={list.id}
                       onPress={() => setSelectedListId(list.id)}
-                      className={`rounded-full border px-4 py-2 ${
+                      className={`mr-2 rounded-full border px-4 py-2 ${
                         selectedListId === list.id
                           ? 'border-foreground bg-foreground'
                           : 'border-input bg-background'
@@ -157,16 +164,6 @@ export function AddSubscriptionDialog() {
                       </Text>
                     </Pressable>
                   ))}
-                  <Pressable
-                    onPress={() => {
-                      setIsOpen(false);
-                      resetForm();
-                      router.push('/settings/manage-lists');
-                    }}
-                    className="border-brand-brown mr-4 flex-row items-center gap-2 rounded-full border border-dashed bg-card/50 px-4 py-2">
-                    <Icon as={PlusIcon} className="size-4 text-muted-foreground" />
-                    <Text className="text-muted-foreground">Add List</Text>
-                  </Pressable>
                 </ScrollView>
               </View>
             )}
@@ -214,12 +211,12 @@ export function AddSubscriptionDialog() {
             <View className="flex-row gap-3 pb-8 pt-4">
               <Button
                 variant="ghost"
-                className="border-brand-brown flex-1 border"
+                className="flex-1 border border-brand-brown"
                 onPress={() => setIsOpen(false)}>
                 <Text>Cancel</Text>
               </Button>
               <Button
-                className="border-brand-brown flex-1 border"
+                className="flex-1 border border-brand-brown"
                 onPress={handleCreate}
                 disabled={!name.trim()}>
                 <Text>Save Subscription</Text>
