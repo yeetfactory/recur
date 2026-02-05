@@ -10,8 +10,35 @@ export const SUBSCRIPTIONS_KEY = 'subscriptions';
 const Zod_CreateSubscriptionSchema = Zod_Subscription.omit({
   id: true,
 });
+const Zod_SubscriptionArray = Zod_Subscription.array();
 
 type CreateSubscription = Omit<Subscription, 'id'>;
+
+const normalizeSubscriptions = (raw: unknown): Subscription[] => {
+  if (!Array.isArray(raw)) return [];
+
+  const parsedArray = Zod_SubscriptionArray.safeParse(raw);
+  if (parsedArray.success) {
+    return parsedArray.data;
+  }
+
+  const cleaned: Subscription[] = [];
+  let dropped = 0;
+  for (const item of raw) {
+    const parsed = Zod_Subscription.safeParse(item);
+    if (parsed.success) {
+      cleaned.push(parsed.data);
+    } else {
+      dropped += 1;
+    }
+  }
+
+  if (dropped > 0) {
+    logger.warn(`Dropped ${dropped} invalid subscription(s) from storage`);
+  }
+
+  return cleaned;
+};
 
 export const createSubscription = (args: CreateSubscription) => {
   const validated = Zod_CreateSubscriptionSchema.safeParse(args);
@@ -77,9 +104,20 @@ export const removeSubscription = (args: { subscription: Subscription }) => {
 };
 
 export const getSubscriptions = () => {
-  return mmkv.get<Subscription[]>(SUBSCRIPTIONS_KEY) ?? [];
+  const stored = mmkv.get<Subscription[]>(SUBSCRIPTIONS_KEY);
+  const normalized = normalizeSubscriptions(stored);
+  if (Array.isArray(stored) && normalized.length !== stored.length) {
+    mmkv.set(SUBSCRIPTIONS_KEY, normalized);
+  }
+  return normalized;
 };
 
 export const saveSubscriptions = (subscriptions: Subscription[]) => {
-  mmkv.set(SUBSCRIPTIONS_KEY, subscriptions);
+  const validated = Zod_SubscriptionArray.safeParse(subscriptions);
+  if (!validated.success) {
+    logger.error('Invalid subscriptions in saveSubscriptions', validated.error);
+    throw new Error('Invalid subscriptions');
+  }
+
+  mmkv.set(SUBSCRIPTIONS_KEY, validated.data);
 };

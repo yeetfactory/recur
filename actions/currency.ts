@@ -34,7 +34,6 @@ export const getDefaultCurrency = () => {
   const storedCurrency = mmkv.get<Currency>(DEFAULT_CURRENCY_KEY);
 
   if (!storedCurrency) {
-    logger.info('No default currency set');
     return null;
   }
 

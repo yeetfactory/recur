@@ -4,6 +4,7 @@ import { Text } from '@/components/ui/text';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Icon } from '@/components/ui/icon';
+import { ProgressDots } from '@/components/ui/progress-dots';
 import { router } from 'expo-router';
 import { CURRENCIES } from '@/const';
 import { setUserName } from '@/actions/user';
@@ -18,26 +19,6 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog';
-
-// Progress indicator component
-function ProgressDots({ current, total }: { current: number; total: number }) {
-  return (
-    <View className="flex-row items-center justify-center gap-2">
-      {Array.from({ length: total }).map((_, index) => (
-        <View
-          key={index}
-          className={`h-2 rounded-full ${
-            index === current
-              ? 'w-6 bg-primary'
-              : index < current
-                ? 'w-2 bg-primary/50'
-                : 'w-2 bg-muted'
-          }`}
-        />
-      ))}
-    </View>
-  );
-}
 
 export default function OnboardingDetails() {
   const [name, setName] = useState('');

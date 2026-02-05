@@ -11,7 +11,7 @@ import { getSubscriptions, removeSubscription, saveSubscriptions } from '@/actio
 import { getDefaultCurrency } from '@/actions/currency';
 
 import { useLists } from '@/hooks/use-lists';
-import { Subscription, List } from '@/types';
+import { SUBSCRIPTION_FREQUENCIES, Subscription, SubscriptionFrequency } from '@/types';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -40,18 +40,25 @@ export default function Screen() {
   const greeting = getGreeting();
 
   const [subscriptions, setSubscriptions] = React.useState<Subscription[]>([]);
-  const { lists } = useLists();
+  const { lists, fetchLists } = useLists();
   const [selectedListId, setSelectedListId] = React.useState<string | null>(null);
   const [subscriptionToDelete, setSubscriptionToDelete] = React.useState<Subscription | null>(null);
   const [editingSubscription, setEditingSubscription] = React.useState<Subscription | null>(null);
-  const [viewMode, setViewMode] = React.useState<'monthly' | 'yearly'>('monthly');
+  const [viewMode, setViewMode] = React.useState<SubscriptionFrequency>('monthly');
   const defaultCurrency = getDefaultCurrency() ?? 'USD';
   const currencySymbol = getCurrencySymbol(defaultCurrency);
+
+  React.useEffect(() => {
+    if (selectedListId && !lists.some((list) => list.id === selectedListId)) {
+      setSelectedListId(null);
+    }
+  }, [lists, selectedListId]);
 
   const loadData = React.useCallback(() => {
     const subsData = getSubscriptions();
     setSubscriptions(subsData);
-  }, []);
+    fetchLists();
+  }, [fetchLists]);
 
   useFocusEffect(
     React.useCallback(() => {
@@ -166,7 +173,7 @@ export default function Screen() {
               {/* View Mode Toggle */}
               <View className="flex-row justify-center">
                 <View className="flex-row rounded-full border border-border bg-card p-1">
-                  {(['monthly', 'yearly'] as const).map((mode) => (
+                  {SUBSCRIPTION_FREQUENCIES.map((mode) => (
                     <Text
                       key={mode}
                       onPress={() => setViewMode(mode)}

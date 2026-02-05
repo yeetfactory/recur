@@ -26,7 +26,6 @@ export const getUserName = (): string | null => {
   const storedName = mmkv.get<string>(USER_NAME_KEY);
 
   if (!storedName) {
-    logger.info('No user name set');
     return null;
   }
 
@@ -43,7 +42,6 @@ export const getUserName = (): string | null => {
 // Onboarding State Actions
 export const setOnboardingComplete = () => {
   mmkv.set(ONBOARDING_COMPLETE_KEY, true);
-  logger.info('Onboarding marked as complete');
 };
 
 export const isOnboardingComplete = (): boolean => {

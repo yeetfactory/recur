@@ -6,7 +6,7 @@ import { Sheet, SheetTrigger, SheetContent } from '@/components/ui/sheet';
 import { Text } from '@/components/ui/text';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { SubscriptionFrequency } from '@/types';
+import { SUBSCRIPTION_FREQUENCIES, SubscriptionFrequency } from '@/types';
 import { createSubscription } from '@/actions/subscription';
 import { getDefaultCurrency } from '@/actions/currency';
 
@@ -17,6 +17,7 @@ import { router } from 'expo-router';
 import { PlusIcon } from 'lucide-react-native';
 import { Icon } from '@/components/ui/icon';
 import { getCurrencySymbol } from '@/lib/currency';
+import { parseAmount, parseDateInput, todayDateInput } from '@/lib/validation';
 
 interface AddSubscriptionDialogProps {
   onSubscriptionCreated?: () => void;
@@ -30,12 +31,14 @@ export function AddSubscriptionDialog({ onSubscriptionCreated }: AddSubscription
   const [name, setName] = React.useState('');
   const [icon, setIcon] = React.useState<string | null>(null);
   const [showEmojiPicker, setShowEmojiPicker] = React.useState(false);
-  const [errors, setErrors] = React.useState<{ name?: string }>({});
+  const [errors, setErrors] = React.useState<{ name?: string; amount?: string; date?: string }>(
+    {}
+  );
 
   // Details State
   const [frequency, setFrequency] = React.useState<SubscriptionFrequency>('monthly');
   const [amount, setAmount] = React.useState('');
-  const [date, setDate] = React.useState(new Date().toISOString().split('T')[0]);
+  const [date, setDate] = React.useState(todayDateInput());
 
   // List State
   const { lists, createList } = useLists();
@@ -43,26 +46,47 @@ export function AddSubscriptionDialog({ onSubscriptionCreated }: AddSubscription
 
   const defaultCurrency = getDefaultCurrency() ?? 'USD';
   const currencySymbol = getCurrencySymbol(defaultCurrency);
+  const isSaveDisabled =
+    !name.trim() || parseAmount(amount) === null || parseDateInput(date) === null;
 
-  React.useEffect(() => {
-    if (isOpen) {
-      if (lists.length > 0 && !selectedListId) {
-        setSelectedListId(lists[0].id);
-      }
-    }
-  }, [isOpen, lists]);
-
-  const resetForm = () => {
+  const resetForm = React.useCallback(() => {
     setName('');
     setIcon(null);
     setAmount('');
-    setDate(new Date().toISOString().split('T')[0]);
+    setDate(todayDateInput());
     setErrors({});
-  };
+  }, []);
+
+  React.useEffect(() => {
+    if (isOpen) {
+      if (lists.length > 0) {
+        const hasSelected = selectedListId
+          ? lists.some((list) => list.id === selectedListId)
+          : false;
+        if (!hasSelected) {
+          setSelectedListId(lists[0].id);
+        }
+      } else {
+        setSelectedListId(null);
+      }
+    } else {
+      resetForm();
+    }
+  }, [isOpen, lists, resetForm, selectedListId]);
 
   const handleCreate = () => {
-    if (!name.trim()) {
-      setErrors({ name: 'Name is required' });
+    const nextErrors: { name?: string; amount?: string; date?: string } = {};
+    if (!name.trim()) nextErrors.name = 'Name is required';
+    const parsedAmount = parseAmount(amount);
+    if (parsedAmount === null) nextErrors.amount = 'Enter a valid amount';
+    const parsedDate = parseDateInput(date);
+    if (!parsedDate) nextErrors.date = 'Use YYYY-MM-DD';
+
+    if (Object.keys(nextErrors).length > 0) {
+      setErrors(nextErrors);
+      return;
+    }
+    if (parsedAmount === null || !parsedDate) {
       return;
     }
 
@@ -82,11 +106,10 @@ export function AddSubscriptionDialog({ onSubscriptionCreated }: AddSubscription
         name: name.trim(),
         icon,
         frequency,
-        amount: parseFloat(amount) || 0,
+        amount: parsedAmount,
         currency: defaultCurrency,
-        isFreeTrial: false,
         listId: targetListId,
-        startDate: new Date(date),
+        startDate: parsedDate,
       });
       setIsOpen(false);
       resetForm();
@@ -130,12 +153,16 @@ export function AddSubscriptionDialog({ onSubscriptionCreated }: AddSubscription
                 <Input
                   placeholder="e.g. Netflix, Spotify"
                   value={name}
-                  onChangeText={setName}
+                  onChangeText={(value) => {
+                    setName(value);
+                    if (errors.name) setErrors((prev) => ({ ...prev, name: undefined }));
+                  }}
                   autoCapitalize="words"
                   className="border-0 bg-transparent"
                 />
               </View>
             </View>
+            {errors.name && <Text className="text-sm text-destructive">{errors.name}</Text>}
           </View>
 
           <View className="mt-4 gap-6">
@@ -177,7 +204,7 @@ export function AddSubscriptionDialog({ onSubscriptionCreated }: AddSubscription
             <View className="gap-2">
               <Text className="font-recoleta-medium text-sm text-foreground">Frequency</Text>
               <View className="flex-row gap-2">
-                {(['monthly', 'yearly'] as const).map((freq) => (
+                {SUBSCRIPTION_FREQUENCIES.map((freq) => (
                   <Button
                     key={freq}
                     variant={frequency === freq ? 'default' : 'outline'}
@@ -200,16 +227,28 @@ export function AddSubscriptionDialog({ onSubscriptionCreated }: AddSubscription
                   placeholder="0.00"
                   keyboardType="numeric"
                   value={amount}
-                  onChangeText={setAmount}
+                  onChangeText={(value) => {
+                    setAmount(value);
+                    if (errors.amount) setErrors((prev) => ({ ...prev, amount: undefined }));
+                  }}
                   className="pl-7"
                 />
               </View>
+              {errors.amount && <Text className="text-sm text-destructive">{errors.amount}</Text>}
             </View>
 
             {/* Date Input */}
             <View className="gap-2">
               <Text className="font-recoleta-medium text-sm text-foreground">Start Date</Text>
-              <Input placeholder="YYYY-MM-DD" value={date} onChangeText={setDate} />
+              <Input
+                placeholder="YYYY-MM-DD"
+                value={date}
+                onChangeText={(value) => {
+                  setDate(value);
+                  if (errors.date) setErrors((prev) => ({ ...prev, date: undefined }));
+                }}
+              />
+              {errors.date && <Text className="text-sm text-destructive">{errors.date}</Text>}
             </View>
 
             {/* Action Buttons */}
@@ -223,7 +262,7 @@ export function AddSubscriptionDialog({ onSubscriptionCreated }: AddSubscription
               <Button
                 className="flex-1 border border-brand-brown"
                 onPress={handleCreate}
-                disabled={!name.trim()}>
+                disabled={isSaveDisabled}>
                 <Text>Save Subscription</Text>
               </Button>
             </View>

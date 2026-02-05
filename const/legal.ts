@@ -1,48 +1,44 @@
-// Privacy Policy and Terms content - Single source of truth
-// Used by both onboarding and settings policy screens
+import Constants from 'expo-constants';
+
+const APP_VERSION = Constants.expoConfig?.version ?? Constants.manifest?.version ?? '1.0.0';
 
 export const PRIVACY_CONTENT = {
   title: 'Privacy Policy',
-  lastUpdated: 'December 2025',
-  version: '0.0.1 (Alpha)',
+  lastUpdated: 'February 5, 2026',
+  version: APP_VERSION,
   sections: [
     {
       title: 'Overview',
       content:
-        "Recur is a subscription tracking application. We are committed to protecting your privacy.\n\nThe short version: We don't collect, store, or share any of your personal data. Everything stays on your device.",
+        "Recur is a subscription tracking app that works fully on your device. We don't run accounts or servers for your subscription data.",
     },
     {
       title: 'Information We Collect',
       content:
-        'None. The App does not collect, transmit, or store any personal information on external servers. All data you enter is stored locally on your device only.',
+        'We do not collect, sell, or share personal data. The app does not send your subscription data to any server.',
     },
     {
       title: 'Data Storage',
       content:
-        'All information you provide is stored exclusively on your device using local storage. This includes:\n\n• Your name\n• Your currency preference\n• Subscription information you enter\n• App preferences\n\nWe do not have access to this data. It never leaves your device.',
+        'All information you provide is stored locally on your device. This includes your name, currency preference, subscriptions you add, and app preferences.',
     },
     {
       title: 'Third-Party Services',
       content:
-        'The App does not use any third-party services. All functionality is provided locally on your device. The App does not integrate with any analytics, advertising, or tracking services.',
+        'We do not integrate analytics, advertising, or tracking SDKs.',
     },
     {
       title: 'Permissions',
       content:
         'The App does not require or request any special device permissions (such as camera, contacts, location, etc.).',
     },
-    {
-      title: 'International Compliance',
-      content:
-        'Since all data remains on your device and we collect nothing, no cross-border data transfers occur. This approach is compliant with:\n\n• GDPR (European Union)\n• CCPA (California, USA)\n• LGPD (Brazil)\n• POPIA (South Africa)\n• PDPA (Singapore, Thailand)\n• DPDP Act (India)\n• Other applicable data protection regulations',
-    },
   ],
 };
 
 export const TERMS_CONTENT = {
   title: 'Terms & Conditions',
-  lastUpdated: 'December 2025',
-  version: '0.0.1 (Alpha)',
+  lastUpdated: 'February 5, 2026',
+  version: APP_VERSION,
   sections: [
     {
       title: '1. Agreement to Terms',
@@ -55,9 +51,9 @@ export const TERMS_CONTENT = {
         'Recur is a subscription tracking application that helps you manage and monitor your recurring payments. The App stores all data locally on your device.',
     },
     {
-      title: '3. Alpha Version Disclaimer',
+      title: '3. Pre-Release Notice',
       content:
-        'This is an Alpha release (v0.0.1). The App is provided for testing and early access purposes. Features may be incomplete, change without notice, or contain bugs.',
+        'Recur may be in active development. Features can change or improve over time, and you should keep backups of important information.',
     },
     {
       title: '4. User Responsibilities',

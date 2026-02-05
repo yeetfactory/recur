@@ -14,6 +14,7 @@ interface PolicyScreenProps {
 
 export function PolicyScreen({ type, showHeader = true }: PolicyScreenProps) {
   const content = getPolicyContent(type);
+  const currentYear = new Date().getFullYear();
 
   return (
     <View className="flex-1 bg-background">
@@ -48,7 +49,7 @@ export function PolicyScreen({ type, showHeader = true }: PolicyScreenProps) {
         ))}
 
         <Text className="mt-4 text-center text-sm text-muted-foreground">
-          © 2025 YeetFactory. All rights reserved.
+          © {currentYear} YeetFactory. All rights reserved.
         </Text>
       </ScrollView>
     </View>

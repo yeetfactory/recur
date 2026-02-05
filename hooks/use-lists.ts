@@ -1,10 +1,12 @@
 import { useState, useCallback } from 'react';
 import { useFocusEffect } from 'expo-router';
-import { mmkv } from '@/integrations/mmkv';
-import { List, Zod_List } from '@/types';
-import { generateUUID } from '@/lib/utils';
-
-export const LISTS_KEY = 'lists';
+import { List } from '@/types';
+import {
+  createList as createListAction,
+  getLists,
+  removeList as removeListAction,
+  updateList as updateListAction,
+} from '@/actions/list';
 
 export const useLists = () => {
   const [lists, setLists] = useState<List[]>([]);
@@ -12,12 +14,7 @@ export const useLists = () => {
 
   const fetchLists = useCallback(() => {
     try {
-      const storedLists = mmkv.get<List[]>(LISTS_KEY);
-      if (storedLists) {
-        setLists(storedLists);
-      } else {
-        setLists([]);
-      }
+      setLists(getLists());
     } catch (error) {
       console.error('Failed to fetch lists', error);
       setLists([]);
@@ -34,16 +31,9 @@ export const useLists = () => {
   );
 
   const createList = useCallback((name: string) => {
-    const newList: List = {
-      id: generateUUID(),
-      name: name.trim(),
-    };
-
     try {
-      const currentLists = mmkv.get<List[]>(LISTS_KEY) ?? [];
-      const updatedLists = [...currentLists, newList];
-      mmkv.set(LISTS_KEY, updatedLists);
-      setLists(updatedLists);
+      const newList = createListAction(name);
+      setLists(getLists());
       return newList;
     } catch (error) {
       console.error('Failed to create list', error);
@@ -53,12 +43,8 @@ export const useLists = () => {
 
   const updateList = useCallback((id: string, name: string) => {
     try {
-      const currentLists = mmkv.get<List[]>(LISTS_KEY) ?? [];
-      const updatedLists = currentLists.map((list) =>
-        list.id === id ? { ...list, name: name.trim() } : list
-      );
-      mmkv.set(LISTS_KEY, updatedLists);
-      setLists(updatedLists);
+      updateListAction(id, name);
+      setLists(getLists());
     } catch (error) {
       console.error('Failed to update list', error);
       throw error;
@@ -67,10 +53,8 @@ export const useLists = () => {
 
   const removeList = useCallback((id: string) => {
     try {
-      const currentLists = mmkv.get<List[]>(LISTS_KEY) ?? [];
-      const updatedLists = currentLists.filter((list) => list.id !== id);
-      mmkv.set(LISTS_KEY, updatedLists);
-      setLists(updatedLists);
+      removeListAction(id);
+      setLists(getLists());
     } catch (error) {
       console.error('Failed to remove list', error);
       throw error;

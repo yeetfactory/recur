@@ -1,8 +1,9 @@
 import { View, Text, ImageBackground } from 'react-native';
+import type { SubscriptionFrequency } from '@/types';
 
 type ChartProps = {
   total: string;
-  viewMode?: 'monthly' | 'yearly';
+  viewMode?: SubscriptionFrequency;
 };
 
 export const Chart = ({ total, viewMode = 'monthly' }: ChartProps) => {

@@ -2,7 +2,7 @@
   "expo": {
     "name": "recur",
     "slug": "recur",
-    "version": "1.0.0",
+    "version": "0.0.1",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "recur",
@@ -18,7 +18,7 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.anonymous.recur"
+      "bundleIdentifier": "com.yeetfactory.recur"
     },
     "android": {
       "edgeToEdgeEnabled": true,
@@ -26,7 +26,7 @@
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.anonymous.recur"
+      "package": "com.yeetfactory.recur"
     },
     "web": {
       "bundler": "metro",

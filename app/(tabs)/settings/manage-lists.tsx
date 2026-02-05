@@ -1,10 +1,20 @@
 import * as React from 'react';
-import { View, TouchableOpacity, Alert, ScrollView } from 'react-native';
+import { View, TouchableOpacity, ScrollView } from 'react-native';
 import { Stack } from 'expo-router';
 import { Text } from '@/components/ui/text';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Icon } from '@/components/ui/icon';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from '@/components/ui/alert-dialog';
 import {
   Dialog,
   DialogContent,
@@ -29,6 +39,8 @@ export default function ManageListsPage() {
   const [isEditDialogOpen, setIsEditDialogOpen] = React.useState(false);
   const [editingList, setEditingList] = React.useState<List | null>(null);
   const [newListName, setNewListName] = React.useState('');
+  const [listToDelete, setListToDelete] = React.useState<List | null>(null);
+  const [errorMessage, setErrorMessage] = React.useState<string | null>(null);
 
   // Filter lists based on search query
   const filteredLists = React.useMemo(() => {
@@ -46,7 +58,7 @@ export default function ManageListsPage() {
         setIsAddDialogOpen(false);
       } catch (error) {
         console.error(error);
-        Alert.alert('Error', 'Failed to create list');
+        setErrorMessage('Failed to create list.');
       }
     }
   };
@@ -60,33 +72,30 @@ export default function ManageListsPage() {
         setIsEditDialogOpen(false);
       } catch (error) {
         console.error(error);
-        Alert.alert('Error', 'Failed to update list');
+        setErrorMessage('Failed to update list.');
       }
     }
   };
 
-  const handleDeleteList = (listToDelete: List) => {
-    Alert.alert('Delete List', `Are you sure you want to delete "${listToDelete.name}"?`, [
-      { text: 'Cancel', style: 'cancel' },
-      {
-        text: 'Delete',
-        style: 'destructive',
-        onPress: () => {
-          try {
-            removeList(listToDelete.id);
-          } catch (error) {
-            console.error(error);
-            Alert.alert('Error', 'Failed to delete list');
-          }
-        },
-      },
-    ]);
+  const handleDeleteList = (list: List) => {
+    setListToDelete(list);
   };
 
   const openEditDialog = (list: List) => {
     setEditingList(list);
     setNewListName(list.name);
     setIsEditDialogOpen(true);
+  };
+
+  const confirmDelete = () => {
+    if (!listToDelete) return;
+    try {
+      removeList(listToDelete.id);
+      setListToDelete(null);
+    } catch (error) {
+      console.error(error);
+      setErrorMessage('Failed to delete list.');
+    }
   };
 
   return (
@@ -192,6 +201,46 @@ export default function ManageListsPage() {
           </DialogFooter>
         </DialogContent>
       </Dialog>
+
+      {/* Delete Confirmation Dialog */}
+      <AlertDialog open={!!listToDelete} onOpenChange={(open) => !open && setListToDelete(null)}>
+        <AlertDialogContent className="border border-brand-brown">
+          <AlertDialogHeader>
+            <AlertDialogTitle className="font-recoleta-medium text-foreground">
+              Delete List?
+            </AlertDialogTitle>
+            <AlertDialogDescription>
+              Are you sure you want to delete "{listToDelete?.name}"? Subscriptions in this list
+              will be moved to All.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel onPress={() => setListToDelete(null)}>
+              <Text>Cancel</Text>
+            </AlertDialogCancel>
+            <AlertDialogAction onPress={confirmDelete} className="bg-destructive">
+              <Text className="text-white">Delete</Text>
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+
+      {/* Error Dialog */}
+      <AlertDialog open={!!errorMessage} onOpenChange={(open) => !open && setErrorMessage(null)}>
+        <AlertDialogContent className="border border-brand-brown">
+          <AlertDialogHeader>
+            <AlertDialogTitle className="font-recoleta-medium text-foreground">
+              Error
+            </AlertDialogTitle>
+            <AlertDialogDescription>{errorMessage}</AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogAction onPress={() => setErrorMessage(null)}>
+              <Text>OK</Text>
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </>
   );
 }

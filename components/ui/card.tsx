@@ -1,6 +1,6 @@
 import { View, Text, useColorScheme, Pressable } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { Subscription } from '@/types';
+import { Subscription, SubscriptionFrequency } from '@/types';
 import { SubscriptionAvatar } from '@/components/subscription-avatar';
 import { getCurrencySymbol } from '@/lib/currency';
 
@@ -10,7 +10,7 @@ type CardProps = {
   onDelete?: () => void;
   drag?: () => void;
   isActive?: boolean;
-  viewMode?: 'monthly' | 'yearly';
+  viewMode?: SubscriptionFrequency;
 };
 
 export const Card = ({

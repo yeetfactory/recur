@@ -1,6 +1,5 @@
 import React from 'react';
 import { Text } from '@/components/ui/text';
-import { Button } from '@/components/ui/button';
 import { Icon } from '@/components/ui/icon';
 import { useColorScheme } from 'nativewind';
 import {
@@ -17,7 +16,9 @@ import {
 import { Ionicons } from '@expo/vector-icons';
 import { Stack, router } from 'expo-router';
 import { View, ScrollView, TouchableOpacity, Linking, Share, Platform } from 'react-native';
-import { DISCORD_INVITE_URL, APP_STORE_URL, CURRENCIES } from '@/const';
+import Constants from 'expo-constants';
+import { CURRENCIES } from '@/const';
+import { DISCORD_INVITE_URL, getAppStoreUrl, getShareUrl } from '@/const/links';
 import { getUserName } from '@/actions/user';
 import { getDefaultCurrency } from '@/actions/currency';
 
@@ -64,20 +65,26 @@ function ProfileCard() {
 }
 
 export default function Settings() {
+  const appStoreUrl = getAppStoreUrl(Platform.OS);
+  const shareUrl = getShareUrl(Platform.OS);
+  const appVersion = Constants.expoConfig?.version ?? Constants.manifest?.version ?? '1.0.0';
+  const showSupport = !!appStoreUrl || !!shareUrl || !!DISCORD_INVITE_URL;
+
   const handleJoinCommunity = () => {
-    Linking.openURL(DISCORD_INVITE_URL);
+    if (!DISCORD_INVITE_URL) return;
+    void Linking.openURL(DISCORD_INVITE_URL);
   };
 
   const handleLeaveReview = () => {
-    Linking.openURL(APP_STORE_URL);
+    if (!appStoreUrl) return;
+    void Linking.openURL(appStoreUrl);
   };
 
   const handleShareApp = async () => {
     try {
       await Share.share({
-        message:
-          Platform.OS === 'ios' ? 'Check out this app!' : `Check out this app! ${APP_STORE_URL}`,
-        url: APP_STORE_URL,
+        message: shareUrl ? `Check out Recur: ${shareUrl}` : 'Check out Recur.',
+        url: shareUrl || undefined,
       });
     } catch (error) {
       console.error(error);
@@ -106,33 +113,57 @@ export default function Settings() {
 
           <SettingsSection title="Data">
             <SettingsItem
-              icon={ListIcon}
+              icon={<Icon as={ListIcon} className="size-5 text-foreground" />}
               label="Manage Lists"
               onPress={() => router.push('/settings/manage-lists')}
             />
           </SettingsSection>
 
-          <SettingsSection title="Support">
-            <SettingsItem icon={StarIcon} label="Leave a review" onPress={handleLeaveReview} />
-            <SettingsItem icon={ShareIcon} label="Share with friends" onPress={handleShareApp} />
-            <SettingsItem
-              icon={DiscordIcon}
-              label="Join our community"
-              onPress={handleJoinCommunity}
-            />
-          </SettingsSection>
+          {showSupport && (
+            <SettingsSection title="Support">
+              {appStoreUrl && (
+                <SettingsItem
+                  icon={<Icon as={StarIcon} className="size-5 text-foreground" />}
+                  label="Leave a review"
+                  onPress={handleLeaveReview}
+                />
+              )}
+              {shareUrl && (
+                <SettingsItem
+                  icon={<Icon as={ShareIcon} className="size-5 text-foreground" />}
+                  label="Share with friends"
+                  onPress={handleShareApp}
+                />
+              )}
+              {DISCORD_INVITE_URL && (
+                <SettingsItem
+                  icon={<DiscordIcon />}
+                  label="Join our community"
+                  onPress={handleJoinCommunity}
+                />
+              )}
+            </SettingsSection>
+          )}
 
           <SettingsSection title="Legal">
-            <SettingsItem icon={ShieldIcon} label="Privacy policy" onPress={handlePrivacyPolicy} />
             <SettingsItem
-              icon={FileTextIcon}
+              icon={<Icon as={ShieldIcon} className="size-5 text-foreground" />}
+              label="Privacy policy"
+              onPress={handlePrivacyPolicy}
+            />
+            <SettingsItem
+              icon={<Icon as={FileTextIcon} className="size-5 text-foreground" />}
               label="Terms and conditions"
               onPress={handleTermsAndConditions}
             />
           </SettingsSection>
 
           <SettingsSection title="About">
-            <SettingsItem icon={InfoIcon} label="Version" value="v0.0.1" />
+            <SettingsItem
+              icon={<Icon as={InfoIcon} className="size-5 text-foreground" />}
+              label="Version"
+              value={`v${appVersion}`}
+            />
           </SettingsSection>
         </View>
       </ScrollView>
@@ -152,30 +183,36 @@ function SettingsSection({ title, children }: { title: string; children: React.R
 }
 
 function SettingsItem({
-  icon: IconComponent,
+  icon,
   label,
   value,
   onPress,
 }: {
-  icon: any;
+  icon: React.ReactNode;
   label: string;
   value?: string;
   onPress?: () => void;
 }) {
+  const content = (
+    <View className="border-brand-brown flex-row items-center justify-between rounded-lg border bg-card p-4 dark:bg-black">
+      <View className="flex-1 flex-row items-center gap-3">
+        <View className="rounded-md bg-muted p-2">{icon}</View>
+        <Text className="flex-1 font-medium text-card-foreground dark:text-white">{label}</Text>
+      </View>
+      <View className="flex-row items-center gap-2">
+        {value && <Text className="text-sm text-muted-foreground">{value}</Text>}
+        {onPress && <Icon as={ChevronRightIcon} className="size-4 text-muted-foreground" />}
+      </View>
+    </View>
+  );
+
+  if (!onPress) {
+    return content;
+  }
+
   return (
     <TouchableOpacity onPress={onPress} activeOpacity={0.7}>
-      <View className="border-brand-brown flex-row items-center justify-between rounded-lg border bg-card p-4 dark:bg-black">
-        <View className="flex-1 flex-row items-center gap-3">
-          <View className="rounded-md bg-muted p-2">
-            <Icon as={IconComponent} className="size-5 text-foreground" />
-          </View>
-          <Text className="flex-1 font-medium text-card-foreground dark:text-white">{label}</Text>
-        </View>
-        <View className="flex-row items-center gap-2">
-          {value && <Text className="text-sm text-muted-foreground">{value}</Text>}
-          <Icon as={ChevronRightIcon} className="size-4 text-muted-foreground" />
-        </View>
-      </View>
+      {content}
     </TouchableOpacity>
   );
 }
@@ -211,9 +248,9 @@ function ThemeToggleItem() {
             </Text>
           </View>
         </View>
-        <Button onPress={handleToggleTheme} variant="ghost" size="sm" className="h-8 px-3">
+        <View className="rounded-md border border-border px-3 py-1">
           <Text className="font-medium text-primary">Toggle</Text>
-        </Button>
+        </View>
       </View>
     </TouchableOpacity>
   );

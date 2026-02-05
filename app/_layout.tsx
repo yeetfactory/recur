@@ -14,7 +14,7 @@ import { isOnboardingComplete } from '@/actions/user';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
-SplashScreen.preventAutoHideAsync();
+void SplashScreen.preventAutoHideAsync();
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -35,10 +35,8 @@ export default function RootLayout() {
     const checkOnboarding = () => {
       try {
         const status = isOnboardingComplete();
-        console.log('[_layout] Onboarding check result:', status);
         setOnboardingComplete(status);
       } catch (e) {
-        console.log('[_layout] MMKV not ready, retrying...');
         setTimeout(checkOnboarding, 100);
       }
     };
@@ -53,7 +51,7 @@ export default function RootLayout() {
 
   useEffect(() => {
     if (loaded && onboardingComplete !== null) {
-      SplashScreen.hideAsync();
+      void SplashScreen.hideAsync();
     }
   }, [loaded, onboardingComplete]);
 

@@ -3,6 +3,7 @@ import { View, ScrollView, Pressable } from 'react-native';
 import { Text } from '@/components/ui/text';
 import { Button } from '@/components/ui/button';
 import { Icon } from '@/components/ui/icon';
+import { ProgressDots } from '@/components/ui/progress-dots';
 import { router } from 'expo-router';
 import { setOnboardingComplete } from '@/actions/user';
 import {
@@ -13,26 +14,6 @@ import {
   type LucideIcon,
 } from 'lucide-react-native';
 import Animated, { FadeInDown, FadeInUp } from 'react-native-reanimated';
-
-// Progress indicator component
-function ProgressDots({ current, total }: { current: number; total: number }) {
-  return (
-    <View className="flex-row items-center justify-center gap-2">
-      {Array.from({ length: total }).map((_, index) => (
-        <View
-          key={index}
-          className={`h-2 rounded-full ${
-            index === current
-              ? 'w-6 bg-primary'
-              : index < current
-                ? 'w-2 bg-primary/50'
-                : 'w-2 bg-muted'
-          }`}
-        />
-      ))}
-    </View>
-  );
-}
 
 interface CheckboxItemProps {
   checked: boolean;

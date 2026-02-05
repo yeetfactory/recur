@@ -1530,9 +1530,3 @@ export const CURRENCIES = [
 ] as const;
 
 export const CURRENCY_CODES = CURRENCIES.map((c) => c.code);
-
-// Community Links
-export const DISCORD_INVITE_URL = 'https://discord.gg/your-invite-link'; // TODO: use the actual links
-
-// App Store Links
-export const APP_STORE_URL = 'https://apps.apple.com/app/your-app-id'; // TODO: change to use both playstore and appstore
