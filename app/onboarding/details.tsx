@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from 'react';
-import { View, ScrollView, Pressable, FlatList } from 'react-native';
+import { View, ScrollView, Pressable, FlatList, TextInput } from 'react-native';
 import { Text } from '@/components/ui/text';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -44,6 +44,7 @@ export default function OnboardingDetails() {
   const [selectedCurrency, setSelectedCurrency] = useState<Currency | null>(null);
   const [currencySearch, setCurrencySearch] = useState('');
   const [isCurrencyDialogOpen, setIsCurrencyDialogOpen] = useState(false);
+  const searchInputRef = React.useRef<TextInput>(null);
 
   const filteredCurrencies = useMemo(() => {
     if (!currencySearch.trim()) {
@@ -78,6 +79,14 @@ export default function OnboardingDetails() {
     setIsCurrencyDialogOpen(false);
     setCurrencySearch('');
   };
+
+  React.useEffect(() => {
+    if (!isCurrencyDialogOpen) return;
+    const timer = setTimeout(() => {
+      searchInputRef.current?.focus();
+    }, 80);
+    return () => clearTimeout(timer);
+  }, [isCurrencyDialogOpen]);
 
   return (
     <ScrollView
@@ -138,7 +147,10 @@ export default function OnboardingDetails() {
                 </Pressable>
               </DialogTrigger>
 
-              <DialogContent className="w-[90%] max-w-md">
+              <DialogContent
+                className="mx-4 w-auto max-w-none sm:max-w-none"
+                overlayStyle={{ padding: 0, alignItems: 'stretch' }}
+                style={{ alignSelf: 'stretch' }}>
                 <DialogHeader>
                   <DialogTitle>Select Currency</DialogTitle>
                 </DialogHeader>
@@ -147,9 +159,11 @@ export default function OnboardingDetails() {
                   <View className="flex-row items-center gap-2 rounded-lg border border-input bg-background px-3 dark:bg-input/30">
                     <Icon as={SearchIcon} className="size-4 text-muted-foreground" />
                     <Input
+                      ref={searchInputRef}
                       value={currencySearch}
                       onChangeText={setCurrencySearch}
                       placeholder="Search currencies..."
+                      autoFocus={true}
                       className="h-10 flex-1 border-0 bg-transparent shadow-none"
                     />
                   </View>

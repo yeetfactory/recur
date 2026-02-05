@@ -2,6 +2,7 @@ import { View, Text, useColorScheme, Pressable } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { Subscription } from '@/types';
 import { SubscriptionAvatar } from '@/components/subscription-avatar';
+import { getCurrencySymbol } from '@/lib/currency';
 
 type CardProps = {
   subscription: Subscription;
@@ -24,6 +25,7 @@ export const Card = ({
   const isDark = colorScheme === 'dark';
   const iconColor = isDark ? '#9CA3AF' : '#6B7280';
   const { name, icon, amount, frequency, currency } = subscription;
+  const currencySymbol = getCurrencySymbol(currency);
 
   const displayAmount =
     viewMode === frequency
@@ -74,7 +76,7 @@ export const Card = ({
           </View>
           <View className="items-end">
             <Text className="text-base font-bold text-card-foreground">
-              {currency === 'USD' ? '$' : currency}
+              {currencySymbol}
               {displayAmount.toFixed(2)}
             </Text>
             <Text className="text-xs text-muted-foreground">{subtitle}</Text>

@@ -14,6 +14,7 @@ import { EmojiPicker } from '@/components/emoji-picker';
 import { router } from 'expo-router';
 import { PlusIcon } from 'lucide-react-native';
 import { Icon } from '@/components/ui/icon';
+import { getCurrencySymbol } from '@/lib/currency';
 
 interface EditSubscriptionDialogProps {
   subscription: Subscription | null;
@@ -43,6 +44,11 @@ export function EditSubscriptionDialog({
   // List State
   const { lists, createList } = useLists();
   const [selectedListId, setSelectedListId] = React.useState<string | null>(null);
+
+  const currencySymbol = React.useMemo(
+    () => getCurrencySymbol(subscription?.currency),
+    [subscription?.currency]
+  );
 
   React.useEffect(() => {
     if (open && subscription) {
@@ -165,7 +171,7 @@ export function EditSubscriptionDialog({
                       onOpenChange(false);
                       router.push('/settings/manage-lists');
                     }}
-                    className="border-brand-brown mr-4 flex-row items-center gap-2 rounded-full border border-dashed bg-card/50 px-4 py-2">
+                    className="mr-4 flex-row items-center gap-2 rounded-full border border-dashed border-brand-brown bg-card/50 px-4 py-2">
                     <Icon as={PlusIcon} className="size-4 text-muted-foreground" />
                     <Text className="text-muted-foreground">Add List</Text>
                   </Pressable>
@@ -193,7 +199,9 @@ export function EditSubscriptionDialog({
             <View className="gap-2">
               <Text className="font-recoleta-medium text-sm text-foreground">Amount</Text>
               <View className="relative justify-center">
-                <Text className="absolute left-3 z-10 font-recoleta-medium text-foreground">$</Text>
+                <Text className="absolute left-3 z-10 font-recoleta-medium text-foreground">
+                  {currencySymbol}
+                </Text>
                 <Input
                   placeholder="0.00"
                   keyboardType="numeric"
@@ -214,12 +222,12 @@ export function EditSubscriptionDialog({
             <View className="flex-row gap-3 pb-8 pt-4">
               <Button
                 variant="ghost"
-                className="border-brand-brown flex-1 border"
+                className="flex-1 border border-brand-brown"
                 onPress={() => onOpenChange(false)}>
                 <Text>Cancel</Text>
               </Button>
               <Button
-                className="border-brand-brown flex-1 border"
+                className="flex-1 border border-brand-brown"
                 onPress={handleUpdate}
                 disabled={!name.trim()}>
                 <Text>Update</Text>

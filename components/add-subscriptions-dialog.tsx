@@ -8,6 +8,7 @@ import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { SubscriptionFrequency } from '@/types';
 import { createSubscription } from '@/actions/subscription';
+import { getDefaultCurrency } from '@/actions/currency';
 
 import { useLists } from '@/hooks/use-lists';
 import { SubscriptionAvatar } from '@/components/subscription-avatar';
@@ -15,6 +16,7 @@ import { EmojiPicker } from '@/components/emoji-picker';
 import { router } from 'expo-router';
 import { PlusIcon } from 'lucide-react-native';
 import { Icon } from '@/components/ui/icon';
+import { getCurrencySymbol } from '@/lib/currency';
 
 export function AddSubscriptionDialog() {
   const { colorScheme } = useColorScheme();
@@ -34,6 +36,9 @@ export function AddSubscriptionDialog() {
   // List State
   const { lists, createList } = useLists();
   const [selectedListId, setSelectedListId] = React.useState<string | null>(null);
+
+  const defaultCurrency = getDefaultCurrency() ?? 'USD';
+  const currencySymbol = getCurrencySymbol(defaultCurrency);
 
   React.useEffect(() => {
     if (isOpen) {
@@ -74,7 +79,7 @@ export function AddSubscriptionDialog() {
         icon,
         frequency,
         amount: parseFloat(amount) || 0,
-        currency: 'USD',
+        currency: defaultCurrency,
         isFreeTrial: false,
         listId: targetListId,
         startDate: new Date(date),
@@ -186,7 +191,9 @@ export function AddSubscriptionDialog() {
             <View className="gap-2">
               <Text className="font-recoleta-medium text-sm text-foreground">Amount</Text>
               <View className="relative justify-center">
-                <Text className="absolute left-3 z-10 font-recoleta-medium text-foreground">$</Text>
+                <Text className="absolute left-3 z-10 font-recoleta-medium text-foreground">
+                  {currencySymbol}
+                </Text>
                 <Input
                   placeholder="0.00"
                   keyboardType="numeric"

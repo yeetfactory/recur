@@ -8,6 +8,7 @@ import { AddSubscriptionDialog } from '@/components/add-subscriptions-dialog';
 import { EditSubscriptionDialog } from '@/components/edit-subscription-dialog';
 import { getUserName } from '@/actions/user';
 import { getSubscriptions, removeSubscription, saveSubscriptions } from '@/actions/subscription';
+import { getDefaultCurrency } from '@/actions/currency';
 
 import { useLists } from '@/hooks/use-lists';
 import { Subscription, List } from '@/types';
@@ -25,6 +26,7 @@ import DraggableFlatList, {
   RenderItemParams,
   ScaleDecorator,
 } from 'react-native-draggable-flatlist';
+import { getCurrencySymbol } from '@/lib/currency';
 
 function getGreeting(): string {
   const hour = new Date().getHours();
@@ -43,6 +45,8 @@ export default function Screen() {
   const [subscriptionToDelete, setSubscriptionToDelete] = React.useState<Subscription | null>(null);
   const [editingSubscription, setEditingSubscription] = React.useState<Subscription | null>(null);
   const [viewMode, setViewMode] = React.useState<'monthly' | 'yearly'>('monthly');
+  const defaultCurrency = getDefaultCurrency() ?? 'USD';
+  const currencySymbol = getCurrencySymbol(defaultCurrency);
 
   const loadData = React.useCallback(() => {
     const subsData = getSubscriptions();
@@ -113,7 +117,7 @@ export default function Screen() {
       <AlertDialog
         open={!!subscriptionToDelete}
         onOpenChange={(open) => !open && setSubscriptionToDelete(null)}>
-        <AlertDialogContent className="border-brand-brown border">
+        <AlertDialogContent className="border border-brand-brown">
           <AlertDialogHeader>
             <AlertDialogTitle className="font-recoleta-medium text-foreground">
               Remove Subscription?
@@ -177,7 +181,7 @@ export default function Screen() {
                 </View>
               </View>
 
-              <Chart total={`$${totalAmount.toFixed(2)}`} viewMode={viewMode} />
+              <Chart total={`${currencySymbol}${totalAmount.toFixed(2)}`} viewMode={viewMode} />
 
               {/* Filter Chips */}
               <ScrollView
