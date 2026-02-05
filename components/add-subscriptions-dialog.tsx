@@ -18,7 +18,11 @@ import { PlusIcon } from 'lucide-react-native';
 import { Icon } from '@/components/ui/icon';
 import { getCurrencySymbol } from '@/lib/currency';
 
-export function AddSubscriptionDialog() {
+interface AddSubscriptionDialogProps {
+  onSubscriptionCreated?: () => void;
+}
+
+export function AddSubscriptionDialog({ onSubscriptionCreated }: AddSubscriptionDialogProps) {
   const { colorScheme } = useColorScheme();
   const [isOpen, setIsOpen] = React.useState(false);
 
@@ -86,6 +90,7 @@ export function AddSubscriptionDialog() {
       });
       setIsOpen(false);
       resetForm();
+      onSubscriptionCreated?.();
     } catch (e) {
       console.error('Failed to create subscription', e);
     }
@@ -127,7 +132,7 @@ export function AddSubscriptionDialog() {
                   value={name}
                   onChangeText={setName}
                   autoCapitalize="words"
-                  className="border-0 bg-transparent px-0"
+                  className="border-0 bg-transparent"
                 />
               </View>
             </View>

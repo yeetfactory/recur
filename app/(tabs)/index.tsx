@@ -159,7 +159,7 @@ export default function Screen() {
                   {userName || 'there'} 👋
                 </Text>
               </View>
-              <AddSubscriptionDialog />
+              <AddSubscriptionDialog onSubscriptionCreated={loadData} />
             </View>
 
             <View className="gap-4 px-4 pb-4">

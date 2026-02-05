@@ -136,7 +136,7 @@ export function EditSubscriptionDialog({
                   value={name}
                   onChangeText={setName}
                   autoCapitalize="words"
-                  className="border-0 bg-transparent px-0"
+                  className="border-0 bg-transparent"
                 />
               </View>
             </View>
