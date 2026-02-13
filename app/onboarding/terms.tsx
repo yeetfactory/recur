@@ -24,6 +24,8 @@ interface CheckboxItemProps {
   linkText: string;
   policyType: 'privacy' | 'terms';
   index: number;
+  testID: string;
+  linkTestID: string;
 }
 
 function CheckboxItem({
@@ -35,6 +37,8 @@ function CheckboxItem({
   linkText,
   policyType,
   index,
+  testID,
+  linkTestID,
 }: CheckboxItemProps) {
   const handleLinkPress = () => {
     router.push({ pathname: '/onboarding/policy', params: { type: policyType } });
@@ -43,6 +47,7 @@ function CheckboxItem({
   return (
     <Animated.View entering={FadeInUp.delay(300 + index * 100).springify()}>
       <Pressable
+        testID={testID}
         onPress={onToggle}
         className={`flex-row items-start gap-4 rounded-2xl border p-4 ${
           checked
@@ -64,7 +69,10 @@ function CheckboxItem({
             <Text className="text-base font-semibold text-foreground">{title}</Text>
           </View>
           <Text className="mt-1 text-sm text-muted-foreground">{description}</Text>
-          <Pressable onPress={handleLinkPress} className="mt-2 flex-row items-center gap-1">
+          <Pressable
+            testID={linkTestID}
+            onPress={handleLinkPress}
+            className="mt-2 flex-row items-center gap-1">
             <Text className="text-sm font-medium text-primary">{linkText}</Text>
             <Icon as={ChevronRightIcon} className="size-3 text-primary" />
           </Pressable>
@@ -118,6 +126,8 @@ export default function OnboardingTerms() {
             linkText="Read Terms & Conditions"
             policyType="terms"
             index={0}
+            testID="onboarding-accept-terms"
+            linkTestID="onboarding-open-terms-link"
           />
 
           <CheckboxItem
@@ -129,12 +139,15 @@ export default function OnboardingTerms() {
             linkText="Read Privacy Policy"
             policyType="privacy"
             index={1}
+            testID="onboarding-accept-privacy"
+            linkTestID="onboarding-open-privacy-link"
           />
         </View>
 
         {/* Get Started Button */}
         <Animated.View entering={FadeInUp.delay(500).springify()}>
           <Button
+            testID="onboarding-get-started"
             onPress={handleGetStarted}
             disabled={!canContinue}
             className="h-14 rounded-xl bg-primary">

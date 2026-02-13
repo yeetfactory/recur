@@ -7,7 +7,16 @@
     "android": "expo run:android",
     "ios": "expo run:ios",
     "web": "expo start -c --web",
-    "clean": "rm -rf .expo node_modules"
+    "clean": "rm -rf .expo node_modules",
+    "maestro:test": "maestro test .maestro/smoke.yaml",
+    "maestro:onboarding": "maestro test .maestro/onboarding.yaml",
+    "maestro:dashboard": "maestro test .maestro/dashboard.yaml",
+    "maestro:default-list": "maestro test .maestro/default-list.yaml",
+    "maestro:lists": "maestro test .maestro/lists.yaml",
+    "maestro:add-dialog-manage-lists": "maestro test .maestro/add-dialog-manage-lists.yaml",
+    "maestro:subscriptions": "maestro test .maestro/subscriptions.yaml",
+    "maestro:settings": "maestro test .maestro/settings.yaml",
+    "maestro:persistence": "maestro test .maestro/persistence.yaml"
   },
   "dependencies": {
     "@react-navigation/native": "^7.0.0",

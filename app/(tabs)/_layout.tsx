@@ -12,6 +12,7 @@ export default function TabLayout() {
         options={{
           title: 'Home',
           headerShown: false,
+          tabBarButtonTestID: 'tab-home',
           tabBarIcon: ({ color, focused }) => (
             <Ionicons name={focused ? 'home-sharp' : 'home-outline'} color={color} size={24} />
           ),
@@ -22,6 +23,7 @@ export default function TabLayout() {
         options={{
           title: 'Settings',
           headerShown: false,
+          tabBarButtonTestID: 'tab-settings',
           tabBarIcon: ({ color, focused }) => (
             <Ionicons name={focused ? 'cog' : 'cog-outline'} color={color} size={24} />
           ),

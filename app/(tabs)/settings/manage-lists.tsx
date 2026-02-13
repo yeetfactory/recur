@@ -32,6 +32,13 @@ const SCREEN_OPTIONS = {
   title: 'Manage Lists',
 };
 
+const toTestIdSegment = (value: string) =>
+  value
+    .trim()
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '');
+
 export default function ManageListsPage() {
   const { lists, createList, updateList, removeList } = useLists();
   const [searchQuery, setSearchQuery] = React.useState('');
@@ -107,6 +114,7 @@ export default function ManageListsPage() {
           <View className="border-brand-brown flex-row items-center gap-2 rounded-lg border bg-card p-2 dark:bg-black">
             <Icon as={SearchIcon} className="ml-2 size-5 text-muted-foreground" />
             <Input
+              testID="manage-lists-search-input"
               placeholder="Search lists..."
               value={searchQuery}
               onChangeText={setSearchQuery}
@@ -118,6 +126,7 @@ export default function ManageListsPage() {
           {filteredLists.map((list) => (
             <View
               key={list.id}
+              testID={`manage-list-item-${toTestIdSegment(list.name)}`}
               className="border-brand-brown flex-row items-center justify-between rounded-lg border bg-card p-4 dark:bg-black">
               <View className="flex-row items-center gap-3">
                 <View className="rounded-md bg-muted p-2">
@@ -129,11 +138,13 @@ export default function ManageListsPage() {
               </View>
               <View className="flex-row items-center gap-2">
                 <TouchableOpacity
+                  testID={`manage-list-edit-${toTestIdSegment(list.name)}`}
                   onPress={() => openEditDialog(list)}
                   className="rounded-md bg-muted p-2">
                   <Icon as={PencilIcon} className="size-4 text-muted-foreground" />
                 </TouchableOpacity>
                 <TouchableOpacity
+                  testID={`manage-list-delete-${toTestIdSegment(list.name)}`}
                   onPress={() => handleDeleteList(list)}
                   className="rounded-md bg-muted p-2">
                   <Icon as={Trash2Icon} className="size-4 text-destructive" />
@@ -143,7 +154,10 @@ export default function ManageListsPage() {
           ))}
 
           {/* Add List Button */}
-          <TouchableOpacity activeOpacity={0.7} onPress={() => setIsAddDialogOpen(true)}>
+          <TouchableOpacity
+            testID="manage-lists-add-new"
+            activeOpacity={0.7}
+            onPress={() => setIsAddDialogOpen(true)}>
             <View className="border-brand-brown flex-row items-center justify-center gap-2 rounded-lg border border-dashed bg-card/50 p-4 dark:bg-black/50">
               <Icon as={PlusIcon} className="size-5 text-muted-foreground" />
               <Text className="font-medium text-muted-foreground">Add New List</Text>
@@ -160,6 +174,7 @@ export default function ManageListsPage() {
             <DialogDescription>Create a new list to organize your subscriptions.</DialogDescription>
           </DialogHeader>
           <Input
+            testID="manage-lists-add-input"
             placeholder="List name"
             value={newListName}
             onChangeText={setNewListName}
@@ -170,7 +185,7 @@ export default function ManageListsPage() {
             <Button variant="outline" onPress={() => setIsAddDialogOpen(false)}>
               <Text>Cancel</Text>
             </Button>
-            <Button onPress={handleAddList}>
+            <Button testID="manage-lists-add-submit" onPress={handleAddList}>
               <Text>Add List</Text>
             </Button>
           </DialogFooter>
@@ -185,6 +200,7 @@ export default function ManageListsPage() {
             <DialogDescription>Update the name of your list.</DialogDescription>
           </DialogHeader>
           <Input
+            testID="manage-lists-edit-input"
             placeholder="List name"
             value={newListName}
             onChangeText={setNewListName}
@@ -195,7 +211,7 @@ export default function ManageListsPage() {
             <Button variant="outline" onPress={() => setIsEditDialogOpen(false)}>
               <Text>Cancel</Text>
             </Button>
-            <Button onPress={handleEditList}>
+            <Button testID="manage-lists-edit-submit" onPress={handleEditList}>
               <Text>Save</Text>
             </Button>
           </DialogFooter>
@@ -218,7 +234,10 @@ export default function ManageListsPage() {
             <AlertDialogCancel onPress={() => setListToDelete(null)}>
               <Text>Cancel</Text>
             </AlertDialogCancel>
-            <AlertDialogAction onPress={confirmDelete} className="bg-destructive">
+            <AlertDialogAction
+              testID="manage-lists-delete-confirm"
+              onPress={confirmDelete}
+              className="bg-destructive">
               <Text className="text-white">Delete</Text>
             </AlertDialogAction>
           </AlertDialogFooter>

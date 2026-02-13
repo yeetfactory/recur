@@ -1,0 +1,38 @@
+appId: com.yeetfactory.recur
+---
+- assertVisible:
+    id: "add-subscription-open"
+- tapOn:
+    id: "add-subscription-open"
+- tapOn:
+    id: "add-subscription-name-input"
+- inputText: "Prime"
+- tapOn:
+    id: "add-subscription-amount-input"
+- inputText: "9"
+- tapOn:
+    id: "add-subscription-save"
+- runFlow:
+    when:
+      visible:
+        id: "add-subscription-save"
+    commands:
+      - tapOn:
+          id: "add-subscription-save"
+- extendedWaitUntil:
+    visible: "Prime"
+    timeout: 15000
+- tapOn:
+    id: "tab-settings"
+- tapOn:
+    id: "settings-manage-lists"
+- assertVisible:
+    id: "manage-list-item-default"
+- back
+- tapOn:
+    id: "tab-home"
+- tapOn:
+    id: "subscription-prime-delete"
+- tapOn:
+    id: "subscription-delete-confirm"
+- assertVisible: "No subscriptions yet."

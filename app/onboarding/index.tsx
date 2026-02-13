@@ -112,6 +112,7 @@ export default function OnboardingWelcome() {
         <Animated.View entering={FadeInUp.delay(700).springify()}>
           <Button
             onPress={() => router.push('/onboarding/details')}
+            testID="onboarding-start"
             className="h-14 rounded-xl bg-primary">
             <Text className="text-lg font-semibold text-primary-foreground">Let's get started</Text>
           </Button>

@@ -9,6 +9,7 @@ type SubscriptionAvatarProps = {
   size?: number;
   onPress?: () => void;
   showEditHint?: boolean;
+  testID?: string;
 };
 
 // Use app theme colors for initials (warm browns/oranges to match the app)
@@ -49,6 +50,7 @@ export const SubscriptionAvatar = ({
   size = 40,
   onPress,
   showEditHint = false,
+  testID,
 }: SubscriptionAvatarProps) => {
   const { colorScheme } = useColorScheme();
   const isDark = colorScheme === 'dark';
@@ -96,6 +98,7 @@ export const SubscriptionAvatar = ({
   if (onPress) {
     return (
       <Pressable
+        testID={testID}
         style={({ pressed }) => ({
           position: 'relative' as const,
           opacity: pressed ? 0.8 : 1,

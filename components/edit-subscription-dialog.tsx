@@ -23,6 +23,13 @@ interface EditSubscriptionDialogProps {
   onUpdate?: () => void;
 }
 
+const toTestIdSegment = (value: string) =>
+  value
+    .trim()
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '');
+
 export function EditSubscriptionDialog({
   subscription,
   open,
@@ -139,6 +146,7 @@ export function EditSubscriptionDialog({
             <Text className="font-recoleta-medium text-sm text-foreground">Service Name</Text>
             <View className="flex-row items-center gap-4 rounded-xl border border-border bg-card/50 p-3">
               <SubscriptionAvatar
+                testID="edit-subscription-avatar"
                 name={name || 'Ab'}
                 icon={icon}
                 size={52}
@@ -147,6 +155,7 @@ export function EditSubscriptionDialog({
               />
               <View className="flex-1">
                 <Input
+                  testID="edit-subscription-name-input"
                   placeholder="e.g. Netflix, Spotify"
                   value={name}
                   onChangeText={(value) => {
@@ -168,6 +177,7 @@ export function EditSubscriptionDialog({
                 <Text className="font-recoleta-medium text-sm text-foreground">List</Text>
                 <ScrollView horizontal showsHorizontalScrollIndicator={false} className="flex-row">
                   <Pressable
+                    testID="edit-subscription-manage-lists"
                     onPress={() => {
                       onOpenChange(false);
                       router.push('/settings/manage-lists');
@@ -179,6 +189,7 @@ export function EditSubscriptionDialog({
                   {lists.map((list) => (
                     <Pressable
                       key={list.id}
+                      testID={`edit-subscription-list-${toTestIdSegment(list.name)}`}
                       onPress={() => setSelectedListId(list.id)}
                       className={`mr-2 rounded-full border px-4 py-2 ${
                         selectedListId === list.id
@@ -202,6 +213,7 @@ export function EditSubscriptionDialog({
                 {SUBSCRIPTION_FREQUENCIES.map((freq) => (
                   <Button
                     key={freq}
+                    testID={`edit-subscription-frequency-${freq}`}
                     variant={frequency === freq ? 'default' : 'outline'}
                     onPress={() => setFrequency(freq)}
                     className="flex-1">
@@ -219,6 +231,7 @@ export function EditSubscriptionDialog({
                   {currencySymbol}
                 </Text>
                 <Input
+                  testID="edit-subscription-amount-input"
                   placeholder="0.00"
                   keyboardType="numeric"
                   value={amount}
@@ -236,6 +249,7 @@ export function EditSubscriptionDialog({
             <View className="gap-2">
               <Text className="font-recoleta-medium text-sm text-foreground">Start Date</Text>
               <Input
+                testID="edit-subscription-date-input"
                 placeholder="YYYY-MM-DD"
                 value={date}
                 onChangeText={(value) => {
@@ -249,12 +263,14 @@ export function EditSubscriptionDialog({
             {/* Action Buttons */}
             <View className="flex-row gap-3 pb-8 pt-4">
               <Button
+                testID="edit-subscription-cancel"
                 variant="ghost"
                 className="flex-1 border border-brand-brown"
                 onPress={() => onOpenChange(false)}>
                 <Text>Cancel</Text>
               </Button>
               <Button
+                testID="edit-subscription-update"
                 className="flex-1 border border-brand-brown"
                 onPress={handleUpdate}
                 disabled={isUpdateDisabled}>

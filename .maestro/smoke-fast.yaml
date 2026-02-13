@@ -1,0 +1,6 @@
+appId: com.yeetfactory.recur
+---
+- runFlow: onboarding.yaml
+- runFlow: default-list.yaml
+- runFlow: settings.yaml
+- runFlow: persistence.yaml

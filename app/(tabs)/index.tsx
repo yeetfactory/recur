@@ -28,6 +28,13 @@ import DraggableFlatList, {
 } from 'react-native-draggable-flatlist';
 import { getCurrencySymbol } from '@/lib/currency';
 
+const toTestIdSegment = (value: string) =>
+  value
+    .trim()
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '');
+
 function getGreeting(): string {
   const hour = new Date().getHours();
   if (hour < 12) return 'Good morning';
@@ -139,7 +146,10 @@ export default function Screen() {
             <AlertDialogCancel onPress={() => setSubscriptionToDelete(null)}>
               <Text>Cancel</Text>
             </AlertDialogCancel>
-            <AlertDialogAction onPress={confirmDelete} className="bg-destructive">
+            <AlertDialogAction
+              testID="subscription-delete-confirm"
+              onPress={confirmDelete}
+              className="bg-destructive">
               <Text className="text-white">Remove</Text>
             </AlertDialogAction>
           </AlertDialogFooter>
@@ -175,6 +185,7 @@ export default function Screen() {
                 <View className="flex-row rounded-full border border-border bg-card p-1">
                   {SUBSCRIPTION_FREQUENCIES.map((mode) => (
                     <Text
+                      testID={`view-mode-${mode}`}
                       key={mode}
                       onPress={() => setViewMode(mode)}
                       className={`overflow-hidden rounded-full px-6 py-2 text-sm font-medium ${
@@ -197,6 +208,7 @@ export default function Screen() {
                 className="flex-row"
                 contentContainerStyle={{ gap: 8 }}>
                 <TouchableOpacity
+                  testID="filter-chip-all"
                   onPress={() => setSelectedListId(null)}
                   className={`rounded-full border px-4 py-1.5 ${
                     selectedListId === null
@@ -213,6 +225,7 @@ export default function Screen() {
                 {lists.map((list) => (
                   <TouchableOpacity
                     key={list.id}
+                    testID={`filter-chip-${toTestIdSegment(list.name)}`}
                     onPress={() => setSelectedListId(list.id)}
                     className={`rounded-full border px-4 py-1.5 ${
                       selectedListId === list.id

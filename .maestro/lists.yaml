@@ -1,0 +1,54 @@
+appId: com.yeetfactory.recur
+---
+- tapOn:
+    id: "tab-settings"
+- tapOn:
+    id: "settings-manage-lists"
+- assertVisible:
+    id: "manage-lists-add-new"
+- tapOn:
+    id: "manage-lists-add-new"
+- tapOn:
+    id: "manage-lists-add-input"
+- inputText: "Work"
+- tapOn:
+    id: "manage-lists-add-submit"
+- runFlow:
+    when:
+      visible:
+        id: "manage-lists-add-submit"
+    commands:
+      - tapOn:
+          id: "manage-lists-add-submit"
+- assertVisible:
+    id: "manage-list-item-work"
+- tapOn:
+    id: "manage-list-edit-work"
+- tapOn:
+    id: "manage-lists-edit-input"
+- eraseText: 50
+- inputText: "Essentials"
+- tapOn:
+    id: "manage-lists-edit-submit"
+- runFlow:
+    when:
+      visible:
+        id: "manage-lists-edit-submit"
+    commands:
+      - tapOn:
+          id: "manage-lists-edit-submit"
+- assertVisible:
+    id: "manage-list-item-essentials"
+- tapOn:
+    id: "manage-lists-search-input"
+- inputText: "Essentials"
+- assertVisible:
+    id: "manage-list-item-essentials"
+- tapOn:
+    id: "manage-lists-search-input"
+- eraseText: 50
+- back
+- tapOn:
+    id: "tab-home"
+- assertVisible:
+    id: "filter-chip-essentials"
