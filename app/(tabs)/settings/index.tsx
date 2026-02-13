@@ -116,6 +116,7 @@ export default function Settings() {
               icon={<Icon as={ListIcon} className="size-5 text-foreground" />}
               label="Manage Lists"
               onPress={() => router.push('/settings/manage-lists')}
+              testID="settings-manage-lists"
             />
           </SettingsSection>
 
@@ -126,6 +127,7 @@ export default function Settings() {
                   icon={<Icon as={StarIcon} className="size-5 text-foreground" />}
                   label="Leave a review"
                   onPress={handleLeaveReview}
+                  testID="settings-leave-review"
                 />
               )}
               {shareUrl && (
@@ -133,6 +135,7 @@ export default function Settings() {
                   icon={<Icon as={ShareIcon} className="size-5 text-foreground" />}
                   label="Share with friends"
                   onPress={handleShareApp}
+                  testID="settings-share-app"
                 />
               )}
               {DISCORD_INVITE_URL && (
@@ -140,6 +143,7 @@ export default function Settings() {
                   icon={<DiscordIcon />}
                   label="Join our community"
                   onPress={handleJoinCommunity}
+                  testID="settings-join-community"
                 />
               )}
             </SettingsSection>
@@ -150,11 +154,13 @@ export default function Settings() {
               icon={<Icon as={ShieldIcon} className="size-5 text-foreground" />}
               label="Privacy policy"
               onPress={handlePrivacyPolicy}
+              testID="settings-privacy-policy"
             />
             <SettingsItem
               icon={<Icon as={FileTextIcon} className="size-5 text-foreground" />}
               label="Terms and conditions"
               onPress={handleTermsAndConditions}
+              testID="settings-terms-conditions"
             />
           </SettingsSection>
 
@@ -187,14 +193,18 @@ function SettingsItem({
   label,
   value,
   onPress,
+  testID,
 }: {
   icon: React.ReactNode;
   label: string;
   value?: string;
   onPress?: () => void;
+  testID?: string;
 }) {
   const content = (
-    <View className="border-brand-brown flex-row items-center justify-between rounded-lg border bg-card p-4 dark:bg-black">
+    <View
+      testID={onPress ? undefined : testID}
+      className="border-brand-brown flex-row items-center justify-between rounded-lg border bg-card p-4 dark:bg-black">
       <View className="flex-1 flex-row items-center gap-3">
         <View className="rounded-md bg-muted p-2">{icon}</View>
         <Text className="flex-1 font-medium text-card-foreground dark:text-white">{label}</Text>
@@ -211,7 +221,7 @@ function SettingsItem({
   }
 
   return (
-    <TouchableOpacity onPress={onPress} activeOpacity={0.7}>
+    <TouchableOpacity testID={testID} onPress={onPress} activeOpacity={0.7}>
       {content}
     </TouchableOpacity>
   );
@@ -235,7 +245,7 @@ function ThemeToggleItem() {
   };
 
   return (
-    <TouchableOpacity onPress={handleToggleTheme} activeOpacity={0.7}>
+    <TouchableOpacity testID="settings-theme-toggle" onPress={handleToggleTheme} activeOpacity={0.7}>
       <View className="border-brand-brown flex-row items-center justify-between rounded-lg border bg-card p-4 dark:bg-black">
         <View className="flex-row items-center gap-3">
           <View className="rounded-md bg-muted p-2">

@@ -1,0 +1,20 @@
+appId: com.yeetfactory.recur
+---
+- tapOn:
+    id: "tab-settings"
+- tapOn:
+    id: "settings-manage-lists"
+- assertVisible:
+    id: "manage-list-delete-essentials"
+- tapOn:
+    id: "manage-list-delete-essentials"
+- tapOn:
+    id: "manage-lists-delete-confirm"
+- assertNotVisible:
+    id: "manage-list-item-essentials"
+- back
+- tapOn:
+    id: "tab-home"
+- assertVisible: "Spotify"
+- assertNotVisible:
+    id: "filter-chip-essentials"

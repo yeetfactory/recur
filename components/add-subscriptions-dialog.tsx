@@ -23,6 +23,13 @@ interface AddSubscriptionDialogProps {
   onSubscriptionCreated?: () => void;
 }
 
+const toTestIdSegment = (value: string) =>
+  value
+    .trim()
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '');
+
 export function AddSubscriptionDialog({ onSubscriptionCreated }: AddSubscriptionDialogProps) {
   const { colorScheme } = useColorScheme();
   const [isOpen, setIsOpen] = React.useState(false);
@@ -122,7 +129,7 @@ export function AddSubscriptionDialog({ onSubscriptionCreated }: AddSubscription
   return (
     <Sheet open={isOpen} onOpenChange={setIsOpen}>
       <SheetTrigger asChild>
-        <Pressable>
+        <Pressable testID="add-subscription-open">
           <Ionicons
             name="add-circle-outline"
             size={36}
@@ -143,6 +150,7 @@ export function AddSubscriptionDialog({ onSubscriptionCreated }: AddSubscription
             <Text className="font-recoleta-medium text-sm text-foreground">Service Name</Text>
             <View className="flex-row items-center gap-4 rounded-xl border border-border bg-card/50 p-3">
               <SubscriptionAvatar
+                testID="add-subscription-avatar"
                 name={name || 'Ab'}
                 icon={icon}
                 size={52}
@@ -151,6 +159,7 @@ export function AddSubscriptionDialog({ onSubscriptionCreated }: AddSubscription
               />
               <View className="flex-1">
                 <Input
+                  testID="add-subscription-name-input"
                   placeholder="e.g. Netflix, Spotify"
                   value={name}
                   onChangeText={(value) => {
@@ -172,6 +181,7 @@ export function AddSubscriptionDialog({ onSubscriptionCreated }: AddSubscription
                 <Text className="font-recoleta-medium text-sm text-foreground">List</Text>
                 <ScrollView horizontal showsHorizontalScrollIndicator={false} className="flex-row">
                   <Pressable
+                    testID="add-subscription-manage-lists"
                     onPress={() => {
                       setIsOpen(false);
                       resetForm();
@@ -184,6 +194,7 @@ export function AddSubscriptionDialog({ onSubscriptionCreated }: AddSubscription
                   {lists.map((list) => (
                     <Pressable
                       key={list.id}
+                      testID={`add-subscription-list-${toTestIdSegment(list.name)}`}
                       onPress={() => setSelectedListId(list.id)}
                       className={`mr-2 rounded-full border px-4 py-2 ${
                         selectedListId === list.id
@@ -207,6 +218,7 @@ export function AddSubscriptionDialog({ onSubscriptionCreated }: AddSubscription
                 {SUBSCRIPTION_FREQUENCIES.map((freq) => (
                   <Button
                     key={freq}
+                    testID={`add-subscription-frequency-${freq}`}
                     variant={frequency === freq ? 'default' : 'outline'}
                     onPress={() => setFrequency(freq)}
                     className="flex-1">
@@ -224,6 +236,7 @@ export function AddSubscriptionDialog({ onSubscriptionCreated }: AddSubscription
                   {currencySymbol}
                 </Text>
                 <Input
+                  testID="add-subscription-amount-input"
                   placeholder="0.00"
                   keyboardType="numeric"
                   value={amount}
@@ -241,6 +254,7 @@ export function AddSubscriptionDialog({ onSubscriptionCreated }: AddSubscription
             <View className="gap-2">
               <Text className="font-recoleta-medium text-sm text-foreground">Start Date</Text>
               <Input
+                testID="add-subscription-date-input"
                 placeholder="YYYY-MM-DD"
                 value={date}
                 onChangeText={(value) => {
@@ -254,12 +268,14 @@ export function AddSubscriptionDialog({ onSubscriptionCreated }: AddSubscription
             {/* Action Buttons */}
             <View className="flex-row gap-3 pb-8 pt-4">
               <Button
+                testID="add-subscription-cancel"
                 variant="ghost"
                 className="flex-1 border border-brand-brown"
                 onPress={() => setIsOpen(false)}>
                 <Text>Cancel</Text>
               </Button>
               <Button
+                testID="add-subscription-save"
                 className="flex-1 border border-brand-brown"
                 onPress={handleCreate}
                 disabled={isSaveDisabled}>

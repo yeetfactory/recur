@@ -11,6 +11,13 @@ type EmojiPickerProps = {
   currentEmoji: string | null;
 };
 
+const toTestIdSegment = (value: string) =>
+  value
+    .trim()
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '');
+
 // Curated emojis for subscriptions
 const EMOJI_CATEGORIES = {
   Entertainment: ['🎬', '📺', '🎵', '🎧', '🎮', '🎲', '📽️', '🍿', '🎭', '📻'],
@@ -38,7 +45,7 @@ export const EmojiPicker = ({ visible, onClose, onSelect, currentEmoji }: EmojiP
           {/* Header */}
           <View className="mb-4 flex-row items-center justify-between">
             <Text className="font-recoleta-medium text-lg text-foreground">Choose an Icon</Text>
-            <Button variant="ghost" size="sm" onPress={onClose}>
+            <Button testID="emoji-picker-done" variant="ghost" size="sm" onPress={onClose}>
               <Text>Done</Text>
             </Button>
           </View>
@@ -46,6 +53,7 @@ export const EmojiPicker = ({ visible, onClose, onSelect, currentEmoji }: EmojiP
           {/* Clear button */}
           {currentEmoji && (
             <Button
+              testID="emoji-picker-use-initials"
               variant="outline"
               className="mb-4 border-destructive"
               onPress={() => {
@@ -67,6 +75,7 @@ export const EmojiPicker = ({ visible, onClose, onSelect, currentEmoji }: EmojiP
                   {emojis.map((emoji, index) => (
                     <Pressable
                       key={`${category}-${index}`}
+                      testID={`emoji-option-${toTestIdSegment(category)}-${index}`}
                       className={`m-1 h-12 w-12 items-center justify-center rounded-lg ${
                         currentEmoji === emoji
                           ? 'border-2 border-primary bg-primary/20'

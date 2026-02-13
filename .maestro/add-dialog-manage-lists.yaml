@@ -1,0 +1,15 @@
+appId: com.yeetfactory.recur
+---
+- tapOn:
+    id: "add-subscription-open"
+- assertVisible:
+    id: "add-subscription-manage-lists"
+- tapOn:
+    id: "add-subscription-manage-lists"
+- assertVisible:
+    id: "manage-lists-add-new"
+- back
+- tapOn:
+    id: "tab-home"
+- assertVisible:
+    id: "add-subscription-open"

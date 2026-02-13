@@ -1,0 +1,19 @@
+appId: com.yeetfactory.recur
+---
+- launchApp
+- runFlow:
+    when:
+      visible:
+        id: "onboarding-start"
+    file: onboarding.yaml
+- assertVisible:
+    id: "add-subscription-open"
+- tapOn:
+    id: "tab-settings"
+- assertVisible: "Settings"
+- assertVisible:
+    id: "settings-manage-lists"
+- tapOn:
+    id: "tab-home"
+- assertVisible:
+    id: "add-subscription-open"

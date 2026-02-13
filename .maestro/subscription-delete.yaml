@@ -1,0 +1,7 @@
+appId: com.yeetfactory.recur
+---
+- tapOn:
+    id: "subscription-spotify-delete"
+- tapOn:
+    id: "subscription-delete-confirm"
+- assertVisible: "No subscriptions yet."

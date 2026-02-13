@@ -1,0 +1,8 @@
+appId: com.yeetfactory.recur
+---
+- killApp
+- launchApp
+- assertNotVisible:
+    id: "onboarding-start"
+- assertVisible:
+    id: "add-subscription-open"

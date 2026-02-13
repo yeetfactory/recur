@@ -22,6 +22,7 @@ export function PolicyScreen({ type, showHeader = true }: PolicyScreenProps) {
       {showHeader && (
         <View className="flex-row items-center gap-3 px-4 pb-4 pt-16">
           <Pressable
+            testID="policy-back"
             onPress={() => router.back()}
             className="h-10 w-10 items-center justify-center rounded-full bg-muted">
             <Icon as={ArrowLeftIcon} className="size-5 text-foreground" />

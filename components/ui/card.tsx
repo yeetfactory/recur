@@ -13,6 +13,13 @@ type CardProps = {
   viewMode?: SubscriptionFrequency;
 };
 
+const toTestIdSegment = (value: string) =>
+  value
+    .trim()
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '');
+
 export const Card = ({
   subscription,
   onEdit,
@@ -25,6 +32,7 @@ export const Card = ({
   const isDark = colorScheme === 'dark';
   const iconColor = isDark ? '#9CA3AF' : '#6B7280';
   const { name, icon, amount, frequency, currency } = subscription;
+  const cardId = `subscription-${toTestIdSegment(name || subscription.id)}`;
   const currencySymbol = getCurrencySymbol(currency);
 
   const displayAmount =
@@ -44,6 +52,7 @@ export const Card = ({
 
   return (
     <Pressable
+      testID={`${cardId}-card`}
       className="mb-2 flex flex-row items-center rounded-lg border border-[#502615] bg-card p-4"
       onLongPress={drag}
       delayLongPress={200}
@@ -88,6 +97,7 @@ export const Card = ({
       <View className="ml-2 flex-row items-center gap-0">
         {onEdit && (
           <Pressable
+            testID={`${cardId}-edit`}
             className="rounded-lg p-2 active:bg-gray-200 dark:active:bg-gray-700"
             onPress={onEdit}
             hitSlop={{ top: 8, bottom: 8, left: 4, right: 4 }}>
@@ -96,6 +106,7 @@ export const Card = ({
         )}
         {onDelete && (
           <Pressable
+            testID={`${cardId}-delete`}
             className="rounded-lg p-2 active:bg-red-100 dark:active:bg-red-900/30"
             onPress={onDelete}
             hitSlop={{ top: 8, bottom: 8, left: 4, right: 4 }}>

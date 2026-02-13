@@ -98,6 +98,7 @@ export default function OnboardingDetails() {
           <Animated.View entering={FadeInUp.delay(300).springify()}>
             <Text className="mb-2 text-sm font-medium text-foreground">Your name</Text>
             <Input
+              testID="onboarding-name-input"
               value={name}
               onChangeText={setName}
               placeholder="Enter your name"
@@ -113,7 +114,9 @@ export default function OnboardingDetails() {
 
             <Dialog open={isCurrencyDialogOpen} onOpenChange={setIsCurrencyDialogOpen}>
               <DialogTrigger asChild>
-                <Pressable className="flex-row items-center justify-between rounded-xl border border-input bg-background p-4 dark:bg-input/30">
+                <Pressable
+                  testID="onboarding-currency-trigger"
+                  className="flex-row items-center justify-between rounded-xl border border-input bg-background p-4 dark:bg-input/30">
                   <Text
                     className={
                       selectedCurrency
@@ -140,6 +143,7 @@ export default function OnboardingDetails() {
                   <View className="flex-row items-center gap-2 rounded-lg border border-input bg-background px-3 dark:bg-input/30">
                     <Icon as={SearchIcon} className="size-4 text-muted-foreground" />
                     <Input
+                      testID="onboarding-currency-search"
                       ref={searchInputRef}
                       value={currencySearch}
                       onChangeText={setCurrencySearch}
@@ -157,6 +161,7 @@ export default function OnboardingDetails() {
                   showsVerticalScrollIndicator={false}
                   renderItem={({ item }) => (
                     <Pressable
+                      testID={`currency-option-${item.code}`}
                       onPress={() => handleSelectCurrency(item.code as Currency)}
                       className="flex-row items-center justify-between rounded-lg p-3 active:bg-muted">
                       <View className="flex-1">
@@ -192,6 +197,7 @@ export default function OnboardingDetails() {
         {/* Continue Button */}
         <Animated.View entering={FadeInUp.delay(600).springify()}>
           <Button
+            testID="onboarding-continue"
             onPress={handleContinue}
             disabled={!canContinue}
             className="h-14 rounded-xl bg-primary">

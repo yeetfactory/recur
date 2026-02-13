@@ -1,0 +1,90 @@
+appId: com.yeetfactory.recur
+---
+- assertVisible:
+    id: "add-subscription-open"
+- tapOn:
+    id: "add-subscription-open"
+- assertVisible:
+    id: "add-subscription-name-input"
+- tapOn:
+    id: "add-subscription-avatar"
+- extendedWaitUntil:
+    visible:
+      id: "emoji-picker-done"
+    timeout: 10000
+- tapOn:
+    id: "emoji-option-entertainment-0"
+- tapOn:
+    id: "add-subscription-name-input"
+- inputText: "Spotify"
+- tapOn:
+    id: "add-subscription-list-essentials"
+- tapOn:
+    id: "add-subscription-amount-input"
+- inputText: "12"
+- tapOn:
+    id: "add-subscription-save"
+- runFlow:
+    when:
+      visible:
+        id: "add-subscription-save"
+    commands:
+      - tapOn:
+          id: "add-subscription-save"
+- extendedWaitUntil:
+    visible: "Spotify"
+    timeout: 15000
+- assertVisible: "₹12.00"
+- tapOn:
+    id: "view-mode-yearly"
+- assertVisible: "₹144.00"
+- tapOn:
+    id: "view-mode-monthly"
+- tapOn:
+    id: "filter-chip-essentials"
+- assertVisible: "Spotify"
+- tapOn:
+    id: "filter-chip-all"
+- tapOn:
+    id: "subscription-spotify-edit"
+- assertVisible:
+    id: "edit-subscription-name-input"
+- assertVisible:
+    id: "edit-subscription-manage-lists"
+- tapOn:
+    id: "edit-subscription-manage-lists"
+- assertVisible:
+    id: "manage-lists-add-new"
+- back
+- tapOn:
+    id: "tab-home"
+- tapOn:
+    id: "subscription-spotify-edit"
+- assertVisible:
+    id: "edit-subscription-name-input"
+- tapOn:
+    id: "edit-subscription-frequency-yearly"
+- tapOn:
+    id: "edit-subscription-amount-input"
+- eraseText: 20
+- inputText: "180"
+- tapOn:
+    id: "edit-subscription-date-input"
+- eraseText: 20
+- inputText: "2025-01-01"
+- tapOn:
+    id: "edit-subscription-update"
+- runFlow:
+    when:
+      visible:
+        id: "edit-subscription-update"
+    commands:
+      - tapOn:
+          id: "edit-subscription-update"
+- assertVisible: "₹15.00"
+- tapOn:
+    id: "view-mode-yearly"
+- assertVisible: "₹180.00"
+- tapOn:
+    id: "view-mode-monthly"
+- assertVisible: "₹15.00"

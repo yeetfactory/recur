@@ -1,0 +1,11 @@
+appId: com.yeetfactory.recur
+---
+- runFlow: onboarding.yaml
+- runFlow: default-list.yaml
+- runFlow: lists.yaml
+- runFlow: add-dialog-manage-lists.yaml
+- runFlow: subscriptions.yaml
+- runFlow: settings.yaml
+- runFlow: list-delete.yaml
+- runFlow: subscription-delete.yaml
+- runFlow: persistence.yaml

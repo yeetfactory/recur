@@ -1,0 +1,42 @@
+appId: com.yeetfactory.recur
+---
+- tapOn:
+    id: "tab-settings"
+- assertVisible: "Settings"
+- assertVisible:
+    id: "settings-theme-toggle"
+- tapOn:
+    id: "settings-theme-toggle"
+- runFlow:
+    when:
+      visible:
+        id: "settings-leave-review"
+    commands:
+      - assertVisible:
+          id: "settings-leave-review"
+- runFlow:
+    when:
+      visible:
+        id: "settings-share-app"
+    commands:
+      - assertVisible:
+          id: "settings-share-app"
+- runFlow:
+    when:
+      visible:
+        id: "settings-join-community"
+    commands:
+      - assertVisible:
+          id: "settings-join-community"
+- tapOn:
+    id: "settings-privacy-policy"
+- assertVisible: "Privacy Policy"
+- tapOn:
+    id: "policy-back"
+- tapOn:
+    id: "settings-terms-conditions"
+- assertVisible: "Terms & Conditions"
+- tapOn:
+    id: "policy-back"
+- tapOn:
+    id: "tab-home"
