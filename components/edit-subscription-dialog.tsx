@@ -40,9 +40,7 @@ export function EditSubscriptionDialog({
   const [name, setName] = React.useState('');
   const [icon, setIcon] = React.useState<string | null>(null);
   const [showEmojiPicker, setShowEmojiPicker] = React.useState(false);
-  const [errors, setErrors] = React.useState<{ name?: string; amount?: string; date?: string }>(
-    {}
-  );
+  const [errors, setErrors] = React.useState<{ name?: string; amount?: string; date?: string }>({});
 
   // Details State
   const [frequency, setFrequency] = React.useState<SubscriptionFrequency>('monthly');
@@ -167,7 +165,7 @@ export function EditSubscriptionDialog({
                 />
               </View>
             </View>
-            {errors.name && <Text className="text-sm text-destructive">{errors.name}</Text>}
+            {errors.name ? <Text className="text-sm text-destructive">{errors.name}</Text> : null}
           </View>
 
           <View className="mt-4 gap-6">
@@ -242,7 +240,9 @@ export function EditSubscriptionDialog({
                   className="pl-7"
                 />
               </View>
-              {errors.amount && <Text className="text-sm text-destructive">{errors.amount}</Text>}
+              {errors.amount ? (
+                <Text className="text-sm text-destructive">{errors.amount}</Text>
+              ) : null}
             </View>
 
             {/* Date Input */}
@@ -257,7 +257,7 @@ export function EditSubscriptionDialog({
                   if (errors.date) setErrors((prev) => ({ ...prev, date: undefined }));
                 }}
               />
-              {errors.date && <Text className="text-sm text-destructive">{errors.date}</Text>}
+              {errors.date ? <Text className="text-sm text-destructive">{errors.date}</Text> : null}
             </View>
 
             {/* Action Buttons */}

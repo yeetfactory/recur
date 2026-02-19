@@ -60,7 +60,7 @@ function StatCard({
           }`}>
           {value}
         </Text>
-        {suffix && <Text className="text-lg text-muted-foreground">{suffix}</Text>}
+        {suffix ? <Text className="text-lg text-muted-foreground">{suffix}</Text> : null}
       </View>
       <Text className="mt-1 text-sm text-muted-foreground">{label}</Text>
     </Animated.View>

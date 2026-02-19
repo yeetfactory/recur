@@ -2,7 +2,7 @@ import { Card } from '@/components/ui/card';
 import { Chart } from '@/components/ui/chart';
 import { Stack, useFocusEffect } from 'expo-router';
 import * as React from 'react';
-import { View, ScrollView, TouchableOpacity } from 'react-native';
+import { View, ScrollView, Pressable } from 'react-native';
 import { Text } from '@/components/ui/text';
 import { AddSubscriptionDialog } from '@/components/add-subscriptions-dialog';
 import { EditSubscriptionDialog } from '@/components/edit-subscription-dialog';
@@ -34,6 +34,11 @@ const toTestIdSegment = (value: string) =>
     .toLowerCase()
     .replace(/[^a-z0-9]+/g, '-')
     .replace(/^-+|-+$/g, '');
+
+// Hoisted styles for list performance (avoid inline objects in renderItem)
+const listItemPadding = { paddingHorizontal: 16 };
+const draggableContainerStyle = { flex: 1, backgroundColor: 'transparent' };
+const draggableContentContainerStyle = { paddingBottom: 100 };
 
 function getGreeting(): string {
   const hour = new Date().getHours();
@@ -109,7 +114,7 @@ export default function Screen() {
   const renderItem = ({ item, drag, isActive }: RenderItemParams<Subscription>) => {
     return (
       <ScaleDecorator>
-        <View style={{ paddingHorizontal: 16 }}>
+        <View style={listItemPadding}>
           <Card
             subscription={item}
             onEdit={() => setEditingSubscription(item)}
@@ -161,8 +166,8 @@ export default function Screen() {
         onDragEnd={handleDragEnd}
         keyExtractor={(item) => item.id}
         renderItem={renderItem}
-        containerStyle={{ flex: 1, backgroundColor: 'transparent' }}
-        contentContainerStyle={{ paddingBottom: 100 }}
+        containerStyle={draggableContainerStyle}
+        contentContainerStyle={draggableContentContainerStyle}
         showsVerticalScrollIndicator={false}
         activationDistance={20}
         autoscrollThreshold={50}
@@ -207,7 +212,7 @@ export default function Screen() {
                 showsHorizontalScrollIndicator={false}
                 className="flex-row"
                 contentContainerStyle={{ gap: 8 }}>
-                <TouchableOpacity
+                <Pressable
                   testID="filter-chip-all"
                   onPress={() => setSelectedListId(null)}
                   className={`rounded-full border px-4 py-1.5 ${
@@ -221,9 +226,9 @@ export default function Screen() {
                     }`}>
                     All
                   </Text>
-                </TouchableOpacity>
+                </Pressable>
                 {lists.map((list) => (
-                  <TouchableOpacity
+                  <Pressable
                     key={list.id}
                     testID={`filter-chip-${toTestIdSegment(list.name)}`}
                     onPress={() => setSelectedListId(list.id)}
@@ -238,7 +243,7 @@ export default function Screen() {
                       }`}>
                       {list.name}
                     </Text>
-                  </TouchableOpacity>
+                  </Pressable>
                 ))}
               </ScrollView>
             </View>

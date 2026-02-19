@@ -119,7 +119,7 @@ export default function OnboardingTerms() {
         <View className="my-8 gap-4">
           <CheckboxItem
             checked={termsAccepted}
-            onToggle={() => setTermsAccepted(!termsAccepted)}
+            onToggle={() => setTermsAccepted((prev) => !prev)}
             icon={FileTextIcon}
             title="Terms & Conditions"
             description="I agree to the Terms and Conditions that govern the use of this app."
@@ -132,7 +132,7 @@ export default function OnboardingTerms() {
 
           <CheckboxItem
             checked={privacyAccepted}
-            onToggle={() => setPrivacyAccepted(!privacyAccepted)}
+            onToggle={() => setPrivacyAccepted((prev) => !prev)}
             icon={ShieldIcon}
             title="Privacy Policy"
             description="I have read and understood how my data will be collected and used."

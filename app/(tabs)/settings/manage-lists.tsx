@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, TouchableOpacity, ScrollView } from 'react-native';
+import { View, Pressable, ScrollView } from 'react-native';
 import { Stack } from 'expo-router';
 import { Text } from '@/components/ui/text';
 import { Button } from '@/components/ui/button';
@@ -108,7 +108,10 @@ export default function ManageListsPage() {
   return (
     <>
       <Stack.Screen options={SCREEN_OPTIONS} />
-      <ScrollView className="flex-1" showsVerticalScrollIndicator={false}>
+      <ScrollView
+        className="flex-1"
+        showsVerticalScrollIndicator={false}
+        contentInsetAdjustmentBehavior="automatic">
         <View className="mt-[100px] flex-1 gap-4 p-4">
           {/* Search Input */}
           <View className="flex-row items-center gap-2 rounded-lg border border-brand-brown bg-card p-2 dark:bg-black">
@@ -137,32 +140,32 @@ export default function ManageListsPage() {
                 </Text>
               </View>
               <View className="flex-row items-center gap-2">
-                <TouchableOpacity
+                <Pressable
                   testID={`manage-list-edit-${toTestIdSegment(list.name)}`}
                   onPress={() => openEditDialog(list)}
                   className="rounded-md bg-muted p-2">
                   <Icon as={PencilIcon} className="size-4 text-muted-foreground" />
-                </TouchableOpacity>
-                <TouchableOpacity
+                </Pressable>
+                <Pressable
                   testID={`manage-list-delete-${toTestIdSegment(list.name)}`}
                   onPress={() => handleDeleteList(list)}
                   className="rounded-md bg-muted p-2">
                   <Icon as={Trash2Icon} className="size-4 text-destructive" />
-                </TouchableOpacity>
+                </Pressable>
               </View>
             </View>
           ))}
 
           {/* Add List Button */}
-          <TouchableOpacity
+          <Pressable
             testID="manage-lists-add-new"
-            activeOpacity={0.7}
+            className="active:opacity-70"
             onPress={() => setIsAddDialogOpen(true)}>
             <View className="flex-row items-center justify-center gap-2 rounded-lg border border-dashed border-brand-brown bg-card/50 p-4 dark:bg-black/50">
               <Icon as={PlusIcon} className="size-5 text-muted-foreground" />
               <Text className="font-medium text-muted-foreground">Add New List</Text>
             </View>
-          </TouchableOpacity>
+          </Pressable>
         </View>
       </ScrollView>
 

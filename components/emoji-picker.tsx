@@ -51,7 +51,7 @@ export const EmojiPicker = ({ visible, onClose, onSelect, currentEmoji }: EmojiP
           </View>
 
           {/* Clear button */}
-          {currentEmoji && (
+          {currentEmoji ? (
             <Button
               testID="emoji-picker-use-initials"
               variant="outline"
@@ -62,7 +62,7 @@ export const EmojiPicker = ({ visible, onClose, onSelect, currentEmoji }: EmojiP
               }}>
               <Text className="text-destructive">Use Initials Instead</Text>
             </Button>
-          )}
+          ) : null}
 
           {/* Emoji grid */}
           <ScrollView showsVerticalScrollIndicator={false}>

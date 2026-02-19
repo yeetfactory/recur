@@ -20,6 +20,16 @@ const toTestIdSegment = (value: string) =>
     .replace(/[^a-z0-9]+/g, '-')
     .replace(/^-+|-+$/g, '');
 
+// Hoisted styles for list performance (avoid inline objects in renderItem)
+const activeShadowStyle = {
+  shadowColor: '#000',
+  shadowOffset: { width: 0, height: 4 },
+  shadowOpacity: 0.3,
+  shadowRadius: 8,
+  elevation: 8,
+};
+const cardHitSlop = { top: 8, bottom: 8, left: 4, right: 4 };
+
 export const Card = ({
   subscription,
   onEdit,
@@ -57,23 +67,13 @@ export const Card = ({
       onLongPress={drag}
       delayLongPress={200}
       disabled={isActive}
-      style={
-        isActive
-          ? {
-              shadowColor: '#000',
-              shadowOffset: { width: 0, height: 4 },
-              shadowOpacity: 0.3,
-              shadowRadius: 8,
-              elevation: 8,
-            }
-          : undefined
-      }>
+      style={isActive ? activeShadowStyle : undefined}>
       {/* Drag handle indicator */}
-      {drag && (
+      {drag ? (
         <View className="mr-2 opacity-40">
           <Ionicons name="menu" size={18} color={iconColor} />
         </View>
-      )}
+      ) : null}
 
       <SubscriptionAvatar name={name} icon={icon} size={40} />
       <View className="ml-3 flex-1">
@@ -95,24 +95,24 @@ export const Card = ({
 
       {/* Action buttons */}
       <View className="ml-2 flex-row items-center gap-0">
-        {onEdit && (
+        {onEdit ? (
           <Pressable
             testID={`${cardId}-edit`}
             className="rounded-lg p-2 active:bg-gray-200 dark:active:bg-gray-700"
             onPress={onEdit}
-            hitSlop={{ top: 8, bottom: 8, left: 4, right: 4 }}>
+            hitSlop={cardHitSlop}>
             <Ionicons name="pencil" size={16} color={iconColor} />
           </Pressable>
-        )}
-        {onDelete && (
+        ) : null}
+        {onDelete ? (
           <Pressable
             testID={`${cardId}-delete`}
             className="rounded-lg p-2 active:bg-red-100 dark:active:bg-red-900/30"
             onPress={onDelete}
-            hitSlop={{ top: 8, bottom: 8, left: 4, right: 4 }}>
+            hitSlop={cardHitSlop}>
             <Ionicons name="trash-outline" size={16} color="#EF4444" />
           </Pressable>
-        )}
+        ) : null}
       </View>
     </Pressable>
   );
