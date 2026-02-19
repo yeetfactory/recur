@@ -27,13 +27,7 @@ import DraggableFlatList, {
   ScaleDecorator,
 } from 'react-native-draggable-flatlist';
 import { getCurrencySymbol } from '@/lib/currency';
-
-const toTestIdSegment = (value: string) =>
-  value
-    .trim()
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, '-')
-    .replace(/^-+|-+$/g, '');
+import { toTestIdSegment } from '@/lib/utils';
 
 // Hoisted styles for list performance (avoid inline objects in renderItem)
 const listItemPadding = { paddingHorizontal: 16 };
@@ -111,22 +105,25 @@ export default function Screen() {
     }, 0);
   }, [filteredSubscriptions, viewMode]);
 
-  const renderItem = ({ item, drag, isActive }: RenderItemParams<Subscription>) => {
-    return (
-      <ScaleDecorator>
-        <View style={listItemPadding}>
-          <Card
-            subscription={item}
-            onEdit={() => setEditingSubscription(item)}
-            onDelete={() => setSubscriptionToDelete(item)}
-            drag={selectedListId === null ? drag : undefined}
-            isActive={isActive}
-            viewMode={viewMode}
-          />
-        </View>
-      </ScaleDecorator>
-    );
-  };
+  const renderItem = React.useCallback(
+    ({ item, drag, isActive }: RenderItemParams<Subscription>) => {
+      return (
+        <ScaleDecorator>
+          <View style={listItemPadding}>
+            <Card
+              subscription={item}
+              onEdit={() => setEditingSubscription(item)}
+              onDelete={() => setSubscriptionToDelete(item)}
+              drag={selectedListId === null ? drag : undefined}
+              isActive={isActive}
+              viewMode={viewMode}
+            />
+          </View>
+        </ScaleDecorator>
+      );
+    },
+    [selectedListId, viewMode]
+  );
 
   return (
     <View style={{ flex: 1 }}>

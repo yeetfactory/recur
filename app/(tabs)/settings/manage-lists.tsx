@@ -27,17 +27,11 @@ import { ListIcon, PlusIcon, PencilIcon, Trash2Icon, SearchIcon } from 'lucide-r
 
 import { useLists } from '@/hooks/use-lists';
 import type { List } from '@/types';
+import { toTestIdSegment } from '@/lib/utils';
 
 const SCREEN_OPTIONS = {
   title: 'Manage Lists',
 };
-
-const toTestIdSegment = (value: string) =>
-  value
-    .trim()
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, '-')
-    .replace(/^-+|-+$/g, '');
 
 export default function ManageListsPage() {
   const { lists, createList, updateList, removeList } = useLists();

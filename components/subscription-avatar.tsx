@@ -12,12 +12,31 @@ type SubscriptionAvatarProps = {
   testID?: string;
 };
 
+// Warm color palette that matches the app's brown/orange theme – hoisted for performance
+const THEME_COLORS_DARK = [
+  '#78350F',
+  '#7C2D12',
+  '#713F12',
+  '#365314',
+  '#134E4A',
+  '#1E3A5F',
+  '#312E81',
+  '#4C1D95',
+];
+const THEME_COLORS_LIGHT = [
+  '#FEF3C7',
+  '#FFEDD5',
+  '#FEF9C3',
+  '#ECFCCB',
+  '#CCFBF1',
+  '#E0E7FF',
+  '#EDE9FE',
+  '#FCE7F3',
+];
+
 // Use app theme colors for initials (warm browns/oranges to match the app)
 const getThemeColor = (name: string, isDark: boolean): string => {
-  // Warm color palette that matches the app's brown/orange theme
-  const colors = isDark
-    ? ['#78350F', '#7C2D12', '#713F12', '#365314', '#134E4A', '#1E3A5F', '#312E81', '#4C1D95']
-    : ['#FEF3C7', '#FFEDD5', '#FEF9C3', '#ECFCCB', '#CCFBF1', '#E0E7FF', '#EDE9FE', '#FCE7F3'];
+  const colors = isDark ? THEME_COLORS_DARK : THEME_COLORS_LIGHT;
 
   let hash = 0;
   for (let i = 0; i < name.length; i++) {
@@ -31,18 +50,24 @@ const getTextColor = (isDark: boolean): string => {
   return isDark ? '#FDE68A' : '#78350F'; // Amber tones
 };
 
+// Hoisted regex for splitting – avoids re-creation (js-hoist-regexp)
+const WHITESPACE_RE = /\s+/;
+
 // Get initials from name (max 2 characters)
 const getInitials = (name: string): string => {
   const safe = name.trim();
   if (!safe) {
     return '?';
   }
-  const words = safe.split(/\s+/);
+  const words = safe.split(WHITESPACE_RE);
   if (words.length >= 2) {
     return (words[0][0] + words[1][0]).toUpperCase();
   }
   return safe.slice(0, 2).toUpperCase();
 };
+
+// Hoisted constant to avoid re-creation in render (rerender-memo-with-default-value)
+const AVATAR_HIT_SLOP = { top: 8, bottom: 8, left: 8, right: 8 };
 
 export const SubscriptionAvatar = ({
   name,
@@ -106,7 +131,7 @@ export const SubscriptionAvatar = ({
           ...(icon ? emojiWrapperStyle : {}),
         })}
         onPress={onPress}
-        hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}>
+        hitSlop={AVATAR_HIT_SLOP}>
         {content}
         {/* Edit indicator badge */}
         {showEditHint && (

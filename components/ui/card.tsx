@@ -3,6 +3,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { Subscription, SubscriptionFrequency } from '@/types';
 import { SubscriptionAvatar } from '@/components/subscription-avatar';
 import { getCurrencySymbol } from '@/lib/currency';
+import { toTestIdSegment } from '@/lib/utils';
 
 type CardProps = {
   subscription: Subscription;
@@ -12,13 +13,6 @@ type CardProps = {
   isActive?: boolean;
   viewMode?: SubscriptionFrequency;
 };
-
-const toTestIdSegment = (value: string) =>
-  value
-    .trim()
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, '-')
-    .replace(/^-+|-+$/g, '');
 
 // Hoisted styles for list performance (avoid inline objects in renderItem)
 const activeShadowStyle = {

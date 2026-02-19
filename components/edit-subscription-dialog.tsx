@@ -15,6 +15,7 @@ import { PlusIcon } from 'lucide-react-native';
 import { Icon } from '@/components/ui/icon';
 import { getCurrencySymbol } from '@/lib/currency';
 import { formatDateInput, parseAmount, parseDateInput, todayDateInput } from '@/lib/validation';
+import { toTestIdSegment } from '@/lib/utils';
 
 interface EditSubscriptionDialogProps {
   subscription: Subscription | null;
@@ -22,13 +23,6 @@ interface EditSubscriptionDialogProps {
   onOpenChange: (open: boolean) => void;
   onUpdate?: () => void;
 }
-
-const toTestIdSegment = (value: string) =>
-  value
-    .trim()
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, '-')
-    .replace(/^-+|-+$/g, '');
 
 export function EditSubscriptionDialog({
   subscription,

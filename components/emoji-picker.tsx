@@ -3,6 +3,7 @@ import { View, Pressable, ScrollView, Modal } from 'react-native';
 import { Text } from '@/components/ui/text';
 import { Button } from '@/components/ui/button';
 import { useColorScheme } from 'nativewind';
+import { toTestIdSegment } from '@/lib/utils';
 
 type EmojiPickerProps = {
   visible: boolean;
@@ -10,13 +11,6 @@ type EmojiPickerProps = {
   onSelect: (emoji: string | null) => void;
   currentEmoji: string | null;
 };
-
-const toTestIdSegment = (value: string) =>
-  value
-    .trim()
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, '-')
-    .replace(/^-+|-+$/g, '');
 
 // Curated emojis for subscriptions
 const EMOJI_CATEGORIES = {
