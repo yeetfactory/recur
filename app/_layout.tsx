@@ -59,6 +59,7 @@ export default function RootLayout() {
         const status = isOnboardingComplete();
         dispatch({ type: 'SET_ONBOARDING', payload: status });
       } catch (e) {
+        console.error(e);
         setTimeout(checkOnboarding, 100);
       }
     };

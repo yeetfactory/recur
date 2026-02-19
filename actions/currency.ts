@@ -1,4 +1,3 @@
-import { CURRENCY_CODES } from '@/const';
 import { mmkv } from '@/integrations/mmkv';
 import { Currency, Zod_Currency } from '@/types';
 import { Logger } from '@/clients/logger';
