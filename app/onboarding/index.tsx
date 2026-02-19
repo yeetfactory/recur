@@ -101,7 +101,7 @@ export default function OnboardingWelcome() {
 
           <View className="flex-row flex-wrap gap-3">
             {STATS.map((stat, index) => (
-              <View key={index} className="w-[48%]">
+              <View key={stat.value} className="w-[48%]">
                 <StatCard {...stat} index={index} />
               </View>
             ))}

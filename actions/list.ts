@@ -10,7 +10,7 @@ const Zod_ListNameSchema = Zod_List.shape.name;
 const Zod_ListIdSchema = Zod_List.shape.id;
 const Zod_ListArray = Zod_List.array();
 
-export const LISTS_KEY = 'lists';
+const LISTS_KEY = 'lists';
 
 const normalizeLists = (raw: unknown): List[] => {
   if (!Array.isArray(raw)) return [];

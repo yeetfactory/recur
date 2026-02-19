@@ -1,5 +1,10 @@
 appId: com.yeetfactory.recur
 ---
+# ═══════════════════════════════════════════════════════
+# Full Regression Test Suite
+# Identical flows to smoke but intended for CI/pre-release.
+# ═══════════════════════════════════════════════════════
+
 - runFlow: onboarding.yaml
 - runFlow: default-list.yaml
 - runFlow: lists.yaml

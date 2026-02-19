@@ -1,15 +1,34 @@
 appId: com.yeetfactory.recur
 ---
+# ─── Open the add subscription dialog ───
 - tapOn:
     id: "add-subscription-open"
+- extendedWaitUntil:
+    visible:
+      id: "add-subscription-name-input"
+    timeout: 10000
+
+# ─── Verify the manage lists button is visible ───
 - assertVisible:
     id: "add-subscription-manage-lists"
+
+# ─── Tap manage lists and verify navigation ───
 - tapOn:
     id: "add-subscription-manage-lists"
+- extendedWaitUntil:
+    visible:
+      id: "manage-lists-add-new"
+    timeout: 10000
 - assertVisible:
     id: "manage-lists-add-new"
+
+# ─── Go back to home ───
 - back
 - tapOn:
     id: "tab-home"
+- extendedWaitUntil:
+    visible:
+      id: "add-subscription-open"
+    timeout: 10000
 - assertVisible:
     id: "add-subscription-open"

@@ -74,7 +74,7 @@ export const EmojiPicker = ({ visible, onClose, onSelect, currentEmoji }: EmojiP
                 <View className="flex-row flex-wrap">
                   {emojis.map((emoji, index) => (
                     <Pressable
-                      key={`${category}-${index}`}
+                      key={`${category}-${emoji}`}
                       testID={`emoji-option-${toTestIdSegment(category)}-${index}`}
                       className={`m-1 h-12 w-12 items-center justify-center rounded-lg ${
                         currentEmoji === emoji

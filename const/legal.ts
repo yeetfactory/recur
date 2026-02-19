@@ -2,7 +2,7 @@ import Constants from 'expo-constants';
 
 const APP_VERSION = Constants.expoConfig?.version ?? Constants.manifest?.version ?? '1.0.0';
 
-export const PRIVACY_CONTENT = {
+const PRIVACY_CONTENT = {
   title: 'Privacy Policy',
   lastUpdated: 'February 5, 2026',
   version: APP_VERSION,
@@ -24,8 +24,7 @@ export const PRIVACY_CONTENT = {
     },
     {
       title: 'Third-Party Services',
-      content:
-        'We do not integrate analytics, advertising, or tracking SDKs.',
+      content: 'We do not integrate analytics, advertising, or tracking SDKs.',
     },
     {
       title: 'Permissions',
@@ -35,7 +34,7 @@ export const PRIVACY_CONTENT = {
   ],
 };
 
-export const TERMS_CONTENT = {
+const TERMS_CONTENT = {
   title: 'Terms & Conditions',
   lastUpdated: 'February 5, 2026',
   version: APP_VERSION,

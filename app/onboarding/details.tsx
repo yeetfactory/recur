@@ -148,7 +148,6 @@ export default function OnboardingDetails() {
                       value={currencySearch}
                       onChangeText={setCurrencySearch}
                       placeholder="Search currencies..."
-                      autoFocus={true}
                       className="h-10 flex-1 border-0 bg-transparent shadow-none"
                     />
                   </View>

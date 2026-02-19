@@ -1,11 +1,34 @@
 appId: com.yeetfactory.recur
 ---
+# ═══════════════════════════════════════════════════════
+# Full Smoke Test Suite
+# Runs the complete happy path through all features.
+# Order matters – each flow depends on state from previous flows.
+# ═══════════════════════════════════════════════════════
+
+# 1. Onboarding (clean state → dashboard)
 - runFlow: onboarding.yaml
+
+# 2. Default list auto-creation (add + delete sub without explicit list)
 - runFlow: default-list.yaml
+
+# 3. List management (create Work, rename to Essentials, search, create Fun)
 - runFlow: lists.yaml
+
+# 4. Add dialog → Manage Lists navigation
 - runFlow: add-dialog-manage-lists.yaml
+
+# 5. Subscriptions (create Spotify, edit, add Netflix, filter, cancel, delete Netflix)
 - runFlow: subscriptions.yaml
+
+# 6. Settings (profile, theme, manage lists, privacy, terms)
 - runFlow: settings.yaml
+
+# 7. Delete lists (Essentials + Fun)
 - runFlow: list-delete.yaml
+
+# 8. Delete remaining subscription (Spotify)
 - runFlow: subscription-delete.yaml
+
+# 9. Persistence (kill/restart x2, verify data survives)
 - runFlow: persistence.yaml

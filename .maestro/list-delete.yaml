@@ -1,20 +1,65 @@
 appId: com.yeetfactory.recur
 ---
+# ─── Navigate to Manage Lists ───
 - tapOn:
     id: "tab-settings"
+- extendedWaitUntil:
+    visible:
+      id: "settings-manage-lists"
+    timeout: 10000
 - tapOn:
     id: "settings-manage-lists"
-- assertVisible:
-    id: "manage-list-delete-essentials"
+- extendedWaitUntil:
+    visible:
+      id: "manage-list-delete-essentials"
+    timeout: 10000
+
+# ─── Delete the "Essentials" list ───
 - tapOn:
     id: "manage-list-delete-essentials"
+- extendedWaitUntil:
+    visible:
+      id: "manage-lists-delete-confirm"
+    timeout: 10000
+- assertVisible: "Delete List?"
 - tapOn:
     id: "manage-lists-delete-confirm"
+
+# ─── Verify the list is gone ───
+- extendedWaitUntil:
+    notVisible:
+      id: "manage-list-item-essentials"
+    timeout: 10000
 - assertNotVisible:
     id: "manage-list-item-essentials"
+
+# ─── Delete the "Fun" list too ───
+- tapOn:
+    id: "manage-list-delete-fun"
+- extendedWaitUntil:
+    visible:
+      id: "manage-lists-delete-confirm"
+    timeout: 10000
+- tapOn:
+    id: "manage-lists-delete-confirm"
+- extendedWaitUntil:
+    notVisible:
+      id: "manage-list-item-fun"
+    timeout: 10000
+- assertNotVisible:
+    id: "manage-list-item-fun"
+
+# ─── Go back to home and verify subscription still exists ───
 - back
 - tapOn:
     id: "tab-home"
+- extendedWaitUntil:
+    visible: "Spotify"
+    timeout: 10000
 - assertVisible: "Spotify"
+
+# ─── Verify no more list filter chips (except "All") ───
 - assertNotVisible:
     id: "filter-chip-essentials"
+- assertNotVisible:
+    id: "filter-chip-fun"

@@ -1,7 +1,22 @@
 appId: com.yeetfactory.recur
 ---
-- tapOn:
+# ─── Delete the Spotify subscription ───
+- assertVisible:
     id: "subscription-spotify-delete"
 - tapOn:
+    id: "subscription-spotify-delete"
+- extendedWaitUntil:
+    visible:
+      id: "subscription-delete-confirm"
+    timeout: 10000
+- assertVisible: "Remove Subscription?"
+- tapOn:
     id: "subscription-delete-confirm"
+
+# ─── Verify dashboard is empty ───
+- extendedWaitUntil:
+    visible: "No subscriptions yet."
+    timeout: 10000
 - assertVisible: "No subscriptions yet."
+- assertNotVisible:
+    id: "subscription-spotify-card"

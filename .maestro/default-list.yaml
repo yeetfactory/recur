@@ -1,9 +1,16 @@
 appId: com.yeetfactory.recur
 ---
+# ─── Verify we're on the home screen ───
 - assertVisible:
     id: "add-subscription-open"
+
+# ─── Add a subscription without explicitly selecting a list ───
 - tapOn:
     id: "add-subscription-open"
+- extendedWaitUntil:
+    visible:
+      id: "add-subscription-name-input"
+    timeout: 10000
 - tapOn:
     id: "add-subscription-name-input"
 - inputText: "Prime"
@@ -19,20 +26,49 @@ appId: com.yeetfactory.recur
     commands:
       - tapOn:
           id: "add-subscription-save"
+
+# ─── Verify subscription appears ───
 - extendedWaitUntil:
     visible: "Prime"
     timeout: 15000
+- assertVisible: "₹9.00"
+
+# ─── Verify a "Default" list was auto-created ───
 - tapOn:
     id: "tab-settings"
+- extendedWaitUntil:
+    visible:
+      id: "settings-manage-lists"
+    timeout: 10000
 - tapOn:
     id: "settings-manage-lists"
+- extendedWaitUntil:
+    visible:
+      id: "manage-list-item-default"
+    timeout: 10000
 - assertVisible:
     id: "manage-list-item-default"
+
+# ─── Go back to home ───
 - back
 - tapOn:
     id: "tab-home"
+- extendedWaitUntil:
+    visible: "Prime"
+    timeout: 10000
+
+# ─── Delete the test subscription ───
 - tapOn:
     id: "subscription-prime-delete"
+- extendedWaitUntil:
+    visible:
+      id: "subscription-delete-confirm"
+    timeout: 10000
 - tapOn:
     id: "subscription-delete-confirm"
+
+# ─── Verify dashboard is empty again ───
+- extendedWaitUntil:
+    visible: "No subscriptions yet."
+    timeout: 10000
 - assertVisible: "No subscriptions yet."

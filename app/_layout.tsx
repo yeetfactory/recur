@@ -9,7 +9,7 @@ import { Stack, Redirect } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { StatusBar } from 'expo-status-bar';
 import { useColorScheme } from 'nativewind';
-import { useEffect, useState } from 'react';
+import { useEffect, useReducer } from 'react';
 import { isOnboardingComplete } from '@/actions/user';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
@@ -21,21 +21,43 @@ export {
   ErrorBoundary,
 } from 'expo-router';
 
+type LayoutState = {
+  onboardingComplete: boolean | null;
+};
+
+type LayoutAction = { type: 'SET_ONBOARDING'; payload: boolean };
+
+function layoutReducer(_state: LayoutState, action: LayoutAction): LayoutState {
+  switch (action.type) {
+    case 'SET_ONBOARDING':
+      return { onboardingComplete: action.payload };
+    default:
+      return _state;
+  }
+}
+
+const initialLayoutState: LayoutState = {
+  onboardingComplete: null,
+};
+
 export default function RootLayout() {
   const { colorScheme } = useColorScheme();
-  const [onboardingComplete, setOnboardingComplete] = useState<boolean | null>(null);
+  const [state, dispatch] = useReducer(layoutReducer, initialLayoutState);
   const [loaded, error] = useFonts({
     'Recoleta-Regular': require('../assets/fonts/recoleta-regular.otf'),
     'Recoleta-Medium': require('../assets/fonts/recoleta-medium.otf'),
     'Recoleta-SemiBold': require('../assets/fonts/recoleta-semibold.otf'),
   });
 
+  // Re-throw font loading errors so ErrorBoundary can catch them
+  if (error) throw error;
+
   // Read onboarding status inside component after mount
   useEffect(() => {
     const checkOnboarding = () => {
       try {
         const status = isOnboardingComplete();
-        setOnboardingComplete(status);
+        dispatch({ type: 'SET_ONBOARDING', payload: status });
       } catch (e) {
         setTimeout(checkOnboarding, 100);
       }
@@ -46,17 +68,13 @@ export default function RootLayout() {
   }, []);
 
   useEffect(() => {
-    if (error) throw error;
-  }, [error]);
-
-  useEffect(() => {
-    if (loaded && onboardingComplete !== null) {
+    if (loaded && state.onboardingComplete !== null) {
       void SplashScreen.hideAsync();
     }
-  }, [loaded, onboardingComplete]);
+  }, [loaded, state.onboardingComplete]);
 
   // Wait for both fonts and onboarding check
-  if (!loaded || onboardingComplete === null) {
+  if (!loaded || state.onboardingComplete === null) {
     return null;
   }
 
@@ -70,7 +88,7 @@ export default function RootLayout() {
           <Stack.Screen name="onboarding" />
         </Stack>
         {/* Redirect to onboarding only if NOT complete */}
-        {onboardingComplete === false && <Redirect href="/onboarding" />}
+        {state.onboardingComplete === false && <Redirect href="/onboarding" />}
         <PortalHost />
       </ThemeProvider>
     </GestureHandlerRootView>

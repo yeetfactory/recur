@@ -1,13 +1,26 @@
 appId: com.yeetfactory.recur
 ---
+# ─── Navigate to Manage Lists ───
 - tapOn:
     id: "tab-settings"
+- extendedWaitUntil:
+    visible:
+      id: "settings-manage-lists"
+    timeout: 10000
 - tapOn:
     id: "settings-manage-lists"
-- assertVisible:
-    id: "manage-lists-add-new"
+- extendedWaitUntil:
+    visible:
+      id: "manage-lists-add-new"
+    timeout: 10000
+
+# ─── Create a new list "Work" ───
 - tapOn:
     id: "manage-lists-add-new"
+- extendedWaitUntil:
+    visible:
+      id: "manage-lists-add-input"
+    timeout: 10000
 - tapOn:
     id: "manage-lists-add-input"
 - inputText: "Work"
@@ -20,10 +33,22 @@ appId: com.yeetfactory.recur
     commands:
       - tapOn:
           id: "manage-lists-add-submit"
+
+# ─── Verify the list appeared ───
+- extendedWaitUntil:
+    visible:
+      id: "manage-list-item-work"
+    timeout: 10000
 - assertVisible:
     id: "manage-list-item-work"
+
+# ─── Edit "Work" to "Essentials" ───
 - tapOn:
     id: "manage-list-edit-work"
+- extendedWaitUntil:
+    visible:
+      id: "manage-lists-edit-input"
+    timeout: 10000
 - tapOn:
     id: "manage-lists-edit-input"
 - eraseText: 50
@@ -37,18 +62,82 @@ appId: com.yeetfactory.recur
     commands:
       - tapOn:
           id: "manage-lists-edit-submit"
+
+# ─── Verify rename took effect ───
+- extendedWaitUntil:
+    visible:
+      id: "manage-list-item-essentials"
+    timeout: 10000
 - assertVisible:
     id: "manage-list-item-essentials"
+
+# ─── Search for the list ───
 - tapOn:
     id: "manage-lists-search-input"
 - inputText: "Essentials"
+- extendedWaitUntil:
+    visible:
+      id: "manage-list-item-essentials"
+    timeout: 5000
 - assertVisible:
     id: "manage-list-item-essentials"
+
+# ─── Clear search ───
 - tapOn:
     id: "manage-lists-search-input"
 - eraseText: 50
+
+# ─── Search for something that doesn't exist ───
+- tapOn:
+    id: "manage-lists-search-input"
+- inputText: "Nonexistent"
+- assertNotVisible:
+    id: "manage-list-item-essentials"
+
+# ─── Clear search again ───
+- tapOn:
+    id: "manage-lists-search-input"
+- eraseText: 50
+
+# ─── Create a second list "Fun" for multi-list testing ───
+- tapOn:
+    id: "manage-lists-add-new"
+- extendedWaitUntil:
+    visible:
+      id: "manage-lists-add-input"
+    timeout: 10000
+- tapOn:
+    id: "manage-lists-add-input"
+- inputText: "Fun"
+- tapOn:
+    id: "manage-lists-add-submit"
+- runFlow:
+    when:
+      visible:
+        id: "manage-lists-add-submit"
+    commands:
+      - tapOn:
+          id: "manage-lists-add-submit"
+- extendedWaitUntil:
+    visible:
+      id: "manage-list-item-fun"
+    timeout: 10000
+- assertVisible:
+    id: "manage-list-item-fun"
+- assertVisible:
+    id: "manage-list-item-essentials"
+
+# ─── Go back to home and verify filter chips ───
 - back
 - tapOn:
     id: "tab-home"
+- extendedWaitUntil:
+    visible:
+      id: "filter-chip-essentials"
+    timeout: 10000
 - assertVisible:
     id: "filter-chip-essentials"
+- assertVisible:
+    id: "filter-chip-fun"
+- assertVisible:
+    id: "filter-chip-all"

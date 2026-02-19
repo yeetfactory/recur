@@ -8,10 +8,6 @@ const logger = new Logger('currency-actions');
 
 const DEFAULT_CURRENCY_KEY = 'default_currency';
 
-export const getCurrencies = () => {
-  return CURRENCY_CODES;
-};
-
 const Zod_SetDefaultCurrencySchema = z.object({
   currency: Zod_Currency,
 });
