@@ -10,7 +10,7 @@ import * as SplashScreen from 'expo-splash-screen';
 import { StatusBar } from 'expo-status-bar';
 import { useColorScheme } from 'nativewind';
 import { useEffect, useReducer } from 'react';
-import { isOnboardingComplete } from '@/actions/user';
+import { isOnboardingComplete, subscribeToOnboarding } from '@/actions/user';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
@@ -54,10 +54,17 @@ export default function RootLayout() {
 
   // Read onboarding status inside component after mount
   useEffect(() => {
+    let unsubscribe: (() => void) | undefined;
+
     const checkOnboarding = () => {
       try {
         const status = isOnboardingComplete();
         dispatch({ type: 'SET_ONBOARDING', payload: status });
+
+        // Once we read initial state, sub to future changes
+        unsubscribe = subscribeToOnboarding((isComplete) => {
+          dispatch({ type: 'SET_ONBOARDING', payload: isComplete });
+        });
       } catch (e) {
         console.error(e);
         setTimeout(checkOnboarding, 100);
@@ -66,6 +73,12 @@ export default function RootLayout() {
 
     // Small delay to ensure MMKV is ready after crash recovery
     setTimeout(checkOnboarding, 50);
+
+    return () => {
+      if (unsubscribe) {
+        unsubscribe();
+      }
+    };
   }, []);
 
   useEffect(() => {

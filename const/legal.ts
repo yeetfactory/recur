@@ -1,6 +1,6 @@
 import Constants from 'expo-constants';
 
-const APP_VERSION = Constants.expoConfig?.version ?? Constants.manifest?.version ?? '1.0.0';
+const APP_VERSION = Constants.expoConfig?.version ?? '1.0.0';
 
 const PRIVACY_CONTENT = {
   title: 'Privacy Policy',

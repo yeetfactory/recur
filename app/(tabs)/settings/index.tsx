@@ -71,7 +71,7 @@ function ProfileCard() {
 export default function Settings() {
   const appStoreUrl = getAppStoreUrl(Platform.OS);
   const shareUrl = getShareUrl(Platform.OS);
-  const appVersion = Constants.expoConfig?.version ?? Constants.manifest?.version ?? '1.0.0';
+  const appVersion = Constants.expoConfig?.version ?? '1.0.0';
   const showSupport = !!appStoreUrl || !!shareUrl || !!DISCORD_INVITE_URL;
 
   const handleJoinCommunity = () => {

@@ -39,9 +39,21 @@ export const getUserName = (): string | null => {
   return validated.data;
 };
 
+// Onboarding Listeners
+type OnboardingListener = (isComplete: boolean) => void;
+const onboardingListeners = new Set<OnboardingListener>();
+
+export const subscribeToOnboarding = (listener: OnboardingListener) => {
+  onboardingListeners.add(listener);
+  return () => {
+    onboardingListeners.delete(listener);
+  };
+};
+
 // Onboarding State Actions
 export const setOnboardingComplete = () => {
   mmkv.set(ONBOARDING_COMPLETE_KEY, true);
+  onboardingListeners.forEach((listener) => listener(true));
 };
 
 export const isOnboardingComplete = (): boolean => {
