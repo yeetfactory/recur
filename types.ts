@@ -14,7 +14,7 @@ export type Currency = z.infer<typeof Zod_Currency>;
 
 export const SUBSCRIPTION_FREQUENCIES = ['monthly', 'yearly'] as const;
 
-export const Zod_SubscriptionFrequency = z.enum(SUBSCRIPTION_FREQUENCIES);
+const Zod_SubscriptionFrequency = z.enum(SUBSCRIPTION_FREQUENCIES);
 
 export type SubscriptionFrequency = z.infer<typeof Zod_SubscriptionFrequency>;
 
