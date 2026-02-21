@@ -1,5 +1,6 @@
 import { View, Text, useColorScheme, Pressable } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import Animated, { useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated';
 import { Subscription, SubscriptionFrequency } from '@/types';
 import { SubscriptionAvatar } from '@/components/subscription-avatar';
 import { getCurrencySymbol } from '@/lib/currency';
@@ -30,16 +31,8 @@ const defaultShadowStyle = {
   elevation: 2,
 };
 const cardHitSlop = { top: 8, bottom: 8, left: 4, right: 4 };
-const accentStripStyle = {
-  position: 'absolute' as const,
-  left: 0,
-  top: 10,
-  bottom: 10,
-  width: 3,
-  borderRadius: 2,
-  backgroundColor: '#D4531D',
-  opacity: 0.35,
-};
+
+const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
 
 export const Card = ({
   subscription,
@@ -55,6 +48,18 @@ export const Card = ({
   const { name, icon, amount, frequency, currency } = subscription;
   const cardId = `subscription-${toTestIdSegment(name || subscription.id)}`;
   const currencySymbol = getCurrencySymbol(currency);
+
+  const scale = useSharedValue(1);
+  const animatedStyle = useAnimatedStyle(() => ({
+    transform: [{ scale: scale.value }],
+  }));
+
+  const handlePressIn = () => {
+    scale.value = withSpring(0.97, { damping: 15, stiffness: 300 });
+  };
+  const handlePressOut = () => {
+    scale.value = withSpring(1, { damping: 15, stiffness: 300 });
+  };
 
   const displayAmount =
     viewMode === frequency
@@ -72,16 +77,15 @@ export const Card = ({
     viewMode === frequency ? `/${freqShort}` : `/${viewModeShort} (billed /${freqShort})`;
 
   return (
-    <Pressable
+    <AnimatedPressable
       testID={`${cardId}-card`}
       className="mb-2 flex flex-row items-center overflow-hidden rounded-xl border border-brand-brown/20 bg-card p-4"
       onLongPress={drag}
       delayLongPress={200}
+      onPressIn={handlePressIn}
+      onPressOut={handlePressOut}
       disabled={isActive}
-      style={isActive ? activeShadowStyle : defaultShadowStyle}>
-      {/* Left accent strip */}
-      <View style={accentStripStyle} />
-
+      style={[isActive ? activeShadowStyle : defaultShadowStyle, animatedStyle]}>
       {/* Drag handle indicator */}
       {drag ? (
         <View className="mr-2 opacity-30">
@@ -128,6 +132,6 @@ export const Card = ({
           </Pressable>
         ) : null}
       </View>
-    </Pressable>
+    </AnimatedPressable>
   );
 };

@@ -1,5 +1,7 @@
 import { Card } from '@/components/ui/card';
 import { Chart } from '@/components/ui/chart';
+import { SegmentedControl } from '@/components/ui/segmented-control';
+import { FilterChip } from '@/components/ui/filter-chip';
 import { Stack, useFocusEffect } from 'expo-router';
 import * as React from 'react';
 import { View, ScrollView, Pressable } from 'react-native';
@@ -184,21 +186,11 @@ export default function Screen() {
             <View className="gap-4 px-4 pb-4">
               {/* View Mode Toggle */}
               <View className="flex-row justify-center">
-                <View className="flex-row rounded-full border border-border bg-card p-1">
-                  {SUBSCRIPTION_FREQUENCIES.map((mode) => (
-                    <Text
-                      testID={`view-mode-${mode}`}
-                      key={mode}
-                      onPress={() => setViewMode(mode)}
-                      className={`overflow-hidden rounded-full px-6 py-2 text-sm font-medium ${
-                        viewMode === mode
-                          ? 'bg-primary text-primary-foreground'
-                          : 'text-muted-foreground'
-                      }`}>
-                      {mode.charAt(0).toUpperCase() + mode.slice(1)}
-                    </Text>
-                  ))}
-                </View>
+                <SegmentedControl
+                  options={SUBSCRIPTION_FREQUENCIES}
+                  value={viewMode}
+                  onChange={setViewMode}
+                />
               </View>
 
               <Chart
@@ -212,39 +204,21 @@ export default function Screen() {
                 horizontal
                 showsHorizontalScrollIndicator={false}
                 className="flex-row"
-                contentContainerStyle={{ gap: 8 }}>
-                <Pressable
+                contentContainerStyle={{ gap: 8, paddingHorizontal: 4 }}>
+                <FilterChip
+                  label="All"
+                  isSelected={selectedListId === null}
+                  onSelect={() => setSelectedListId(null)}
                   testID="filter-chip-all"
-                  onPress={() => setSelectedListId(null)}
-                  className={`rounded-full border px-4 py-1.5 ${
-                    selectedListId === null
-                      ? 'border-primary bg-primary'
-                      : 'border-input bg-background'
-                  }`}>
-                  <Text
-                    className={`text-sm font-medium ${
-                      selectedListId === null ? 'text-primary-foreground' : 'text-foreground'
-                    }`}>
-                    All
-                  </Text>
-                </Pressable>
+                />
                 {lists.map((list) => (
-                  <Pressable
+                  <FilterChip
                     key={list.id}
+                    label={list.name}
+                    isSelected={selectedListId === list.id}
+                    onSelect={() => setSelectedListId(list.id)}
                     testID={`filter-chip-${toTestIdSegment(list.name)}`}
-                    onPress={() => setSelectedListId(list.id)}
-                    className={`rounded-full border px-4 py-1.5 ${
-                      selectedListId === list.id
-                        ? 'border-primary bg-primary'
-                        : 'border-input bg-background'
-                    }`}>
-                    <Text
-                      className={`text-sm font-medium ${
-                        selectedListId === list.id ? 'text-primary-foreground' : 'text-foreground'
-                      }`}>
-                      {list.name}
-                    </Text>
-                  </Pressable>
+                  />
                 ))}
               </ScrollView>
             </View>
