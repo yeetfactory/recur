@@ -1,16 +1,16 @@
 import Constants from 'expo-constants';
 
-const APP_VERSION = Constants.expoConfig?.version ?? '1.0.0';
+const APP_VERSION = Constants.expoConfig?.version ?? '0.0.1';
 
 const PRIVACY_CONTENT = {
   title: 'Privacy Policy',
-  lastUpdated: 'February 5, 2026',
+  lastUpdated: 'February 21, 2026',
   version: APP_VERSION,
   sections: [
     {
       title: 'Overview',
       content:
-        "Recur is a subscription tracking app that works fully on your device. We don't run accounts or servers for your subscription data.",
+        "Recur is an open-source project developed and maintained by the developers of the YeetFactory GitHub organization. It is a subscription tracking app that works fully on your device. We don't run accounts or servers for your subscription data.",
     },
     {
       title: 'Information We Collect',
@@ -36,13 +36,13 @@ const PRIVACY_CONTENT = {
 
 const TERMS_CONTENT = {
   title: 'Terms & Conditions',
-  lastUpdated: 'February 5, 2026',
+  lastUpdated: 'February 21, 2026',
   version: APP_VERSION,
   sections: [
     {
       title: '1. Agreement to Terms',
       content:
-        'By downloading, installing, or using Recur, you agree to be bound by these Terms and Conditions. If you disagree with any part of these terms, you may not use the App.',
+        'By downloading, installing, or using Recur, you agree to be bound by these Terms and Conditions. Recur is provided by the developers and contributors of the YeetFactory GitHub organization ("we", "us", or "YeetFactory"). If you disagree with any part of these terms, you may not use the App.',
     },
     {
       title: '2. Description of Service',
@@ -57,7 +57,7 @@ const TERMS_CONTENT = {
     {
       title: '4. User Responsibilities',
       content:
-        'When using the App, you agree to:\n\n• Provide accurate information for your own personal use\n• Use the App only for lawful purposes\n• Not attempt to reverse engineer, modify, or distribute the App without permission\n• Not use the App for any fraudulent or harmful activities',
+        'When using the App, you agree to:\n\n• Provide accurate information for your own personal use\n• Use the App only for lawful purposes\n• Comply with the terms of the GNU General Public License v3.0 when modifying or distributing the App\n• Not use the App for any fraudulent or harmful activities',
     },
     {
       title: '5. Data and Privacy',
@@ -72,7 +72,7 @@ const TERMS_CONTENT = {
     {
       title: '7. Limitation of Liability',
       content:
-        'To the maximum extent permitted by applicable law, YeetFactory shall not be liable for any indirect, incidental, special, consequential, or punitive damages.',
+        'To the maximum extent permitted by applicable law, the developers and contributors of Recur shall not be liable for any indirect, incidental, special, consequential, or punitive damages.',
     },
   ],
 };
