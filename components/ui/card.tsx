@@ -16,13 +16,30 @@ type CardProps = {
 
 // Hoisted styles for list performance (avoid inline objects in renderItem)
 const activeShadowStyle = {
-  shadowColor: '#000',
-  shadowOffset: { width: 0, height: 4 },
-  shadowOpacity: 0.3,
-  shadowRadius: 8,
+  shadowColor: '#502615',
+  shadowOffset: { width: 0, height: 6 },
+  shadowOpacity: 0.25,
+  shadowRadius: 12,
   elevation: 8,
 };
+const defaultShadowStyle = {
+  shadowColor: '#502615',
+  shadowOffset: { width: 0, height: 2 },
+  shadowOpacity: 0.06,
+  shadowRadius: 6,
+  elevation: 2,
+};
 const cardHitSlop = { top: 8, bottom: 8, left: 4, right: 4 };
+const accentStripStyle = {
+  position: 'absolute' as const,
+  left: 0,
+  top: 10,
+  bottom: 10,
+  width: 3,
+  borderRadius: 2,
+  backgroundColor: '#D4531D',
+  opacity: 0.35,
+};
 
 export const Card = ({
   subscription,
@@ -34,7 +51,7 @@ export const Card = ({
 }: CardProps) => {
   const colorScheme = useColorScheme();
   const isDark = colorScheme === 'dark';
-  const iconColor = isDark ? '#9CA3AF' : '#6B7280';
+  const iconColor = isDark ? '#A69585' : '#7A6B5D';
   const { name, icon, amount, frequency, currency } = subscription;
   const cardId = `subscription-${toTestIdSegment(name || subscription.id)}`;
   const currencySymbol = getCurrencySymbol(currency);
@@ -57,14 +74,17 @@ export const Card = ({
   return (
     <Pressable
       testID={`${cardId}-card`}
-      className="mb-2 flex flex-row items-center rounded-lg border border-[#502615] bg-card p-4"
+      className="mb-2 flex flex-row items-center overflow-hidden rounded-xl border border-brand-brown/20 bg-card p-4"
       onLongPress={drag}
       delayLongPress={200}
       disabled={isActive}
-      style={isActive ? activeShadowStyle : undefined}>
+      style={isActive ? activeShadowStyle : defaultShadowStyle}>
+      {/* Left accent strip */}
+      <View style={accentStripStyle} />
+
       {/* Drag handle indicator */}
       {drag ? (
-        <View className="mr-2 opacity-40">
+        <View className="mr-2 opacity-30">
           <Ionicons name="menu" size={18} color={iconColor} />
         </View>
       ) : null}
@@ -92,7 +112,7 @@ export const Card = ({
         {onEdit ? (
           <Pressable
             testID={`${cardId}-edit`}
-            className="rounded-lg p-2 active:bg-gray-200 dark:active:bg-gray-700"
+            className="rounded-lg p-2 active:bg-accent"
             onPress={onEdit}
             hitSlop={cardHitSlop}>
             <Ionicons name="pencil" size={16} color={iconColor} />
@@ -101,10 +121,10 @@ export const Card = ({
         {onDelete ? (
           <Pressable
             testID={`${cardId}-delete`}
-            className="rounded-lg p-2 active:bg-red-100 dark:active:bg-red-900/30"
+            className="rounded-lg p-2 active:bg-destructive/10"
             onPress={onDelete}
             hitSlop={cardHitSlop}>
-            <Ionicons name="trash-outline" size={16} color="#EF4444" />
+            <Ionicons name="trash-outline" size={16} color="#D4531D" />
           </Pressable>
         ) : null}
       </View>

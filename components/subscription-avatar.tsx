@@ -14,24 +14,24 @@ type SubscriptionAvatarProps = {
 
 // Warm color palette that matches the app's brown/orange theme – hoisted for performance
 const THEME_COLORS_DARK = [
-  '#78350F',
-  '#7C2D12',
-  '#713F12',
-  '#365314',
-  '#134E4A',
-  '#1E3A5F',
-  '#312E81',
-  '#4C1D95',
+  '#5C2A0E',
+  '#502615',
+  '#6B3A1F',
+  '#4A3520',
+  '#3D4F25',
+  '#2D4438',
+  '#3D3028',
+  '#52301D',
 ];
 const THEME_COLORS_LIGHT = [
-  '#FEF3C7',
-  '#FFEDD5',
-  '#FEF9C3',
-  '#ECFCCB',
-  '#CCFBF1',
-  '#E0E7FF',
-  '#EDE9FE',
-  '#FCE7F3',
+  '#FDE8D0',
+  '#F5E6D3',
+  '#FEF1D6',
+  '#F0E8D8',
+  '#E8EDD8',
+  '#DDE5E0',
+  '#E6DDD5',
+  '#F5DDE0',
 ];
 
 // Use app theme colors for initials (warm browns/oranges to match the app)
@@ -47,7 +47,7 @@ const getThemeColor = (name: string, isDark: boolean): string => {
 };
 
 const getTextColor = (isDark: boolean): string => {
-  return isDark ? '#FDE68A' : '#78350F'; // Amber tones
+  return isDark ? '#F5C67A' : '#502615'; // Gold on dark, brand brown on light
 };
 
 // Hoisted regex for splitting – avoids re-creation (js-hoist-regexp)
@@ -143,11 +143,11 @@ export const SubscriptionAvatar = ({
               width: 18,
               height: 18,
               borderRadius: 9,
-              backgroundColor: isDark ? '#3B82F6' : '#2563EB',
+              backgroundColor: isDark ? '#D4531D' : '#C04A18',
               alignItems: 'center',
               justifyContent: 'center',
               borderWidth: 2,
-              borderColor: isDark ? '#18181B' : '#FFFFFF',
+              borderColor: isDark ? '#1C140E' : '#FAF6F1',
             }}>
             <Ionicons name="pencil" size={9} color="white" />
           </View>

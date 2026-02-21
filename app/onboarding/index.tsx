@@ -50,8 +50,8 @@ function StatCard({
       entering={FadeInUp.delay(300 + index * 100).springify()}
       className={`rounded-2xl border p-4 ${
         highlight
-          ? 'border-primary/30 bg-primary/10 dark:bg-primary/20'
-          : 'border-[#502615] bg-card dark:bg-black'
+          ? 'border-primary/30 bg-primary/10 dark:bg-primary/15'
+          : 'border-brand-brown/20 bg-card'
       }`}>
       <View className="flex-row items-baseline">
         <Text

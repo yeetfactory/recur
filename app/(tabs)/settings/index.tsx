@@ -30,7 +30,11 @@ const SCREEN_OPTIONS = {
 const DiscordIcon = () => {
   const { colorScheme } = useColorScheme();
   return (
-    <Ionicons name="logo-discord" size={20} color={colorScheme === 'dark' ? 'white' : 'black'} />
+    <Ionicons
+      name="logo-discord"
+      size={20}
+      color={colorScheme === 'dark' ? '#A69585' : '#502615'}
+    />
   );
 };
 
@@ -41,7 +45,7 @@ function ProfileCard() {
   const initial = userName ? userName.charAt(0).toUpperCase() : '?';
 
   return (
-    <View className="rounded-2xl border border-brand-brown bg-card p-5 dark:bg-black">
+    <View className="rounded-2xl border border-brand-brown/20 bg-card p-5">
       <View className="flex-row items-center gap-4">
         {/* Avatar */}
         <View className="h-16 w-16 items-center justify-center rounded-full bg-primary">
@@ -204,10 +208,10 @@ function SettingsItem({
   const content = (
     <View
       testID={onPress ? undefined : testID}
-      className="flex-row items-center justify-between rounded-lg border border-brand-brown bg-card p-4 dark:bg-black">
+      className="flex-row items-center justify-between rounded-xl border border-brand-brown/20 bg-card p-4">
       <View className="flex-1 flex-row items-center gap-3">
         <View className="rounded-md bg-muted p-2">{icon}</View>
-        <Text className="flex-1 font-medium text-card-foreground dark:text-white">{label}</Text>
+        <Text className="flex-1 font-medium text-card-foreground">{label}</Text>
       </View>
       <View className="flex-row items-center gap-2">
         {value ? <Text className="text-sm text-muted-foreground">{value}</Text> : null}
@@ -249,13 +253,13 @@ function ThemeToggleItem() {
       testID="settings-theme-toggle"
       onPress={handleToggleTheme}
       className="active:opacity-70">
-      <View className="flex-row items-center justify-between rounded-lg border border-brand-brown bg-card p-4 dark:bg-black">
+      <View className="flex-row items-center justify-between rounded-xl border border-brand-brown/20 bg-card p-4">
         <View className="flex-row items-center gap-3">
           <View className="rounded-md bg-muted p-2">
             <Icon as={THEME_ICONS[colorScheme ?? 'light']} className="size-5 text-foreground" />
           </View>
           <View>
-            <Text className="font-medium text-card-foreground dark:text-white">Theme</Text>
+            <Text className="font-medium text-card-foreground">Theme</Text>
             <Text className="text-sm text-muted-foreground">
               {isDark ? 'Dark Mode' : 'Light Mode'}
             </Text>

@@ -34,7 +34,7 @@ export const EmojiPicker = ({ visible, onClose, onSelect, currentEmoji }: EmojiP
     <Modal visible={visible} animationType="slide" transparent={true} onRequestClose={onClose}>
       <Pressable className="flex-1 justify-end bg-black/50" onPress={onClose}>
         <Pressable
-          className={`max-h-[70%] rounded-t-3xl p-4 ${isDark ? 'bg-gray-900' : 'bg-white'}`}
+          className={`max-h-[70%] rounded-t-3xl p-4 ${isDark ? 'bg-[#1F1510]' : 'bg-[#FAF6F1]'}`}
           onPress={(e) => e.stopPropagation()}>
           {/* Header */}
           <View className="mb-4 flex-row items-center justify-between">
@@ -74,8 +74,8 @@ export const EmojiPicker = ({ visible, onClose, onSelect, currentEmoji }: EmojiP
                         currentEmoji === emoji
                           ? 'border-2 border-primary bg-primary/20'
                           : isDark
-                            ? 'bg-gray-800'
-                            : 'bg-gray-100'
+                            ? 'bg-[#2A1E15]'
+                            : 'bg-[#F0E8DE]'
                       }`}
                       onPress={() => {
                         onSelect(emoji);

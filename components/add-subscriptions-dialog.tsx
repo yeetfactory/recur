@@ -122,11 +122,7 @@ export function AddSubscriptionDialog({ onSubscriptionCreated }: AddSubscription
     <Sheet open={isOpen} onOpenChange={setIsOpen}>
       <SheetTrigger asChild>
         <Pressable testID="add-subscription-open">
-          <Ionicons
-            name="add-circle-outline"
-            size={36}
-            color={colorScheme === 'dark' ? 'white' : 'black'}
-          />
+          <Ionicons name="add-circle" size={38} color="#D4531D" />
         </Pressable>
       </SheetTrigger>
       <SheetContent
@@ -179,7 +175,7 @@ export function AddSubscriptionDialog({ onSubscriptionCreated }: AddSubscription
                       resetForm();
                       router.push('/settings/manage-lists');
                     }}
-                    className="mr-2 flex-row items-center gap-2 rounded-full border border-dashed border-brand-brown bg-card/50 px-4 py-2">
+                    className="mr-2 flex-row items-center gap-2 rounded-full border border-dashed border-brand-brown/30 bg-card/50 px-4 py-2">
                     <Icon as={PlusIcon} className="size-4 text-muted-foreground" />
                     <Text className="text-muted-foreground">Add List</Text>
                   </Pressable>
@@ -190,11 +186,11 @@ export function AddSubscriptionDialog({ onSubscriptionCreated }: AddSubscription
                       onPress={() => setSelectedListId(list.id)}
                       className={`mr-2 rounded-full border px-4 py-2 ${
                         selectedListId === list.id
-                          ? 'border-foreground bg-foreground'
+                          ? 'border-primary bg-primary'
                           : 'border-input bg-background'
                       }`}>
                       <Text
-                        className={`${selectedListId === list.id ? 'text-background' : 'text-foreground'}`}>
+                        className={`${selectedListId === list.id ? 'text-primary-foreground' : 'text-foreground'}`}>
                         {list.name}
                       </Text>
                     </Pressable>
@@ -264,13 +260,13 @@ export function AddSubscriptionDialog({ onSubscriptionCreated }: AddSubscription
               <Button
                 testID="add-subscription-cancel"
                 variant="ghost"
-                className="flex-1 border border-brand-brown"
+                className="flex-1 border border-brand-brown/20"
                 onPress={() => setIsOpen(false)}>
                 <Text>Cancel</Text>
               </Button>
               <Button
                 testID="add-subscription-save"
-                className="flex-1 border border-brand-brown"
+                className="flex-1 border border-brand-brown/20"
                 onPress={handleCreate}
                 disabled={isSaveDisabled}>
                 <Text>Save Subscription</Text>

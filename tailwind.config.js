@@ -48,6 +48,8 @@ module.exports = {
           foreground: 'hsl(var(--card-foreground))',
         },
         'brand-brown': '#502615',
+        'brand-terracotta': '#D4531D',
+        'brand-gold': '#EFAC39',
       },
       borderRadius: {
         lg: 'var(--radius)',

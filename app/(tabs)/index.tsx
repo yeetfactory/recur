@@ -133,7 +133,7 @@ export default function Screen() {
       <AlertDialog
         open={!!subscriptionToDelete}
         onOpenChange={(open) => !open && setSubscriptionToDelete(null)}>
-        <AlertDialogContent className="border border-brand-brown">
+        <AlertDialogContent className="border border-brand-brown/20">
           <AlertDialogHeader>
             <AlertDialogTitle className="font-recoleta-medium text-foreground">
               Remove Subscription?
@@ -192,7 +192,7 @@ export default function Screen() {
                       onPress={() => setViewMode(mode)}
                       className={`overflow-hidden rounded-full px-6 py-2 text-sm font-medium ${
                         viewMode === mode
-                          ? 'bg-foreground text-background'
+                          ? 'bg-primary text-primary-foreground'
                           : 'text-muted-foreground'
                       }`}>
                       {mode.charAt(0).toUpperCase() + mode.slice(1)}
@@ -201,7 +201,11 @@ export default function Screen() {
                 </View>
               </View>
 
-              <Chart total={`${currencySymbol}${totalAmount.toFixed(2)}`} viewMode={viewMode} />
+              <Chart
+                total={`${currencySymbol}${totalAmount.toFixed(2)}`}
+                viewMode={viewMode}
+                userName={userName || 'Card Holder'}
+              />
 
               {/* Filter Chips */}
               <ScrollView
@@ -214,12 +218,12 @@ export default function Screen() {
                   onPress={() => setSelectedListId(null)}
                   className={`rounded-full border px-4 py-1.5 ${
                     selectedListId === null
-                      ? 'border-foreground bg-foreground'
+                      ? 'border-primary bg-primary'
                       : 'border-input bg-background'
                   }`}>
                   <Text
                     className={`text-sm font-medium ${
-                      selectedListId === null ? 'text-background' : 'text-foreground'
+                      selectedListId === null ? 'text-primary-foreground' : 'text-foreground'
                     }`}>
                     All
                   </Text>
@@ -231,12 +235,12 @@ export default function Screen() {
                     onPress={() => setSelectedListId(list.id)}
                     className={`rounded-full border px-4 py-1.5 ${
                       selectedListId === list.id
-                        ? 'border-foreground bg-foreground'
+                        ? 'border-primary bg-primary'
                         : 'border-input bg-background'
                     }`}>
                     <Text
                       className={`text-sm font-medium ${
-                        selectedListId === list.id ? 'text-background' : 'text-foreground'
+                        selectedListId === list.id ? 'text-primary-foreground' : 'text-foreground'
                       }`}>
                       {list.name}
                     </Text>

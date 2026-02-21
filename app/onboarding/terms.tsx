@@ -52,7 +52,7 @@ function CheckboxItem({
         className={`flex-row items-start gap-4 rounded-2xl border p-4 ${
           checked
             ? 'border-primary/30 bg-primary/5 dark:bg-primary/10'
-            : 'border-[#502615] bg-card dark:bg-black'
+            : 'border-brand-brown/20 bg-card'
         }`}>
         {/* Checkbox */}
         <View

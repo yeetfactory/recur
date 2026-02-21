@@ -108,7 +108,7 @@ export default function ManageListsPage() {
         contentInsetAdjustmentBehavior="automatic">
         <View className="mt-[100px] flex-1 gap-4 p-4">
           {/* Search Input */}
-          <View className="flex-row items-center gap-2 rounded-lg border border-brand-brown bg-card p-2 dark:bg-black">
+          <View className="flex-row items-center gap-2 rounded-xl border border-brand-brown/20 bg-card p-2">
             <Icon as={SearchIcon} className="ml-2 size-5 text-muted-foreground" />
             <Input
               testID="manage-lists-search-input"
@@ -124,14 +124,12 @@ export default function ManageListsPage() {
             <View
               key={list.id}
               testID={`manage-list-item-${toTestIdSegment(list.name)}`}
-              className="flex-row items-center justify-between rounded-lg border border-brand-brown bg-card p-4 dark:bg-black">
+              className="flex-row items-center justify-between rounded-xl border border-brand-brown/20 bg-card p-4">
               <View className="flex-row items-center gap-3">
                 <View className="rounded-md bg-muted p-2">
                   <Icon as={ListIcon} className="size-5 text-foreground" />
                 </View>
-                <Text className="font-medium text-card-foreground dark:text-white">
-                  {list.name}
-                </Text>
+                <Text className="font-medium text-card-foreground">{list.name}</Text>
               </View>
               <View className="flex-row items-center gap-2">
                 <Pressable
@@ -155,7 +153,7 @@ export default function ManageListsPage() {
             testID="manage-lists-add-new"
             className="active:opacity-70"
             onPress={() => setIsAddDialogOpen(true)}>
-            <View className="flex-row items-center justify-center gap-2 rounded-lg border border-dashed border-brand-brown bg-card/50 p-4 dark:bg-black/50">
+            <View className="flex-row items-center justify-center gap-2 rounded-xl border border-dashed border-brand-brown/30 bg-card/50 p-4">
               <Icon as={PlusIcon} className="size-5 text-muted-foreground" />
               <Text className="font-medium text-muted-foreground">Add New List</Text>
             </View>
@@ -215,7 +213,7 @@ export default function ManageListsPage() {
 
       {/* Delete Confirmation Dialog */}
       <AlertDialog open={!!listToDelete} onOpenChange={(open) => !open && setListToDelete(null)}>
-        <AlertDialogContent className="border border-brand-brown">
+        <AlertDialogContent className="border border-brand-brown/20">
           <AlertDialogHeader>
             <AlertDialogTitle className="font-recoleta-medium text-foreground">
               Delete List?
@@ -241,7 +239,7 @@ export default function ManageListsPage() {
 
       {/* Error Dialog */}
       <AlertDialog open={!!errorMessage} onOpenChange={(open) => !open && setErrorMessage(null)}>
-        <AlertDialogContent className="border border-brand-brown">
+        <AlertDialogContent className="border border-brand-brown/20">
           <AlertDialogHeader>
             <AlertDialogTitle className="font-recoleta-medium text-foreground">
               Error

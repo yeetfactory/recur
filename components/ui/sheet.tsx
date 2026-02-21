@@ -69,17 +69,30 @@ function SheetContent({
             className
           )}
           {...props}>
+          {/* Sheet handle indicator */}
+          <View
+            style={{
+              alignSelf: 'center',
+              width: 36,
+              height: 4,
+              borderRadius: 2,
+              backgroundColor: '#502615',
+              opacity: 0.2,
+              marginBottom: 16,
+            }}
+          />
+
           <View className="mb-6 flex-row items-center justify-between">
             <View className="mr-4 flex-1">
               {title && <Text className="text-2xl font-bold text-foreground">{title}</Text>}
               {description && <Text className="text-muted-foreground">{description}</Text>}
             </View>
             <DialogPrimitive.Close asChild>
-              <Pressable className="rounded-full bg-secondary/50 p-2">
+              <Pressable className="rounded-full bg-muted p-2">
                 <Ionicons
                   name="close"
                   size={20}
-                  color={colorScheme === 'dark' ? 'white' : 'black'}
+                  color={colorScheme === 'dark' ? '#A69585' : '#502615'}
                 />
               </Pressable>
             </DialogPrimitive.Close>
