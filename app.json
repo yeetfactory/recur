@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "recur",
+    "name": "Recur",
     "slug": "recur",
     "version": "0.0.1",
     "orientation": "portrait",
@@ -23,8 +23,8 @@
     "android": {
       "edgeToEdgeEnabled": true,
       "adaptiveIcon": {
-        "foregroundImage": "./assets/images/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
+        "foregroundImage": "./assets/images/Icon-Transparent-fg.png",
+        "backgroundImage": "./assets/images/Icon-Background.png"
       },
       "package": "com.yeetfactory.recur"
     },

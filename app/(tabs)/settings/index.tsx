@@ -106,8 +106,8 @@ export default function Settings() {
   return (
     <>
       <Stack.Screen options={SCREEN_OPTIONS} />
-      <ScrollView contentInsetAdjustmentBehavior="automatic">
-        <View className="mt-[80px] flex-1 gap-6 p-4">
+      <ScrollView contentInsetAdjustmentBehavior="automatic" showsVerticalScrollIndicator={false}>
+        <View className="mt-[50px] flex-1 gap-6 p-4">
           {/* Profile Card */}
           <ProfileCard />
 

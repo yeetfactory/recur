@@ -57,7 +57,11 @@ export default function Screen() {
   const currencySymbol = getCurrencySymbol(defaultCurrency);
 
   React.useEffect(() => {
-    if (selectedListId && !lists.some((list) => list.id === selectedListId)) {
+    if (
+      selectedListId &&
+      selectedListId !== 'unassigned' &&
+      !lists.some((list) => list.id === selectedListId)
+    ) {
       setSelectedListId(null);
     }
   }, [lists, selectedListId]);
@@ -176,7 +180,7 @@ export default function Screen() {
         autoscrollSpeed={100}
         ListHeaderComponent={
           <View className="bg-background">
-            <View className="mt-[60px] flex-row items-center justify-between p-4 px-6">
+            <View className="mt-[50px] flex-row items-center justify-between p-4 px-6">
               <View>
                 <Text className="text-base text-muted-foreground">{greeting},</Text>
                 <Text className="font-recoleta-semibold text-3xl text-foreground">

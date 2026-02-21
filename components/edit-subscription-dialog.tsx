@@ -42,7 +42,7 @@ export function EditSubscriptionDialog({
   const [date, setDate] = React.useState('');
 
   // List State
-  const { lists, createList } = useLists();
+  const { lists } = useLists();
   const [selectedListId, setSelectedListId] = React.useState<string | null>(null);
 
   const currencySymbol = React.useMemo(
@@ -66,9 +66,7 @@ export function EditSubscriptionDialog({
       const listId =
         subscription.listId && lists.some((list) => list.id === subscription.listId)
           ? subscription.listId
-          : lists.length > 0
-            ? lists[0].id
-            : null;
+          : null;
       setSelectedListId(listId);
       setErrors({});
     }
@@ -93,15 +91,6 @@ export function EditSubscriptionDialog({
     }
 
     let targetListId = selectedListId;
-
-    if (!targetListId) {
-      if (lists.length > 0) {
-        targetListId = lists[0].id;
-      } else {
-        const newList = createList('Default');
-        targetListId = newList.id;
-      }
-    }
 
     try {
       updateSubscription({
@@ -182,12 +171,11 @@ export function EditSubscriptionDialog({
                     <Pressable
                       key={list.id}
                       testID={`edit-subscription-list-${toTestIdSegment(list.name)}`}
-                      onPress={() => setSelectedListId(list.id)}
-                      className={`mr-2 rounded-full border px-4 py-2 ${
-                        selectedListId === list.id
-                          ? 'border-primary bg-primary'
-                          : 'border-input bg-background'
-                      }`}>
+                      onPress={() => setSelectedListId(selectedListId === list.id ? null : list.id)}
+                      className={`mr-2 rounded-full border px-4 py-2 ${selectedListId === list.id
+                        ? 'border-primary bg-primary'
+                        : 'border-input bg-background'
+                        }`}>
                       <Text
                         className={`${selectedListId === list.id ? 'text-primary-foreground' : 'text-foreground'}`}>
                         {list.name}

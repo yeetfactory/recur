@@ -40,7 +40,7 @@ export function AddSubscriptionDialog({ onSubscriptionCreated }: AddSubscription
   const [date, setDate] = React.useState(todayDateInput());
 
   // List State
-  const { lists, createList } = useLists();
+  const { lists } = useLists();
   const [selectedListId, setSelectedListId] = React.useState<string | null>(null);
 
   const defaultCurrency = getDefaultCurrency() ?? 'USD';
@@ -63,7 +63,7 @@ export function AddSubscriptionDialog({ onSubscriptionCreated }: AddSubscription
           ? lists.some((list) => list.id === selectedListId)
           : false;
         if (!hasSelected) {
-          setSelectedListId(lists[0].id);
+          setSelectedListId(null);
         }
       } else {
         setSelectedListId(null);
@@ -174,12 +174,11 @@ export function AddSubscriptionDialog({ onSubscriptionCreated }: AddSubscription
                     <Pressable
                       key={list.id}
                       testID={`add-subscription-list-${toTestIdSegment(list.name)}`}
-                      onPress={() => setSelectedListId(list.id)}
-                      className={`mr-2 rounded-full border px-4 py-2 ${
-                        selectedListId === list.id
-                          ? 'border-primary bg-primary'
-                          : 'border-input bg-background'
-                      }`}>
+                      onPress={() => setSelectedListId(selectedListId === list.id ? null : list.id)}
+                      className={`mr-2 rounded-full border px-4 py-2 ${selectedListId === list.id
+                        ? 'border-primary bg-primary'
+                        : 'border-input bg-background'
+                        }`}>
                       <Text
                         className={`${selectedListId === list.id ? 'text-primary-foreground' : 'text-foreground'}`}>
                         {list.name}
