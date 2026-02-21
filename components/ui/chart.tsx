@@ -145,10 +145,22 @@ export const Chart = ({ total, viewMode = 'monthly', userName }: ChartProps) => 
             </View>
 
             {/* Network Logo */}
-            <View className="opacity-80">
+            <View className="opacity-90">
               <Svg width="46" height="30" viewBox="0 0 46 30">
-                <Circle cx="15" cy="15" r="15" fill="#EFAC39" fillOpacity="0.8" />
-                <Circle cx="31" cy="15" r="15" fill="#D4531D" fillOpacity="0.8" />
+                <Defs>
+                  <LinearGradient id="recurGrad" x1="0" y1="0" x2="1" y2="0">
+                    <Stop offset="0" stopColor="#EFAC39" />
+                    <Stop offset="1" stopColor="#D4531D" />
+                  </LinearGradient>
+                </Defs>
+                <Path
+                  d="M 14.5 9 C 6.5 9, 6.5 21, 14.5 21 C 20 21, 26 9, 31.5 9 C 39.5 9, 39.5 21, 31.5 21 C 26 21, 20 9, 14.5 9 Z"
+                  fill="none"
+                  stroke="url(#recurGrad)"
+                  strokeWidth="3.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
               </Svg>
             </View>
           </View>
