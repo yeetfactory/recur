@@ -102,11 +102,8 @@ export default function ManageListsPage() {
   return (
     <>
       <Stack.Screen options={SCREEN_OPTIONS} />
-      <ScrollView
-        className="flex-1"
-        showsVerticalScrollIndicator={false}
-        contentInsetAdjustmentBehavior="automatic">
-        <View className="mt-[100px] flex-1 gap-4 p-4">
+      <View className="flex-1">
+        <View className="mt-[100px] px-4 pt-4 pb-2">
           {/* Search Input */}
           <View className="flex-row items-center gap-2 rounded-xl border border-brand-brown/20 bg-card p-2">
             <Icon as={SearchIcon} className="ml-2 size-5 text-muted-foreground" />
@@ -118,48 +115,54 @@ export default function ManageListsPage() {
               className="flex-1 border-0 bg-transparent"
             />
           </View>
-
-          {/* List Items */}
-          {filteredLists.map((list) => (
-            <View
-              key={list.id}
-              testID={`manage-list-item-${toTestIdSegment(list.name)}`}
-              className="flex-row items-center justify-between rounded-xl border border-brand-brown/20 bg-card p-4">
-              <View className="flex-row items-center gap-3">
-                <View className="rounded-md bg-muted p-2">
-                  <Icon as={ListIcon} className="size-5 text-foreground" />
-                </View>
-                <Text className="font-medium text-card-foreground">{list.name}</Text>
-              </View>
-              <View className="flex-row items-center gap-2">
-                <Pressable
-                  testID={`manage-list-edit-${toTestIdSegment(list.name)}`}
-                  onPress={() => openEditDialog(list)}
-                  className="rounded-md bg-muted p-2">
-                  <Icon as={PencilIcon} className="size-4 text-muted-foreground" />
-                </Pressable>
-                <Pressable
-                  testID={`manage-list-delete-${toTestIdSegment(list.name)}`}
-                  onPress={() => handleDeleteList(list)}
-                  className="rounded-md bg-muted p-2">
-                  <Icon as={Trash2Icon} className="size-4 text-destructive" />
-                </Pressable>
-              </View>
-            </View>
-          ))}
-
-          {/* Add List Button */}
-          <Pressable
-            testID="manage-lists-add-new"
-            className="active:opacity-70"
-            onPress={() => setIsAddDialogOpen(true)}>
-            <View className="flex-row items-center justify-center gap-2 rounded-xl border border-dashed border-brand-brown/30 bg-card/50 p-4">
-              <Icon as={PlusIcon} className="size-5 text-muted-foreground" />
-              <Text className="font-medium text-muted-foreground">Add New List</Text>
-            </View>
-          </Pressable>
         </View>
-      </ScrollView>
+
+        <ScrollView
+          className="flex-1 px-4"
+          showsVerticalScrollIndicator={false}>
+          <View className="gap-4 pb-8">
+            {/* List Items */}
+            {filteredLists.map((list) => (
+              <View
+                key={list.id}
+                testID={`manage-list-item-${toTestIdSegment(list.name)}`}
+                className="flex-row items-center justify-between rounded-xl border border-brand-brown/20 bg-card p-4">
+                <View className="flex-row items-center gap-3">
+                  <View className="rounded-md bg-muted p-2">
+                    <Icon as={ListIcon} className="size-5 text-foreground" />
+                  </View>
+                  <Text className="font-medium text-card-foreground">{list.name}</Text>
+                </View>
+                <View className="flex-row items-center gap-2">
+                  <Pressable
+                    testID={`manage-list-edit-${toTestIdSegment(list.name)}`}
+                    onPress={() => openEditDialog(list)}
+                    className="rounded-md bg-muted p-2">
+                    <Icon as={PencilIcon} className="size-4 text-muted-foreground" />
+                  </Pressable>
+                  <Pressable
+                    testID={`manage-list-delete-${toTestIdSegment(list.name)}`}
+                    onPress={() => handleDeleteList(list)}
+                    className="rounded-md bg-muted p-2">
+                    <Icon as={Trash2Icon} className="size-4 text-destructive" />
+                  </Pressable>
+                </View>
+              </View>
+            ))}
+
+            {/* Add List Button */}
+            <Pressable
+              testID="manage-lists-add-new"
+              className="active:opacity-70"
+              onPress={() => setIsAddDialogOpen(true)}>
+              <View className="flex-row items-center justify-center gap-2 rounded-xl border border-dashed border-brand-brown/30 bg-card/50 p-4">
+                <Icon as={PlusIcon} className="size-5 text-muted-foreground" />
+                <Text className="font-medium text-muted-foreground">Add New List</Text>
+              </View>
+            </Pressable>
+          </View>
+        </ScrollView>
+      </View>
 
       {/* Add List Dialog */}
       <Dialog open={isAddDialogOpen} onOpenChange={setIsAddDialogOpen}>
