@@ -91,15 +91,6 @@ export function AddSubscriptionDialog({ onSubscriptionCreated }: AddSubscription
 
     let targetListId = selectedListId;
 
-    if (!targetListId) {
-      if (lists.length > 0) {
-        targetListId = lists[0].id;
-      } else {
-        const newList = createList('Default');
-        targetListId = newList.id;
-      }
-    }
-
     try {
       createSubscription({
         name: name.trim(),

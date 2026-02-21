@@ -92,6 +92,9 @@ export default function Screen() {
 
   const filteredSubscriptions = React.useMemo(() => {
     if (!selectedListId) return subscriptions;
+    if (selectedListId === 'unassigned') {
+      return subscriptions.filter((sub) => sub.listId === null);
+    }
     return subscriptions.filter((sub) => sub.listId === selectedListId);
   }, [subscriptions, selectedListId]);
 
@@ -210,6 +213,12 @@ export default function Screen() {
                   isSelected={selectedListId === null}
                   onSelect={() => setSelectedListId(null)}
                   testID="filter-chip-all"
+                />
+                <FilterChip
+                  label="Unassigned"
+                  isSelected={selectedListId === 'unassigned'}
+                  onSelect={() => setSelectedListId('unassigned')}
+                  testID="filter-chip-unassigned"
                 />
                 {lists.map((list) => (
                   <FilterChip
