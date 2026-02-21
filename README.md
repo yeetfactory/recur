@@ -239,66 +239,13 @@ Set these environment variables to enable external links in Settings:
 
 ## 📦 Available Scripts
 
-| Command                   | Description                                      |
-| ------------------------- | ------------------------------------------------ |
-| `bun dev`                 | Start Expo dev server (clears cache)             |
-| `bun ios`                 | Build and run on iOS                             |
-| `bun android`             | Build and run on Android                         |
-| `bun web`                 | Start web development server                     |
-| `bun clean`               | Remove `.expo` and `node_modules`                |
-| `bun maestro:test`        | Run full Maestro suite (onboarding + app flows)  |
-| `bun maestro:onboarding`  | Run onboarding flow only                         |
-| `bun maestro:dashboard`   | Run dashboard/settings smoke flow                |
-| `bun maestro:default-list` | Verify default list auto-creation path          |
-| `bun maestro:lists`       | Run manage lists CRUD flow                       |
-| `bun maestro:add-dialog-manage-lists` | Verify Add dialog -> Manage Lists navigation |
-| `bun maestro:subscriptions` | Run subscription CRUD + view mode/filter flow  |
-| `bun maestro:settings`    | Run legal/settings navigation flow               |
-| `bun maestro:persistence` | Verify onboarding does not reappear after restart |
-
-## 🧪 Maestro E2E Tests
-
-Maestro flows are in `.maestro/` and target app id `com.yeetfactory.recur`.
-Flows use `testID`-based selectors (`id`) for stable taps and reduced flakiness.
-
-### Current Coverage
-
-- Onboarding happy path (name + currency + terms/privacy acceptance)
-- Onboarding policy links (terms/privacy detail screens and back navigation)
-- First subscription auto-creates `Default` list
-- List CRUD (create, edit, search, delete)
-- Add Subscription dialog -> Manage Lists navigation
-- Subscription CRUD (add, edit, delete)
-- Emoji picker selection
-- Home view mode toggle (monthly/yearly conversion checks)
-- Home list filter chips
-- Settings legal screens + theme toggle
-- Persistence check (onboarding does not reappear after app relaunch)
-
-### Prerequisites
-
-- Install [Maestro](https://maestro.mobile.dev/getting-started/installing-maestro)
-- Boot an iOS Simulator or Android Emulator
-- Build and install the app once:
-  - `bun ios` (for iOS Simulator)
-  - `bun android` (for Android Emulator)
-
-### Run
-
-```bash
-bun maestro:test
-# or run individual flows
-bun maestro:onboarding
-bun maestro:dashboard
-bun maestro:default-list
-bun maestro:lists
-bun maestro:add-dialog-manage-lists
-bun maestro:subscriptions
-bun maestro:settings
-bun maestro:persistence
-```
-
----
+| Command       | Description                          |
+| ------------- | ------------------------------------ |
+| `bun dev`     | Start Expo dev server (clears cache) |
+| `bun ios`     | Build and run on iOS                 |
+| `bun android` | Build and run on Android             |
+| `bun web`     | Start web development server         |
+| `bun clean`   | Remove `.expo` and `node_modules`    |
 
 ## 🛡️ Privacy & Data
 
