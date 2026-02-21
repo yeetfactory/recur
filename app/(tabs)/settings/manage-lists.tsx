@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { View, Pressable, ScrollView } from 'react-native';
-import { Stack } from 'expo-router';
+import { Stack, router } from 'expo-router';
 import { Text } from '@/components/ui/text';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -23,7 +23,7 @@ import {
   DialogDescription,
   DialogFooter,
 } from '@/components/ui/dialog';
-import { ListIcon, PlusIcon, PencilIcon, Trash2Icon, SearchIcon } from 'lucide-react-native';
+import { ListIcon, PlusIcon, PencilIcon, Trash2Icon, SearchIcon, ArrowLeftIcon } from 'lucide-react-native';
 
 import { useLists } from '@/hooks/use-lists';
 import type { List } from '@/types';
@@ -31,6 +31,7 @@ import { toTestIdSegment } from '@/lib/utils';
 
 const SCREEN_OPTIONS = {
   title: 'Manage Lists',
+  headerShown: false,
 };
 
 export default function ManageListsPage() {
@@ -102,8 +103,18 @@ export default function ManageListsPage() {
   return (
     <>
       <Stack.Screen options={SCREEN_OPTIONS} />
-      <View className="flex-1">
-        <View className="mt-[100px] px-4 pt-4 pb-2">
+      <View className="flex-1 bg-background">
+        <View className="flex-row items-center gap-3 px-4 pb-4 pt-16">
+          <Pressable
+            testID="manage-lists-back"
+            onPress={() => router.back()}
+            className="h-10 w-10 items-center justify-center rounded-full bg-muted">
+            <Icon as={ArrowLeftIcon} className="size-5 text-foreground" />
+          </Pressable>
+          <Text className="font-recoleta-semibold text-xl text-foreground">Manage Lists</Text>
+        </View>
+
+        <View className="px-4 pb-2">
           {/* Search Input */}
           <View className="flex-row items-center gap-2 rounded-xl border border-brand-brown/20 bg-card p-2">
             <Icon as={SearchIcon} className="ml-2 size-5 text-muted-foreground" />
@@ -115,6 +126,16 @@ export default function ManageListsPage() {
               className="flex-1 border-0 bg-transparent"
             />
           </View>
+          {/* Add List Button */}
+          <Pressable
+            testID="manage-lists-add-new"
+            className="active:opacity-70 mt-2"
+            onPress={() => setIsAddDialogOpen(true)}>
+            <View className="flex-row items-center justify-center gap-2 rounded-xl border border-dashed border-brand-brown/30 bg-card/50 p-4">
+              <Icon as={PlusIcon} className="size-5 text-muted-foreground" />
+              <Text className="font-medium text-muted-foreground">Add New List</Text>
+            </View>
+          </Pressable>
         </View>
 
         <ScrollView
@@ -150,16 +171,7 @@ export default function ManageListsPage() {
               </View>
             ))}
 
-            {/* Add List Button */}
-            <Pressable
-              testID="manage-lists-add-new"
-              className="active:opacity-70"
-              onPress={() => setIsAddDialogOpen(true)}>
-              <View className="flex-row items-center justify-center gap-2 rounded-xl border border-dashed border-brand-brown/30 bg-card/50 p-4">
-                <Icon as={PlusIcon} className="size-5 text-muted-foreground" />
-                <Text className="font-medium text-muted-foreground">Add New List</Text>
-              </View>
-            </Pressable>
+
           </View>
         </ScrollView>
       </View>
