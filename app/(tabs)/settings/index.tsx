@@ -18,24 +18,12 @@ import { Stack, router } from 'expo-router';
 import { View, ScrollView, Pressable, Linking, Share, Platform } from 'react-native';
 import Constants from 'expo-constants';
 import { CURRENCIES } from '@/const';
-import { DISCORD_INVITE_URL, getAppStoreUrl, getShareUrl } from '@/const/links';
 import { getUserName } from '@/actions/user';
 import { getDefaultCurrency } from '@/actions/currency';
 
 const SCREEN_OPTIONS = {
   title: 'Settings',
   headerTransparent: true,
-};
-
-const DiscordIcon = () => {
-  const { colorScheme } = useColorScheme();
-  return (
-    <Ionicons
-      name="logo-discord"
-      size={20}
-      color={colorScheme === 'dark' ? '#A69585' : '#502615'}
-    />
-  );
 };
 
 function ProfileCard() {
@@ -69,31 +57,7 @@ function ProfileCard() {
 }
 
 export default function Settings() {
-  const appStoreUrl = getAppStoreUrl(Platform.OS);
-  const shareUrl = getShareUrl(Platform.OS);
-  const appVersion = Constants.expoConfig?.version ?? '1.0.0';
-  const showSupport = !!appStoreUrl || !!shareUrl || !!DISCORD_INVITE_URL;
-
-  const handleJoinCommunity = () => {
-    if (!DISCORD_INVITE_URL) return;
-    void Linking.openURL(DISCORD_INVITE_URL);
-  };
-
-  const handleLeaveReview = () => {
-    if (!appStoreUrl) return;
-    void Linking.openURL(appStoreUrl);
-  };
-
-  const handleShareApp = async () => {
-    try {
-      await Share.share({
-        message: shareUrl ? `Check out Recur: ${shareUrl}` : 'Check out Recur.',
-        url: shareUrl || undefined,
-      });
-    } catch (error) {
-      console.error(error);
-    }
-  };
+  const appVersion = Constants.expoConfig?.version ?? '0.0.1';
 
   const handlePrivacyPolicy = () => {
     router.push('/settings/privacy');
@@ -123,35 +87,6 @@ export default function Settings() {
               testID="settings-manage-lists"
             />
           </SettingsSection>
-
-          {showSupport && (
-            <SettingsSection title="Support">
-              {appStoreUrl && (
-                <SettingsItem
-                  icon={<Icon as={StarIcon} className="size-5 text-foreground" />}
-                  label="Leave a review"
-                  onPress={handleLeaveReview}
-                  testID="settings-leave-review"
-                />
-              )}
-              {shareUrl && (
-                <SettingsItem
-                  icon={<Icon as={ShareIcon} className="size-5 text-foreground" />}
-                  label="Share with friends"
-                  onPress={handleShareApp}
-                  testID="settings-share-app"
-                />
-              )}
-              {DISCORD_INVITE_URL && (
-                <SettingsItem
-                  icon={<DiscordIcon />}
-                  label="Join our community"
-                  onPress={handleJoinCommunity}
-                  testID="settings-join-community"
-                />
-              )}
-            </SettingsSection>
-          )}
 
           <SettingsSection title="Legal">
             <SettingsItem

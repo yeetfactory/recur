@@ -24,6 +24,7 @@ A local-first subscription tracker built with React Native and Expo. Track recur
 
 - Organize subscriptions into custom lists (e.g., "Work", "Entertainment", "Personal")
 - Filter subscriptions by list with chip-based filtering
+- **"Unassigned" chip** for quickly finding subscriptions not assigned to a list
 - Create, edit, and delete lists from Settings
 
 ### 🌍 **Multi-Currency Support**
@@ -173,21 +174,11 @@ recur/
 
 ## 💡 Implementation Nuances
 
-### Auto-Creating Default List
+### Optional Lists & Unassigned View
 
-When a user adds their **first subscription** and no lists exist yet, the app automatically creates a "Default" list and assigns the subscription to it. This ensures every subscription always belongs to a list.
+Lists are entirely optional. If a subscription is added without a list, or if its list is deleted, it becomes **"Unassigned"**. These subscriptions are easily accessible via the "Unassigned" filter chip on the Dashboard.
 
-```typescript
-// From add-subscriptions-dialog.tsx
-if (!targetListId) {
-  if (lists.length > 0) {
-    targetListId = lists[0].id;
-  } else {
-    const newList = createList('Default'); // ← Auto-creates "Default" list
-    targetListId = newList.id;
-  }
-}
-```
+### Currency Lock
 
 ### Currency Lock
 
@@ -201,7 +192,7 @@ The user's default currency is set during onboarding and **cannot be changed lat
 
 ### List Deletion Behavior
 
-When a list is deleted, all subscriptions associated with that list have their `listId` set to `null`. The subscriptions are not deleted—they become "unassigned" and still appear in the "All" view.
+When a list is deleted, all subscriptions associated with that list have their `listId` set to `null`. The subscriptions are not deleted—they become "unassigned" and appear in both the "All" and "Unassigned" dashboard views.
 
 ### Validation
 
@@ -225,15 +216,6 @@ The app uses NativeWind (Tailwind CSS) with a custom color palette:
 Theme switching is available in Settings and persists across sessions.
 
 ---
-
-## 🔗 Optional Links
-
-Set these environment variables to enable external links in Settings:
-
-- `EXPO_PUBLIC_APP_STORE_URL`
-- `EXPO_PUBLIC_PLAY_STORE_URL`
-- `EXPO_PUBLIC_APP_WEBSITE_URL` (used for sharing when available)
-- `EXPO_PUBLIC_DISCORD_INVITE_URL`
 
 ---
 
@@ -274,18 +256,21 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 
 ## 📄 License
 
-This project is private and proprietary. All rights reserved.
+This project is licensed under the [GNU General Public License v3.0](LICENSE).
 
 ---
 
 ## 🔗 Links
 
-- [Join our Discord Community](https://discord.gg/recur)
 - [Privacy Policy](<./app/(tabs)/settings/privacy.tsx>)
 - [Terms of Service](<./app/(tabs)/settings/terms.tsx>)
 
 ---
 
 <p align="center">
-  Made with ❤️ by <a href="https://yeetfactory.com">YeetFactory</a>
+  <i>Partially vibecoded.</i>
+</p>
+
+<p align="center">
+  Made with ❤️ by YeetFactory
 </p>
