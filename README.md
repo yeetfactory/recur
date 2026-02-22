@@ -5,6 +5,15 @@ A local-first subscription tracker built with React Native and Expo. Track recur
 ![Built with Expo](https://img.shields.io/badge/Built%20with-Expo-000020)
 ![React Native](https://img.shields.io/badge/React%20Native-0.81-61dafb)
 
+## 📸 Screenshots
+# Dark Mode:
+![Dark1](https://github.com/user-attachments/assets/38102fca-9bb6-4aa4-8b66-c261682901cc)
+![Dark2](https://github.com/user-attachments/assets/130a511f-52ed-42f5-8ea8-55c3fc487d0b)
+
+# Light Mode:
+![Light1](https://github.com/user-attachments/assets/e2808675-eaef-4780-bc14-c9b96d23e0f1)
+![Light2](https://github.com/user-attachments/assets/2adc6b95-52ba-44a5-b7ad-71958e226415)
+
 ## ✨ Features
 
 ### 📊 **Dashboard Overview**
