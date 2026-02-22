@@ -1,6 +1,16 @@
 import * as React from 'react';
-import { Pressable, ScrollView, View } from 'react-native';
+import { useColorScheme } from 'nativewind';
+import { Platform, Pressable, View, FlatList } from 'react-native';
+import { ScrollView } from 'react-native-gesture-handler';
+import DateTimePicker from '@react-native-community/datetimepicker';
 import { Sheet, SheetContent } from '@/components/ui/sheet';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '@/components/ui/dialog';
 import { Text } from '@/components/ui/text';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
@@ -11,7 +21,7 @@ import { useLists } from '@/hooks/use-lists';
 import { SubscriptionAvatar } from '@/components/subscription-avatar';
 import { EmojiPicker } from '@/components/emoji-picker';
 import { router } from 'expo-router';
-import { PlusIcon } from 'lucide-react-native';
+import { PlusIcon, ChevronDownIcon, CheckIcon, ListIcon } from 'lucide-react-native';
 import { Icon } from '@/components/ui/icon';
 import { getCurrencySymbol } from '@/lib/currency';
 import { formatDateInput, parseAmount, parseDateInput, todayDateInput } from '@/lib/validation';
@@ -40,6 +50,8 @@ export function EditSubscriptionDialog({
   const [frequency, setFrequency] = React.useState<SubscriptionFrequency>('monthly');
   const [amount, setAmount] = React.useState('');
   const [date, setDate] = React.useState('');
+  const [showDatePicker, setShowDatePicker] = React.useState(false);
+  const [isListDialogOpen, setIsListDialogOpen] = React.useState(false);
 
   // List State
   const { lists } = useLists();
@@ -51,6 +63,7 @@ export function EditSubscriptionDialog({
   );
   const isUpdateDisabled =
     !name.trim() || parseAmount(amount) === null || parseDateInput(date) === null;
+  const { colorScheme } = useColorScheme();
 
   React.useEffect(() => {
     if (open && subscription) {
@@ -156,33 +169,65 @@ export function EditSubscriptionDialog({
             {lists.length > 0 && (
               <View className="gap-2">
                 <Text className="font-recoleta-medium text-sm text-foreground">List</Text>
-                <ScrollView horizontal showsHorizontalScrollIndicator={false} className="flex-row">
-                  <Pressable
-                    testID="edit-subscription-manage-lists"
-                    onPress={() => {
-                      onOpenChange(false);
-                      router.push('/settings/manage-lists');
-                    }}
-                    className="mr-2 flex-row items-center gap-2 rounded-full border border-dashed border-brand-brown/30 bg-card/50 px-4 py-2">
-                    <Icon as={PlusIcon} className="size-4 text-muted-foreground" />
-                    <Text className="text-muted-foreground">Add List</Text>
-                  </Pressable>
-                  {lists.map((list) => (
+
+                <Dialog open={isListDialogOpen} onOpenChange={setIsListDialogOpen}>
+                  <DialogTrigger asChild>
                     <Pressable
-                      key={list.id}
-                      testID={`edit-subscription-list-${toTestIdSegment(list.name)}`}
-                      onPress={() => setSelectedListId(selectedListId === list.id ? null : list.id)}
-                      className={`mr-2 rounded-full border px-4 py-2 ${selectedListId === list.id
-                        ? 'border-primary bg-primary'
-                        : 'border-input bg-background'
-                        }`}>
-                      <Text
-                        className={`${selectedListId === list.id ? 'text-primary-foreground' : 'text-foreground'}`}>
-                        {list.name}
-                      </Text>
+                      testID="edit-subscription-list-trigger"
+                      className="flex-row items-center justify-between rounded-md border border-input bg-background/50 px-3 py-2.5 shadow-sm shadow-black/5 dark:bg-input/30">
+                      <View className="flex-row items-center gap-2">
+                        <Icon as={ListIcon} className="size-4 text-muted-foreground" />
+                        <Text className="text-base text-foreground sm:text-sm">
+                          {selectedListId
+                            ? lists.find((l) => l.id === selectedListId)?.name
+                            : 'Select a List...'}
+                        </Text>
+                      </View>
+                      <Icon as={ChevronDownIcon} className="size-4 text-muted-foreground" />
                     </Pressable>
-                  ))}
-                </ScrollView>
+                  </DialogTrigger>
+
+                  <DialogContent
+                    className="mx-4 w-auto max-w-none sm:max-w-none"
+                    overlayStyle={{ padding: 0, alignItems: 'stretch' }}
+                    style={{ alignSelf: 'stretch' }}>
+                    <DialogHeader>
+                      <DialogTitle>Select a List</DialogTitle>
+                    </DialogHeader>
+
+                    <ScrollView className="mt-4 max-h-80" showsVerticalScrollIndicator={true}>
+                      {lists.map((list) => (
+                        <Pressable
+                          key={list.id}
+                          testID={`edit-subscription-list-${toTestIdSegment(list.name)}`}
+                          onPress={() => {
+                            setSelectedListId(selectedListId === list.id ? null : list.id);
+                            setIsListDialogOpen(false);
+                          }}
+                          className="flex-row items-center justify-between rounded-lg p-3 active:bg-muted">
+                          <Text className="font-medium text-foreground">{list.name}</Text>
+                          {selectedListId === list.id && (
+                            <Icon as={CheckIcon} className="size-5 text-primary" />
+                          )}
+                        </Pressable>
+                      ))}
+                      <View className="my-2 h-[1px] bg-border" />
+                      <Pressable
+                        testID="edit-subscription-manage-lists"
+                        onPress={() => {
+                          setIsListDialogOpen(false);
+                          onOpenChange(false);
+                          router.push('/settings/manage-lists');
+                        }}
+                        className="flex-row items-center gap-2 p-3 active:opacity-70">
+                        <View className="rounded-full bg-primary/10 p-1">
+                          <Icon as={PlusIcon} className="size-4 text-primary" />
+                        </View>
+                        <Text className="font-medium text-primary">Create New List</Text>
+                      </Pressable>
+                    </ScrollView>
+                  </DialogContent>
+                </Dialog>
               </View>
             )}
 
@@ -214,6 +259,7 @@ export function EditSubscriptionDialog({
                   testID="edit-subscription-amount-input"
                   placeholder="0.00"
                   keyboardType="numeric"
+                  inputMode="decimal"
                   value={amount}
                   onChangeText={(value) => {
                     setAmount(value);
@@ -230,15 +276,50 @@ export function EditSubscriptionDialog({
             {/* Date Input */}
             <View className="gap-2">
               <Text className="font-recoleta-medium text-sm text-foreground">Start Date</Text>
-              <Input
-                testID="edit-subscription-date-input"
-                placeholder="YYYY-MM-DD"
-                value={date}
-                onChangeText={(value) => {
-                  setDate(value);
-                  if (errors.date) setErrors((prev) => ({ ...prev, date: undefined }));
-                }}
-              />
+
+              {Platform.OS === 'ios' ? (
+                <View className="h-10 flex-row items-center justify-start">
+                  <DateTimePicker
+                    testID="edit-subscription-date-picker"
+                    value={parseDateInput(date) || new Date()}
+                    mode="date"
+                    display="default"
+                    onChange={(event, selectedDate) => {
+                      if (selectedDate) {
+                        const isoString = selectedDate.toISOString().split('T')[0];
+                        setDate(isoString);
+                        if (errors.date) setErrors((prev) => ({ ...prev, date: undefined }));
+                      }
+                    }}
+                    themeVariant={colorScheme ?? 'light'}
+                  />
+                </View>
+              ) : (
+                <>
+                  <Pressable
+                    onPress={() => setShowDatePicker(true)}
+                    className="flex h-10 w-full flex-row items-center rounded-md border border-input bg-background/50 px-3 py-1 shadow-sm shadow-black/5 dark:bg-input/30">
+                    <Text className="text-base text-foreground sm:text-sm">{date}</Text>
+                  </Pressable>
+
+                  {showDatePicker && (
+                    <DateTimePicker
+                      testID="edit-subscription-date-picker"
+                      value={parseDateInput(date) || new Date()}
+                      mode="date"
+                      display="default"
+                      onChange={(event, selectedDate) => {
+                        setShowDatePicker(false);
+                        if (event.type === 'set' && selectedDate) {
+                          const isoString = selectedDate.toISOString().split('T')[0];
+                          setDate(isoString);
+                          if (errors.date) setErrors((prev) => ({ ...prev, date: undefined }));
+                        }
+                      }}
+                    />
+                  )}
+                </>
+              )}
               {errors.date ? <Text className="text-sm text-destructive">{errors.date}</Text> : null}
             </View>
 

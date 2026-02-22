@@ -51,8 +51,8 @@ const CardBackground = ({ isDark }: { isDark: boolean }) => {
   const glowTL = isDark ? '#D4531D' : '#FFFFFF';
   const glowBR = isDark ? '#EFAC39' : '#E8D5C4';
 
-  const lineGold1 = isDark ? '#EFAC39' : '#C1883F';
-  const lineGold2 = isDark ? '#D4531D' : '#8B502C';
+  const lineGold1 = isDark ? '#EFAC39' : '#DAB982';
+  const lineGold2 = isDark ? '#D4531D' : '#BF8664';
 
   return (
     <Svg style={{ position: 'absolute' }} width="100%" height="100%">
@@ -94,7 +94,7 @@ const CardBackground = ({ isDark }: { isDark: boolean }) => {
         fill="none"
         stroke={lineGold1}
         strokeWidth="1.5"
-        strokeOpacity={isDark ? '0.1' : '0.35'}
+        strokeOpacity={isDark ? '0.1' : '0.22'}
         strokeDasharray="4 4"
       />
       <Path
@@ -102,14 +102,14 @@ const CardBackground = ({ isDark }: { isDark: boolean }) => {
         fill="none"
         stroke={lineGold1}
         strokeWidth="1"
-        strokeOpacity={isDark ? '0.05' : '0.25'}
+        strokeOpacity={isDark ? '0.05' : '0.15'}
       />
       <Path
         d="M80 -50 Q 200 50 150 200 T 300 350"
         fill="none"
         stroke={lineGold2}
         strokeWidth="2"
-        strokeOpacity={isDark ? '0.08' : '0.2'}
+        strokeOpacity={isDark ? '0.08' : '0.12'}
       />
 
       {/* Large subtle Recur infinity watermark */}
@@ -118,7 +118,7 @@ const CardBackground = ({ isDark }: { isDark: boolean }) => {
         fill="none"
         stroke={lineGold1}
         strokeWidth="3"
-        strokeOpacity={isDark ? '0.03' : '0.12'}
+        strokeOpacity={isDark ? '0.03' : '0.08'}
         transform="scale(1.2) translate(10, -50)"
       />
 

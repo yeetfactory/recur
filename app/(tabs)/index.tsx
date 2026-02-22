@@ -24,6 +24,15 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from '@/components/ui/alert-dialog';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '@/components/ui/dialog';
+import { FilterIcon, CheckIcon } from 'lucide-react-native';
+import { Icon } from '@/components/ui/icon';
 import DraggableFlatList, {
   RenderItemParams,
   ScaleDecorator,
@@ -113,6 +122,15 @@ export default function Screen() {
       return acc + amount;
     }, 0);
   }, [filteredSubscriptions, viewMode]);
+
+  const [isFilterDialogOpen, setIsFilterDialogOpen] = React.useState(false);
+
+  const getSelectedListName = () => {
+    if (selectedListId === null) return 'All';
+    if (selectedListId === 'unassigned') return 'Unassigned';
+    const list = lists.find((l) => l.id === selectedListId);
+    return list ? list.name : 'Unknown';
+  };
 
   const renderItem = React.useCallback(
     ({ item, drag, isActive }: RenderItemParams<Subscription>) => {
@@ -206,34 +224,69 @@ export default function Screen() {
                 userName={userName || 'Card Holder'}
               />
 
-              {/* Filter Chips */}
-              <ScrollView
-                horizontal
-                showsHorizontalScrollIndicator={false}
-                className="flex-row"
-                contentContainerStyle={{ gap: 8, paddingHorizontal: 4 }}>
-                <FilterChip
-                  label="All"
-                  isSelected={selectedListId === null}
-                  onSelect={() => setSelectedListId(null)}
-                  testID="filter-chip-all"
-                />
-                <FilterChip
-                  label="Unassigned"
-                  isSelected={selectedListId === 'unassigned'}
-                  onSelect={() => setSelectedListId('unassigned')}
-                  testID="filter-chip-unassigned"
-                />
-                {lists.map((list) => (
-                  <FilterChip
-                    key={list.id}
-                    label={list.name}
-                    isSelected={selectedListId === list.id}
-                    onSelect={() => setSelectedListId(list.id)}
-                    testID={`filter-chip-${toTestIdSegment(list.name)}`}
-                  />
-                ))}
-              </ScrollView>
+              {/* Filter Dropdown Toggle */}
+              <Dialog open={isFilterDialogOpen} onOpenChange={setIsFilterDialogOpen}>
+                <DialogTrigger asChild>
+                  <Pressable
+                    testID="filter-trigger"
+                    className="flex-row items-center gap-2 self-start rounded-full border border-border bg-card px-4 py-2">
+                    <Icon as={FilterIcon} className="size-4 text-muted-foreground" />
+                    <Text className="text-sm font-medium text-foreground">
+                      List: {getSelectedListName()}
+                    </Text>
+                  </Pressable>
+                </DialogTrigger>
+
+                <DialogContent
+                  className="mx-4 w-auto max-w-none sm:max-w-none"
+                  overlayStyle={{ padding: 0, alignItems: 'stretch' }}
+                  style={{ alignSelf: 'stretch' }}>
+                  <DialogHeader>
+                    <DialogTitle>Filter by List</DialogTitle>
+                  </DialogHeader>
+
+                  <ScrollView className="mt-4 max-h-80" showsVerticalScrollIndicator={false}>
+                    <Pressable
+                      onPress={() => {
+                        setSelectedListId(null);
+                        setIsFilterDialogOpen(false);
+                      }}
+                      className="flex-row items-center justify-between rounded-lg p-3 active:bg-muted">
+                      <Text className="font-medium text-foreground">All</Text>
+                      {selectedListId === null && (
+                        <Icon as={CheckIcon} className="size-5 text-primary" />
+                      )}
+                    </Pressable>
+
+                    <Pressable
+                      onPress={() => {
+                        setSelectedListId('unassigned');
+                        setIsFilterDialogOpen(false);
+                      }}
+                      className="flex-row items-center justify-between rounded-lg p-3 active:bg-muted">
+                      <Text className="font-medium text-foreground">Unassigned</Text>
+                      {selectedListId === 'unassigned' && (
+                        <Icon as={CheckIcon} className="size-5 text-primary" />
+                      )}
+                    </Pressable>
+
+                    {lists.map((list) => (
+                      <Pressable
+                        key={list.id}
+                        onPress={() => {
+                          setSelectedListId(list.id);
+                          setIsFilterDialogOpen(false);
+                        }}
+                        className="flex-row items-center justify-between rounded-lg p-3 active:bg-muted">
+                        <Text className="font-medium text-foreground">{list.name}</Text>
+                        {selectedListId === list.id && (
+                          <Icon as={CheckIcon} className="size-5 text-primary" />
+                        )}
+                      </Pressable>
+                    ))}
+                  </ScrollView>
+                </DialogContent>
+              </Dialog>
             </View>
 
             {filteredSubscriptions.length === 0 && (
