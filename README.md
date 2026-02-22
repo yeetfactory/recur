@@ -6,16 +6,18 @@ A local-first subscription tracker built with React Native and Expo. Track recur
 ![React Native](https://img.shields.io/badge/React%20Native-0.81-61dafb)
 
 ## 📸 Screenshots
-# Dark Mode:
+### Dark Mode:
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/38102fca-9bb6-4aa4-8b66-c261682901cc" width="49%" />
-  <img src="https://github.com/user-attachments/assets/130a511f-52ed-42f5-8ea8-55c3fc487d0b" width="49%" />
+  <img src="https://github.com/user-attachments/assets/38102fca-9bb6-4aa4-8b66-c261682901cc" width="30%" />
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  <img src="https://github.com/user-attachments/assets/130a511f-52ed-42f5-8ea8-55c3fc487d0b" width="30%" />
 </p>
 
-# Light Mode:
+### Light Mode:
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/e2808675-eaef-4780-bc14-c9b96d23e0f1" width="49%" />
-  <img src="https://github.com/user-attachments/assets/2adc6b95-52ba-44a5-b7ad-71958e226415" width="49%" />
+  <img src="https://github.com/user-attachments/assets/e2808675-eaef-4780-bc14-c9b96d23e0f1" width="30%" />
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  <img src="https://github.com/user-attachments/assets/2adc6b95-52ba-44a5-b7ad-71958e226415" width="30%" />
 </p>
 
 ## ✨ Features
