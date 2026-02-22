@@ -2,9 +2,6 @@
 
 A local-first subscription tracker built with React Native and Expo. Track recurring expenses with a focused, offline-friendly UI.
 
-![Built with Expo](https://img.shields.io/badge/Built%20with-Expo-000020)
-![React Native](https://img.shields.io/badge/React%20Native-0.81-61dafb)
-
 ## 📸 Screenshots
 ### Dark Mode:
 <p align="center">
