@@ -151,12 +151,12 @@ export const Chart = ({ total, viewMode = 'monthly', userName }: ChartProps) => 
   const labelColor = isDark ? 'text-[#EFAC39]/80' : 'text-[#96601D]/80';
 
   return (
-    <View className="mb-6 h-[224px] w-full" style={chartShadow}>
+    <View className="mb-2 h-[224px] w-full" style={chartShadow}>
       <View
         className="h-full w-full overflow-hidden rounded-[20px]"
         style={{
           backgroundColor: isDark ? '#2E160D' : '#F4ECE4',
-          borderWidth: 0.5,
+          borderWidth: 1,
           borderColor: isDark ? 'rgba(239, 172, 57, 0.2)' : 'rgba(150, 96, 29, 0.2)',
         }}>
         <CardBackground isDark={isDark} />

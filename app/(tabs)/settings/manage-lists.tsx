@@ -194,7 +194,7 @@ export default function ManageListsPage() {
             <Button variant="outline" onPress={() => setIsAddDialogOpen(false)}>
               <Text>Cancel</Text>
             </Button>
-            <Button testID="manage-lists-add-submit" onPress={handleAddList}>
+            <Button testID="manage-lists-add-submit" onPress={handleAddList} disabled={!newListName.trim()}>
               <Text>Add List</Text>
             </Button>
           </DialogFooter>
@@ -219,7 +219,7 @@ export default function ManageListsPage() {
             <Button variant="outline" onPress={() => setIsEditDialogOpen(false)}>
               <Text>Cancel</Text>
             </Button>
-            <Button testID="manage-lists-edit-submit" onPress={handleEditList}>
+            <Button testID="manage-lists-edit-submit" onPress={handleEditList} disabled={!newListName.trim()}>
               <Text>Save</Text>
             </Button>
           </DialogFooter>
